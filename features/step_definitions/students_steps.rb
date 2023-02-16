@@ -13,3 +13,8 @@
   When('I click show this student') do
     first("button", text: "Show this student").click
   end
+
+  When('I fill in student {string} with {string}') do |string, string2|
+    fill_in "student[#{string}]", with: string2
+  end
+  
