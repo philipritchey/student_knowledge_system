@@ -14,7 +14,7 @@
 #     User.create!(user)
 # end
 
-User.create(email: 'team_cluck_admin@gmail.com', password: 'team_cluck_12345!')
+# User.create(email: 'team_cluck_admin@gmail.com', password: 'team_cluck_12345!')
 
 #fake data for testing
 #User.create(email: 'oliphcal000@tamu.edu', password: 'Haudi')
@@ -58,6 +58,6 @@ for student in Student.all do
 end
 
 
-User.create(email: 'yourdummycluck@gmail.com', password: 'abc_123!')
+# User.create(email: 'yourdummycluck@gmail.com', password: 'abc_123!')
 User.where(confirmed_at: nil).update_all(confirmed_at: Time.now)
 

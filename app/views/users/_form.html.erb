@@ -1,0 +1,7 @@
+<%= form_with(model: user, data: {turbo: false}) do |form| %>
+    <div>
+      <%= form.label :email %>
+      <%= form.text_field :email %>
+    </div>
+    <%= form.submit "Create account" %>
+  <% end %>
