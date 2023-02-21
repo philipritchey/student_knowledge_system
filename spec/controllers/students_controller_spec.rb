@@ -44,7 +44,7 @@ RSpec.describe StudentsController, type: :controller do
 
     it "shows successfully" do
         get :show, params: { id: @student.id }
-        expect(response).to have_http_status(:redirect)
+        expect(response).to have_http_status(:successful)
     end
 
     it "creates a new student" do
