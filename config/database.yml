@@ -1,6 +1,6 @@
 production:
   url: <%= ENV['DATABASE_URL'] %>
-  # host: student-knowledge-system.herokuapp.com
+  host: student-knowledge-system.herokuapp.com
 
 development:
   adapter: sqlite3
