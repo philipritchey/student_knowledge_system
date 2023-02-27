@@ -81,7 +81,7 @@ class UploadController < ApplicationController
             end
             StudentCourse.find_or_create_by(course_id: @course.id, student_id:@student.id, final_grade:row["FINALGRADE"])
     
-            Tempfile.open([uuid, ".jpg"]) do |tmp|
+            Tempfile.open([uuid]) do |tmp|
                 image.extract(tmp.path) {true}
                 @student.image.attach(io: File.open(tmp), filename: uuid)
             end
