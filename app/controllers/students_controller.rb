@@ -3,6 +3,10 @@ class StudentsController < ApplicationController
     before_action :set_student, only: %i[ show edit update destroy ]
     # GET /student
     def index
+        # make yearbook_style available to view
+        @user = current_user
+        @yearbook_style = @user.yearbook_style
+
         @students = Student.search(params[:search], current_user.email)
         @emails = Set[]
 

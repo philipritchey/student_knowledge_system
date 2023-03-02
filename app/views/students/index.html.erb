@@ -37,8 +37,9 @@
       </tr>
     </thead>
 
-    <div id="tablestyle">
     <tbody id="students">
+    <% if !@yearbook_style %>
+    <div id="tablestyle">
       <% @students.each do |student| %>
         <tr>
           <td>
@@ -78,8 +79,14 @@
     </div>
     <div>
     <div>
+    <% end %>
+    
+
   </table>
 </div>
+
+
+    <% if @yearbook_style %>
 
     <div id="yearbookstyle" class="d-flex flex-wrap justify-content-center">
     <% @students.each do |student| %>
@@ -98,6 +105,8 @@
     </div>
     <% end %>
     </div>
+    
+    <% end %>
 
 <footer class="hd footer mt-auto py-3 mt-2 text-center">
   <div class="container">
