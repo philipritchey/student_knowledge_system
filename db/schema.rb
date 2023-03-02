@@ -104,6 +104,7 @@ ActiveRecord::Schema[7.0].define(version: 202301251058031) do
     t.datetime "updated_at", null: false
     t.string "firstname", default: ""
     t.string "lastname", default: ""
+    t.boolean "yearbook_style"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
