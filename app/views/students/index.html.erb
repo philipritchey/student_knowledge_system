@@ -7,14 +7,14 @@
         </th>
       </tr>
       <tr>
-        <th>
+        <th colspan="2">
           Email: <br>
           <%= form_tag('/students', method: :get) do %>
             <%= text_field_tag :search, params[:search], placeholder: "Search by Email" %>
             <%= submit_tag 'Search', :name => nil %>
           <% end %>
         </th>
-        <th>
+        <th colspan="2">
           Course(s)/Semester(s): <br>
           <%= form_with(method: "get") do |f| %>
           <% selected_course = nil%>
@@ -23,7 +23,7 @@
           <% selected_semester = nil%>
           <%= f.select("selected_semester", @semesters, {:include_blank => true}, {:onchange => "selected_semester=this.value;"}) %>
         </th>
-        <th>
+        <th colspan="2">
           Tags:
           <% selected_tag = nil%> <br>
           <%= f.select("selected_tag", @tags, {:include_blank => true}, {:onchange => "selected_tag=this.value;"}) %>
