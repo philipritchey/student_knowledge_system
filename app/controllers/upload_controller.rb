@@ -24,7 +24,7 @@ class UploadController < ApplicationController
             images_paths = html_doc.search('img/@src').map{ |s| s.text.strip }
             
             images_paths.each do |path|
-              # error handling for .display files because the path pushed to images_paths does not match the entry.name, so find_entry does not work
+              # error handling for .display files because the path pushed to images_paths does not match the entry.name, so find_entry does not work without modyifying the path as done below
               if (path.include? ".display")
                 full_path = path.split("/", 2)
                 # puts full_path
