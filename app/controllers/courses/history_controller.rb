@@ -1,6 +1,8 @@
 module Courses
     class HistoryController < CoursesController
-        before_action :authenticate_user!
+        # before_action :authenticate_user!
+        # before_action :authenticate_by_session
+
         before_action :set_course, only: %i[ show ]
 
         def show

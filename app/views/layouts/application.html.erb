@@ -21,7 +21,7 @@
             </a>
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-              <li><a href="/" class="nav-link px-2 link-light">Home</a></li>
+              <li><a href="/home" class="nav-link px-2 link-light">Home</a></li>
               <li><a href="/courses" class="nav-link px-2 link-light">Courses</a></li>
               <li><a href="/students" class="nav-link px-2 link-light">Students</a></li>
               <li><a href="/upload" class="nav-link px-2 link-light">Upload</a></li>
@@ -43,17 +43,17 @@
                     method: :get
                   ) %>
                 </li>
+              <% end %>
 
                 <li><hr class="dropdown-divider"></li>
                 
                 <li>
                   <%= button_to(
                     "Log Out",
-                    destroy_user_session_path,
+                    users.sign_out_path,
                     method: :delete
                   ) %>
                 </li>
-                <% end %>
               </ul>
             </div>
           </div>

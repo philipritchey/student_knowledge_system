@@ -28,6 +28,8 @@ Rails.application.routes.draw do
   passwordless_for :users
   resources :users
   root to: 'static#index'
+
+  get '/home', to: 'home#index'
   # devise_for :users, controllers: {
   #   registrations: 'users/registrations',
   #   sessions: 'users/sessions',

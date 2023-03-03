@@ -1,5 +1,7 @@
 class HomeController < ApplicationController
-  before_action :authenticate_user!
+  # before_action :authenticate_user!
+  # before_action :authenticate_by_session
+
   def index
     @id = current_user.email
     @dueStudents = Student.getDue(@id)

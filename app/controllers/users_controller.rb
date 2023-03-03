@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+    before_action :require_authentication, only: [:show, :edit, :update, :destroy]
+
     def new
         @user = User.new
     end
@@ -8,7 +10,7 @@ class UsersController < ApplicationController
 
         if @user.save
             sign_in @user
-            redirect_to root_path, notice: "Welcome aboard!"
+            redirect_to home_path, notice: "Welcome aboard!"
         else
             render :new
         end 
