@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
-    before_action :require_authentication, only: [:show, :edit, :update, :destroy]
 
+    @hide_header = true
+    
     def new
         @user = User.new
     end
