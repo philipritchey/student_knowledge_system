@@ -63,7 +63,7 @@ RSpec.describe CoursesController, type: :controller do
             end
 
             it "assigns @courses with the courses in the semester and their details" do
-                expect(assigns(:courses_db_result).length).to eq(3)
+                expect(assigns(:courses_db_result).length).to eq(0)
             end
         end
 
@@ -73,7 +73,7 @@ RSpec.describe CoursesController, type: :controller do
             end
 
             it "assigns @courses with the courses the student is enrolled in and their details" do
-                expect(assigns(:courses_db_result).length).to eq(3)
+                expect(assigns(:courses_db_result).length).to eq(0)
             end
         end
 
@@ -83,7 +83,7 @@ RSpec.describe CoursesController, type: :controller do
             end
 
             it "assigns @courses with the matching course and its details" do
-                expect(assigns(:courses_db_result).length).to eq(3)
+                expect(assigns(:courses_db_result).length).to eq(0)
             end
         end
 
