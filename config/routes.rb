@@ -23,12 +23,18 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
 
-  root 'home#index'
-  devise_for :users, controllers: {
-    registrations: 'users/registrations',
-    sessions: 'users/sessions',
-    omniauth_callbacks: 'users/omniauth_callbacks'
-  }
+  # root 'home#index'
+
+  passwordless_for :users
+  resources :users
+  root to: 'static#index'
+
+  get '/home', to: 'home#index'
+  # devise_for :users, controllers: {
+  #   registrations: 'users/registrations',
+  #   sessions: 'users/sessions',
+  #   omniauth_callbacks: 'users/omniauth_callbacks'
+  # }
   # devise_scope :user do
   #   authenticated :user do
   #       root 'home#index', as: :authenticated_root

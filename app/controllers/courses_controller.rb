@@ -1,5 +1,6 @@
 class CoursesController < ApplicationController
-  before_action :authenticate_user!
+  # before_action :authenticate_user!
+  # before_action :authenticate_by_session
   before_action :set_course, only: %i[ show edit update destroy ]
 
 
