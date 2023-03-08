@@ -16,15 +16,28 @@ class UploadController < ApplicationController
       #when a zip file is uploaded, unzip it
       Zip::File.open(params[:file]) do |zip_file|
         #if the zip file contains a csv file, parse it
-        
         images_paths = []
         zip_file.each do |entry|
+          # puts entry.name
 
           if (entry.name.include? ".htm")
             #parse html doc for correct order of pictures, csv and images zip is mismatched but the html gets the order correct
             html_doc = Nokogiri::HTML(entry.get_input_stream.read)
             images_paths = html_doc.search('img/@src').map{ |s| s.text.strip }
             
+            images_paths.each do |path|
+              # error handling for .display files because the path pushed to images_paths does not match the entry.name, so find_entry does not work without modyifying the path as done below
+              if (path.include? ".display")
+                full_path = path.split("/", 2)
+                # puts full_path
+                # puts full_path[1]
+                images.push(zip_file.find_entry(full_path[1]))
+              else
+                images.push(zip_file.find_entry(path))
+              end
+            end
+            Rails.logger.debug "images_paths: #{images_paths.inspect}"
+            Rails.logger.debug "images: #{images.inspect}"
 
           elsif (entry.name.include? ".csv")
             #parse
@@ -32,12 +45,10 @@ class UploadController < ApplicationController
             Rails.logger.info "Collected all student courses #{csv.inspect}"
             #if the csv file contains empty rows, remove the offensive row
             csv.delete_if {|row| row.to_hash.values.all?(&:nil?)}
+          else
+            
           end 
 
-        end
-
-        images_paths.each do |path|
-          images.push(zip_file.find_entry(path))
         end
 
 
@@ -51,7 +62,7 @@ class UploadController < ApplicationController
         StudentCourse.where(course_id: @course.id).destroy_all
 
         csv.zip(images).each do |row, image|
-          uuid = SecureRandom.uuid
+          uuid = "#{SecureRandom.uuid}-#{row['UIN'].strip()}"
   
           #if the columns are not null, then proceed
           Rails.logger.info "Collected student #{row.inspect}"
@@ -83,7 +94,7 @@ class UploadController < ApplicationController
             end
             StudentCourse.find_or_create_by(course_id: @course.id, student_id:@student.id, final_grade:row["FINALGRADE"])
     
-            Tempfile.open([uuid, ".jpg"]) do |tmp|
+            Tempfile.open([uuid]) do |tmp|
                 image.extract(tmp.path) {true}
                 @student.image.attach(io: File.open(tmp), filename: uuid)
             end
