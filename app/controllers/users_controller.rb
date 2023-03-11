@@ -10,10 +10,9 @@ class UsersController < ApplicationController
         @user = User.new user_params
 
         if @user.save
-            sign_in @user
-            redirect_to home_path, notice: "Welcome aboard!"
+            redirect_to root_path, notice: "Your account has been created. Please sign in."
         else
-            render :new
+            redirect_to root_path, notice: "Your account already exists. Please sign in."
         end 
     end
 
