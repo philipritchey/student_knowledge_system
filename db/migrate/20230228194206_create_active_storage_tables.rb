@@ -1,6 +1,7 @@
 class CreateActiveStorageTables < ActiveRecord::Migration[7.0]
     def change
-      create_table :active_storage_blobs do |t|
+      
+      create_table :active_storage_blobs, if_not_exists: true do |t|
         t.string :key, null: false
         t.string :filename, null: false
         t.string :content_type
