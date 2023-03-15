@@ -57,6 +57,7 @@ class StudentsController < ApplicationController
                 all_tag_assocs = StudentsTag.where(tag_id: selected_tag_id, teacher: current_user.email)
                 @students = @students.select {|s| all_tag_assocs.any? { |assoc| s.id == assoc.student_id}}
             end
+            Rails.logger.info "Filtered students"
         else
             @target_course_id = @course_ids
         end
