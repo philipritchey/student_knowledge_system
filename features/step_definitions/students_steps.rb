@@ -20,3 +20,6 @@
     fill_in "student[#{string}]", with: string2
   end
   
+  When('I select {string} under tag') do |string|
+    find("#selected_tag").select(string)
+  end

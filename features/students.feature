@@ -40,6 +40,27 @@ Scenario: Search by semester
     Then I submit the form
     Then I should see "Kunal"
 
+Scenario: Search by tag
+    When I sign in
+    Given I am on the upload page
+    When I upload a zip file
+    And I input form information
+    When I click save
+    Then I should see the upload was successful
+    And I go to the students page
+    And I select "Spring 2023" under semester
+    Then I submit the form
+    Then I should see "Kunal"
+    When I click show this student
+    And I click "Edit this student"
+    When I fill in student "create_tag" with "test"
+    And I click "Update Student"
+    Then I should see "test"
+    When I go to the students page
+    And I select "test" under tag
+    Then I submit the form
+    Then I should see "Kunal"
+
 Scenario: Show a student
     When I sign in
     And I go to the students page
