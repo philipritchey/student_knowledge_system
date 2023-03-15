@@ -36,7 +36,7 @@ Scenario: Search by semester
     When I click save
     Then I should see the upload was successful
     And I go to the students page
-    And I select "Spring 2020" under semester
+    And I select "Spring 2023" under semester
     Then I submit the form
     Then I should see "Kunal"
 

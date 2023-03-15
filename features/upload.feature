@@ -12,3 +12,11 @@ Scenario: Upload correctly
     And I input form information
     When I click save
     Then I should see the upload was successful
+
+Scenario: Upload with .display files correctly
+    When I sign in
+    Given I am on the upload page
+    When I upload a zip file with .display files
+    And I input 431 form information
+    When I click save
+    Then I should see the upload was successful
