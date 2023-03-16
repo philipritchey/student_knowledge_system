@@ -6,7 +6,10 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&display=swap');
 
-
+.dropdown:hover .dropdown-menu {
+    display: block;
+  }
+  
 // .hd {
 //     background-color: #500000;
 //     color: white;
