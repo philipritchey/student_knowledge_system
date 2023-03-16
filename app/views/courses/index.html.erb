@@ -1,46 +1,46 @@
 
 
-<div id="coursesDiv">
-  <table class="table table-striped table-hover text-center">
-    <thead>
+<div class="p-2 flex justify-center text-[#500000] w-[60rem] drop-shadow-xl rounded mx-auto my-4 bg-gray-100"id="coursesDiv">
+  <table class="my-2 table table-striped table-hover text-center">
+    <thead class="">
       <tr>
-        <th colspan="5">
+        <th class="font-source-serif-pro text-[1.5rem]"colspan="5">
           <h1>Courses</h1>
         </th>
       </tr>
       <tr>
-        <th>
+        <th class="font-source-serif-pro">
           Course Name: <br>
           <%= form_tag('/courses', method: :get) do %>
-            <%= text_field_tag :search_course, params[:search_course], placeholder: "Search by Name" %>
-            <%= submit_tag 'Search Name', :name => nil %>
+            <%= text_field_tag :search_course, params[:search_course], placeholder: "Search by Name", class: "rounded w-3/4 mt-2 mb-3"%>
+            <%= submit_tag 'Search Name', :name => nil, class: "cursor-pointer hover:underline hover:underline-offset-4 py-1 px-3 mb-[1rem] border-2 rounded border-dotted border-[#500000]" %>
           <% end %>
         </th>
-        <th>
+        <th class="font-source-serif-pro">
           Semester(s): <br>
           <%= form_tag('/courses', method: :get) do %>
-            <%= text_field_tag :search_semester, params[:search_semester], placeholder: "Search by Semester" %>
-            <%= submit_tag 'Search Semester', :name => nil %>
+            <%= text_field_tag :search_semester, params[:search_semester], placeholder: "Search by Semester", class: "rounded w-3/4 mt-2 mb-3" %>
+            <%= submit_tag 'Search Semester', :name => nil, class: "cursor-pointer hover:underline hover:underline-offset-4 mb-[1rem] py-1 px-3 border-2 rounded border-dotted border-[#500000]" %>
           <% end %>
         </th>
-        <th>
+        <th class="font-source-serif-pro">
           View Course Profile: <br>
           <%= form_tag('/courses', method: :get) do %>
-            <%= text_field_tag :search_student, params[:search_student], placeholder: "Search by Student" %>
-            <%= submit_tag 'Search Student', :name => nil %>
+            <%= text_field_tag :search_student, params[:search_student], placeholder: "Search by Student", class: "rounded w-3/4 mt-2 mb-3" %>
+            <%= submit_tag 'Search Student', :name => nil, class: "cursor-pointer hover:underline hover:underline-offset-4 py-1 px-3 mb-[1rem] border-2 rounded border-dotted border-[#500000]" %>
           <% end %>
         </th>
       </tr>
     </thead>
 
-    <tbody>
-        <%= render partial: 'courses/partials/course' %>
+    <tbody class="bg-white font-source-serif-pro hover:bg-[#fdfdfd] border-b"> 
+        <%= render partial: 'courses/partials/course' , class: "p-6 "%>
     </tbody>
   </table>
 </div>
 
-<footer class="hd footer mt-auto py-3 mt-2 text-center">
+<footer class="hd footer mt-auto py-3 text-center">
   <div class="container">
-    <%= button_to "New course", new_course_path, :method=>:get  %>
+    <%= button_to "New course", upload_index_path, :method=>:get  %>
   </div>
 </footer>
