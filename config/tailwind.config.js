@@ -13,6 +13,9 @@ module.exports = {
       fontFamily: {
         sans: ['Inter var', ...defaultTheme.fontFamily.sans],
         'dancing-script': ['Dancing Script', 'cursive'],
+        'eczar': ['Eczar', 'serif'],
+        'fira-sans': ['Fira Sans', 'sans-serif'],
+        'source-serif-pro': ['Source Serif Pro', 'serif'],
       },
     },
   },
