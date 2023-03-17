@@ -250,6 +250,9 @@ GEM
       actionpack (>= 4.2)
       omniauth (~> 2.0)
     orm_adapter (0.5.0)
+    passwordless (0.11.0)
+      bcrypt (~> 3.1.11)
+      rails (>= 5.1.4)
     pg (1.4.5)
     popper_js (2.11.6)
     psych (3.3.4)
@@ -354,6 +357,9 @@ GEM
       railties (>= 6.0.0)
     sys-uname (1.2.2)
       ffi (~> 1.1)
+    tailwindcss (0.1.1)
+    tailwindcss-rails (2.0.24-x86_64-linux)
+      railties (>= 6.0.0)
     thor (1.2.1)
     tilt (2.0.11)
     timeout (0.3.1)
@@ -410,6 +416,7 @@ DEPENDENCIES
   omniauth
   omniauth-google-oauth2
   omniauth-rails_csrf_protection (~> 1.0)
+  passwordless
   pg
   psych (< 4)
   puma (~> 5.0)
@@ -422,6 +429,8 @@ DEPENDENCIES
   sprockets-rails (>= 2.3.2)
   sqlite3
   stimulus-rails
+  tailwindcss
+  tailwindcss-rails (~> 2.0)
   turbo-rails
   tzinfo-data
   web-console

@@ -5,59 +5,56 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
+  
 
-  <body class="d-flex flex-column h-100">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <header class="hd p-2 mb-1 border-bottom sticky-top">
-        <div class="container">
-          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 me-lg-auto text-dark text-decoration-none">
-              <%= image_tag("TAMU-Logo.png", :alt => "TAMU Logo", :size => "80x80") %>
+  <body class="flex flex-col z-30 bg-gray-200">
+    <% unless (controller_name == "users") or (controller_name == "static") or (controller_name == "sessions") or (controller_name == "devise")%>
+    <header class="hd mb-1 border-bottom sticky-top">
+    <div class="flex flex-col w-screen">
+        <div class="text-[#500000] flex flex-row justify-between bg-[#DBABAB] drop-shadow-lg border-b-2 border-b-gray-400 pl-5 items-center">
+            <a href="/home" class="">
+                <%= image_tag("k2.png", :size => "200x83") %>
             </a>
 
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-              <li><a href="/" class="nav-link px-2 link-light">Home</a></li>
-              <li><a href="/courses" class="nav-link px-2 link-light">Courses</a></li>
-              <li><a href="/students" class="nav-link px-2 link-light">Students</a></li>
-              <li><a href="/upload" class="nav-link px-2 link-light">Upload</a></li>
+            <ul class="flex font-mono flex-row w-[27rem] justify-between items-center">
+                <li><a href="/home" class="hover:font-medium hover:bg-[#ca8484] hover:pt-3 hover:pl-3 hover:pr-3 hover:pb-4 hover:rounded-xl hover:underline hover:underline-offset-4 nav-link px-2 link-light">Home</a></li>
+                <li><a href="/courses" class="hover:font-medium hover:bg-[#ca8484] hover:pt-3 hover:pl-3 hover:pr-3 hover:pb-4 hover:rounded-xl hover:underline hover:underline-offset-4 nav-link px-2 link-light">Courses</a></li>
+                <li><a href="/students" class="hover:font-medium hover:bg-[#ca8484] hover:pt-3 hover:pl-3 hover:pr-3 hover:pb-4 hover:rounded-xl hover:underline hover:underline-offset-4 nav-link px-2 link-light">Students</a></li>
+                <li><a href="/upload" class="hover:font-medium hover:bg-[#ca8484] hover:pt-3 hover:pl-3 hover:pr-3 hover:pb-4 hover:rounded-xl hover:underline hover:underline-offset-4 nav-link px-2 link-light">Upload</a></li>
             </ul>
 
-            <div class="dropdown text-end">
-              <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <%# <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle"> %>
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person rounded-circle" viewBox="0 0 16 16">
-                  <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
-                </svg>
-              </a>
-              <ul class="dropdown-menu text-small">
-                <li>
-                  <%= button_to(
-                    "Your Account",
-                    edit_user_registration_path,
-                    method: :get
-                  ) %>
-                </li>
+            <div class="p-10">
 
-                <li><hr class="dropdown-divider"></li>
-                
-                <li>
-                  <%= button_to(
-                    "Log Out",
-                    destroy_user_session_path,
-                    method: :delete
-                  ) %>
-                </li>
-              </ul>
+              <div class="z-50 dropdown inline-block font-mono relative">
+                <button class="bg-[#ca8484] text-gray-700 font-semibold py-2 px-8 rounded inline-flex text-left">
+                  <span class="mr-1">Settings</span>
+                  <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/> </svg>
+                </button>
+                <ul class="dropdown-menu absolute hidden text-gray-700 pt-1">
+                  <li class=""><a class="rounded-t bg-gray-300 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="#">Light</a></li>
+                  <li class=""><a class="bg-gray-300 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="#">Dark</a></li>
+                  <li class=""><a class="rounded-b bg-gray-300 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="#">Change Student View</a></li>
+                  <li class="rounded-b bg-gray-300 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" >
+                    <%= button_to(
+                      "Log Out",
+                      users.sign_out_path,
+                      method: :delete
+                    ) %>
+                  </li>
+                </ul>
+              </div>
+
             </div>
           </div>
         </div>
     </header>
-
+    <% end %>
     <% if notice %>
         <p class="alert alert-success"><%= notice %></p>
     <% end %>

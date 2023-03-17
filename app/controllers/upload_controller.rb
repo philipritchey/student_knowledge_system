@@ -1,5 +1,7 @@
 class UploadController < ApplicationController
-    before_action :authenticate_user!
+    # before_action :authenticate_user!
+    # before_action :authenticate_by_session
+
     def index
     end
   
