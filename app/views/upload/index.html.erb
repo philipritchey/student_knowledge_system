@@ -1,8 +1,13 @@
-<div class="container text-center collapse show collapse-all" id="upForm">
+<div class="container text-center show" id="upForm">
   <%= render 'form' %>
 </div>
 
-
+<footer class="hd footer mt-auto py-3 mt-2 text-center">
+  <p>
+    <button class="button" type="button" data-bs-toggle="collapse" data-bs-target=".collapse-all" aria-expanded="false" aria-controls="upForm upInst">
+      Show/Hide Upload Instructions
+    </button>
+  </p>
   <div class="collapse collapse-all" id="upInst">
     <div class="card card-body" style="color:black;">
       <div class="row">
@@ -29,3 +34,4 @@
       </div>
     </div>
   </div>
+</footer>
