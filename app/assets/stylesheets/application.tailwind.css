@@ -11,4 +11,15 @@
   .dropdown:hover .dropdown-menu {
     display: block;
   }
+
+  .custom-tr {
+    border-bottom: 1px solid #E5E7EB; /* add a border at the bottom of each row */
+  }
+  
+  .custom-td {
+    padding-top: 6.5px; /* add padding to each cell */
+    padding-bottom: 6.5px;
+  }
 }
+
+
