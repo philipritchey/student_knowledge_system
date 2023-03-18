@@ -26,43 +26,6 @@ Given(/students are enrolled in their respective courses/) do
 end
 
 When(/I sign in/) do
-
-    #idea, try email_spec again, nah i don't want to deal with real emails
-    
-    # visit root_path
-    # user = User.find_by(email: "team_cluck_admin@gmail.com")
-    # puts "capybara user: #{user.inspect}"
-    # session = Passwordless::Session.new(authenticatable: user)
-    # session.save
-    # # Set the session token in the test session cookie
-    # session_key = Rails.application.config.session_options[:key]
-    # session_cookie = Capybara.current_session.driver.request.env["rack.session"]
-    # session_cookie[session_key.to_s] = { "passwordless" => { "authenticatable_id" => user.id, "token" => session.token, "current_user" => user} }
-    # visit home_path
-
-    ## does not set current_user but runs "visit home_path"
-    # user = User.find_by_email('team_cluck_admin@gmail.com')
-    # session = {
-    #   passwordless: {
-    #     user_id: user.id
-    #   }
-    # }
-    # page.driver.browser.set_cookie("_passwordless_session=#{Rack::Utils.escape(JSON.generate(session))}")
-    # visit home_path
-
-    ## No rails route of '/passwordless/authentications'
-    # visit '/'
-    # page.driver.post('/passwordless/authentications', { auth: { email: 'team_cluck_admin@gmail.com' }})
-    # visit home_path
-
-    ## authenticate_by_session is not a valid method. trying to add it to capybara throws an error
-    # user = User.find_by_email('team_cluck_admin@gmail.com')
-    # authenticate_by_session(user)
-    # visit home_path
-    # expect(page).to have_content("Your account has been created. Please sign in.")
-
-
-
     email = "new@gmail.com"
 
     visit root_path
