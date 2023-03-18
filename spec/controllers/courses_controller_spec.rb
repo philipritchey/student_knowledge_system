@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe CoursesController, type: :controller do
     before do
-        @user = User.create(email:'student@gmail.com', password:'password', confirmed_at:Time.now)
-        sign_in @user
+        @user = User.create(email:'student@gmail.com', confirmed_at:Time.now)
+        # authenticate_by_session(@user)
         @course1 = Course.create(course_name:"CSCE 411", teacher:'student@gmail.com', section:'501', semester:'Fall 2022')
         @course2 = Course.create(course_name:"CSCE 411", teacher:'student@gmail.com', section:'501', semester:'Spring 2023')
         @course3 = Course.create(course_name:"CSCE 412", teacher:'student@gmail.com', section:'501', semester:'Spring 2023')
