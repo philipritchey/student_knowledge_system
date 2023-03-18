@@ -17,8 +17,8 @@
     </div>
   </div>
   <div class="flex justify-center">
-    <div class="flex flex-row justify-between my-6 w-5/6">
-      <div class="bg-white rounded-xl py-3 px-6 flex flex-col">
+    <div class="flex flex-row justify-between my-6 mx-10 w-full">
+      <div class="bg-white h-1/2 w-fixed rounded-xl py-3 px-4 flex flex-col">
           <div class="mx-4 px-5 py-2 text-center w-auto my-2 bg-white border border-2 border-dashed border-gray-300 rounded font-source-serif-pro text-[2.5rem]">
             <h1> <%= @course.course_name %></h1>
           </div>
@@ -57,7 +57,9 @@
               </div>
         </div>
       </div>
+      <div class = "bg-white rounded-xl py-3 px-6">
       <%= render partial: "courses/partials/students" %>
+      </div>
     </div>
   </div>
 </div>
