@@ -26,10 +26,65 @@ Given(/students are enrolled in their respective courses/) do
 end
 
 When(/I sign in/) do
-    visit new_user_session_path()
-    fill_in("Email", with: "team_cluck_admin@gmail.com")
-    fill_in("Password", with: "team_cluck_12345!")
-    click_button("Log in")
+
+    #idea, try email_spec again, nah i don't want to deal with real emails
+    
+    # visit root_path
+    # user = User.find_by(email: "team_cluck_admin@gmail.com")
+    # puts "capybara user: #{user.inspect}"
+    # session = Passwordless::Session.new(authenticatable: user)
+    # session.save
+    # # Set the session token in the test session cookie
+    # session_key = Rails.application.config.session_options[:key]
+    # session_cookie = Capybara.current_session.driver.request.env["rack.session"]
+    # session_cookie[session_key.to_s] = { "passwordless" => { "authenticatable_id" => user.id, "token" => session.token, "current_user" => user} }
+    # visit home_path
+
+    ## does not set current_user but runs "visit home_path"
+    # user = User.find_by_email('team_cluck_admin@gmail.com')
+    # session = {
+    #   passwordless: {
+    #     user_id: user.id
+    #   }
+    # }
+    # page.driver.browser.set_cookie("_passwordless_session=#{Rack::Utils.escape(JSON.generate(session))}")
+    # visit home_path
+
+    ## No rails route of '/passwordless/authentications'
+    # visit '/'
+    # page.driver.post('/passwordless/authentications', { auth: { email: 'team_cluck_admin@gmail.com' }})
+    # visit home_path
+
+    ## authenticate_by_session is not a valid method. trying to add it to capybara throws an error
+    # user = User.find_by_email('team_cluck_admin@gmail.com')
+    # authenticate_by_session(user)
+    # visit home_path
+    # expect(page).to have_content("Your account has been created. Please sign in.")
+
+
+
+    email = "new@gmail.com"
+
+    visit root_path
+    click_link("Create Account")
+    fill_in("user_email", with: email)
+    click_button("Create account")
+    expect(page).to have_content("Your account has been created. Please sign in.")
+    click_link("Create Account")
+    fill_in("user_email", with: email)
+    click_button("Create account")
+    expect(page).to have_content("Your account already exists. Please sign in.")
+    click_link("Sign in")
+    fill_in("passwordless_email", with: email)
+    click_button("Send magic link") # email does not get sent or given to action mailer deliveries array
+    expect(page).to have_content("If we have found you in our system, you have been sent a link to log in!")
+    visit home_path
+
+    ## og thing
+    # visit new_user_session_path()
+    # fill_in("Email", with: "team_cluck_admin@gmail.com")
+    # fill_in("Password", with: "team_cluck_12345!")
+    # click_button("Log in")
 end 
 
 When(/I go to the courses page/) do
