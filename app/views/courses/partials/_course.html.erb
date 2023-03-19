@@ -1,17 +1,24 @@
 <% @courses.each do |course| %>
-    <tr>
-        <td>
-        <%# <strong>Course name:</strong> %>
-        <%= course.course_name %>
-        </td>
-
-        <td>
-        <%# <strong>Semesters:</strong> %>
-        <%= course.semesters.to_a.join(", ") %>
-        </td>
-
-        <td>
-            <%= button_to "View profile", course.records.to_a[0], :method=>:get  %>
-        </td>
+    <tr class="custom-tr hover:bg-gray-200">
+      <td>
+        <div class="custom-td">
+          <%# <strong>Course name:</strong> %>
+          <%= course.course_name %>
+        </div>
+      </td>
+  
+      <td>
+        <div class="custom-td">
+          <%# <strong>Semesters:</strong> %>
+          <%= course.semesters.to_a.join(", ") %>
+        </div>
+      </td>
+  
+      <td>
+        <div class="custom-td">
+          <%= button_to "View profile", course.records.to_a[0], :method=>:get, class: "hover:underline" %>
+        </div>
+      </td>
     </tr>
-<% end %>
+  <% end %>
+  
