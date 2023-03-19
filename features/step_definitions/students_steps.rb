@@ -1,5 +1,6 @@
   When('I go to the students page') do
     visit students_path()
+    expect(page).to have_content("New student")
   end
 
   Then('I select {string} under semester') do |string|
