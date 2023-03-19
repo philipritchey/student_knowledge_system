@@ -27,6 +27,6 @@ Given the following students exist:
 
 Scenario: Due students display on home page
     Given students are enrolled in their respective courses
-    When I sign in
+    When I sign in as "team_cluck_admin@gmail.com"
     Then I should not see "Quizzes"
     And I should see "Students due for you to practice:"

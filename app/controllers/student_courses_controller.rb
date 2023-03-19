@@ -1,5 +1,6 @@
 class StudentCoursesController < ApplicationController
-
+    before_action :require_user!
+    
     def update
         @student_course = StudentCourse.find_by(id: params[:id])
         @student = Student.find(@student_course.student_id)

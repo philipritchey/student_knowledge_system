@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+
+    <% unless Rails.env.test? %> <!-- the step "When I sign in" does not allow access if the following line runs, some error with rbg() happens, thus only run the following line if i'm in production or development-->
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    <% end %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>

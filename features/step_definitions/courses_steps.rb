@@ -25,14 +25,13 @@ Given(/students are enrolled in their respective courses/) do
     StudentCourse.create(course_id: Course.find_by(course_name: 'CSCE 412', semester: 'Spring 2023', section: '501').id, student_id: Student.find_by(uin: '983650274').id, final_grade: "")
 end
 
-When(/I sign in/) do
-    email = "new@gmail.com"
+When('I sign in as {string}') do |email|
 
     visit root_path
-    click_link("Create Account")
-    fill_in("user_email", with: email)
-    click_button("Create account")
-    expect(page).to have_content("Your account has been created. Please sign in.")
+    # click_link("Create Account")
+    # fill_in("user_email", with: email)
+    # click_button("Create account")
+    # expect(page).to have_content("Your account has been created. Please sign in.")
     click_link("Create Account")
     fill_in("user_email", with: email)
     click_button("Create account")
@@ -41,7 +40,19 @@ When(/I sign in/) do
     fill_in("passwordless_email", with: email)
     click_button("Send magic link") # email does not get sent or given to action mailer deliveries array
     expect(page).to have_content("If we have found you in our system, you have been sent a link to log in!")
-    visit home_path
+    
+    user = User.find_by(email: email)
+    session = Passwordless::Session.new({
+        authenticatable: user,
+    user_agent: 'Command Line',
+    remote_addr: 'unknown',
+    })
+    session.save!
+    @magic_link = send(Passwordless.mounted_as).token_sign_in_url(session.token)
+    
+    visit "#{@magic_link}"
+    expect(page).to have_content("Howdy")
+    expect(page).to have_content("Welcome Back!")
 
     ## og thing
     # visit new_user_session_path()

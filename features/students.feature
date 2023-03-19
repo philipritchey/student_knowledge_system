@@ -4,6 +4,8 @@ As a professor,
 So I can keep track of student information.
 I want to be able to perform CRUD actions on students.
 
+Background: database
+
 Given the following users exist:
 | email                         | confirmed_at               |
 | team_cluck_admin@gmail.com    | 2023-01-19 12:12:07.544080 |
@@ -24,12 +26,12 @@ Given the following students exist:
 | Sheev     | Palpatine | 983650274 | senate@tamu.edu       | U2             | CPSC  | team_cluck_admin@gmail.com | 2023-01-25 19:11:11.111111    | 119                    |
 
 Scenario: All students viewable
-    When I sign in
+    When I sign in as "team_cluck_admin@gmail.com"
     And I go to the students page
     And I should see "New student"
 
 Scenario: Search by semester
-    When I sign in
+    When I sign in as "team_cluck_admin@gmail.com"
     Given I am on the upload page
     When I upload a zip file
     And I input form information
@@ -41,7 +43,7 @@ Scenario: Search by semester
     Then I should see "Kunal"
 
 Scenario: Search by tag
-    When I sign in
+    When I sign in as "team_cluck_admin@gmail.com"
     Given I am on the upload page
     When I upload a zip file
     And I input form information
@@ -63,7 +65,7 @@ Scenario: Search by tag
 
 
 Scenario: Add and Delete a student
-    When I sign in
+    When I sign in as "team_cluck_admin@gmail.com"
     And I go to the students page
     When I click "New student"
     When I fill in student "firstname" with "New"

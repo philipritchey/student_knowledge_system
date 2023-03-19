@@ -13,11 +13,7 @@ class ApplicationController < ActionController::Base
     private
 
       def current_user
-        if Rails.env.test?
-          User.find_by(email: 'team_cluck_admin@gmail.com')
-        else
-          @current_user ||= authenticate_by_session(User)
-        end
+        @current_user ||= authenticate_by_session(User)
       end
 
       def require_user!

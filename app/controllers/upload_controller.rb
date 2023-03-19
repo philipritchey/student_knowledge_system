@@ -1,4 +1,5 @@
 class UploadController < ApplicationController
+    before_action :require_user!
     # before_action :authenticate_user!
     # before_action :authenticate_by_session
 
