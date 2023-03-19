@@ -9,8 +9,8 @@ end
 
 When('I input form information') do
     fill_in('course_temp', with: "CSCE 606")
-    fill_in('section_temp', with: "001")
-    fill_in('semester_temp', with: "Spring 2020")
+    fill_in('section_temp', with: "000")
+    fill_in('semester_temp', with: "Fall 2022")
 end
 
 When('I click save') do
@@ -20,3 +20,13 @@ end
 Then('I should see the upload was successful') do
     expect(page).to have_content 'Upload successful!'
 end
+
+When('I upload a zip file with .display files') do
+    attach_file('file', './app/resources/431_image_roster_with_chrome_files.zip')
+  end
+  
+When('I input 431 form information') do
+    fill_in('course_temp', with: "CSCE 431")
+    fill_in('section_temp', with: "550")
+    fill_in('semester_temp', with: "Spring 2023")
+  end

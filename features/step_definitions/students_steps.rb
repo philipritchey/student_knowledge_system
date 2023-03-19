@@ -1,5 +1,6 @@
   When('I go to the students page') do
     visit students_path()
+    expect(page).to have_content("New student")
   end
 
   Then('I select {string} under semester') do |string|
@@ -20,3 +21,6 @@
     fill_in "student[#{string}]", with: string2
   end
   
+  When('I select {string} under tag') do |string|
+    find("#selected_tag").select(string)
+  end

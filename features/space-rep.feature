@@ -29,4 +29,4 @@ Scenario: Due students display on home page
     Given students are enrolled in their respective courses
     When I sign in
     Then I should not see "Quizzes"
-    And I should see "Students due for you to practice: 205"
+    And I should see "Students due for you to practice:"

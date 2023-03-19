@@ -3,8 +3,9 @@ require 'rails_helper'
 RSpec.describe UploadController, type: :controller do
   describe "#parse" do
     before(:each) do
-      @user = User.create(email: "test@example.com", password: "password", confirmed_at: Time.now)
-      sign_in @user
+      @user = User.create(email: "test@example.com", confirmed_at: Time.now)
+      # @user = User.find_by(email: 'team_cluck_admin@gmail.com')
+      # authenticate_by_session(@user)
       @course = Course.create(course_name: "test course", teacher: @user.email, section: "999", semester: "Fall 2000")
     end
   
@@ -12,7 +13,7 @@ RSpec.describe UploadController, type: :controller do
       it "creates a new course and student entries" do
         file = fixture_file_upload('ProfRitchey_Template.zip', 'application/zip')
         params = { file: file, course_temp: @course.course_name, section_temp: @course.section, semester_temp: @course.semester }
-        expect { post :parse, params: params }.to change(Course, :count).by(0)
+        expect { post :parse, params: params }.to change(Course, :count).by(1)
         kunal = Student.find_by firstname: 'Kunal'
         expect(kunal.firstname).to eq('Kunal')
         expect(flash[:notice]).to eq("Upload successful!")

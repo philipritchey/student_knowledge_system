@@ -9,6 +9,7 @@ Bundler.require(*Rails.groups)
 module CrudRailsReact
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
+    #config.log_level = :warn # this line removes log
     config.load_defaults 7.0
     config.active_storage.variant_processor = :mini_magick
 
