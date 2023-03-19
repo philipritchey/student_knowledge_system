@@ -58,4 +58,5 @@ def self.search_student(search, teacher)
       @courses_db_result = Course.where(teacher: teacher)
   end
 end
+
 end
