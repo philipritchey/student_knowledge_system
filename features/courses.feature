@@ -118,3 +118,14 @@ Scenario: Delete A Course
     And I should see "Show this course profile"
     And I click "Delete"
     Then I should see "Course and its info were successfully deleted."
+
+Scenario: Sort Students In A Course
+    Given students are enrolled in their respective courses
+    When I sign in as "team_cluck_admin@gmail.com"
+    And I go to the courses page
+    And I fill in "Search by Semester" with "Fall 2022"
+    And I click "Search Semester"
+    And I click the first "View profile"
+    And I select "Fall 2023" under the semester dropdown
+    And I click "Filter Students List"
+    Then I should see "Students in Current View:"

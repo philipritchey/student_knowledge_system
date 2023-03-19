@@ -83,6 +83,10 @@ When('I click {string}') do |button|
     click_button(button)
 end
 
+When('I click the first {string}') do |button|
+    first(:button, 'View profile').click
+end
+
 Then('I should not see {string} offered in {string}') do |course_name, semester|
     hasCourse = false
     all('tr').each do |tr|
@@ -91,4 +95,21 @@ Then('I should not see {string} offered in {string}') do |course_name, semester|
         hasCourse = true
     end
     expect(hasCourse).to eq(false)
+end
+
+And('I select {string} under the semester dropdown') do |semester|
+  semester_dropdown = find('#selected_semester')
+  semester_dropdown_options = semester_dropdown.all('option')
+  semester_dropdown_options.each do |option|
+    puts option.text
+  end
+  
+  # Find the dropdown menu
+  dropdown = find('#selected_semester')
+  
+  # Check that the dropdown menu is visible and enabled
+  raise 'Semester dropdown is not visible' unless dropdown.visible?
+
+  # Select the option from the dropdown menu
+  select semester, from: 'selected_semester'
 end
