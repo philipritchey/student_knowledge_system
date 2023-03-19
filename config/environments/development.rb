@@ -94,4 +94,7 @@ config.assets.css_compressor = nil
   # config.action_cable.disable_request_forgery_protection = true
   Rails.logger = Logger.new(STDOUT)
   config.logger = ActiveSupport::Logger.new("log/#{Rails.env}.log")
+
+  config.assets.check_precompiled_asset = false
+  
 end

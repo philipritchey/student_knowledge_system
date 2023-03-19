@@ -1,3 +1,8 @@
+
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.1.4/tailwind.min.css">
+</head>
+
 <%= form_with(model: @student) do |form| %>
   <% if @student.errors.any? %>
     <div style="color: red">
@@ -11,76 +16,77 @@
     </div>
   <% end %>
 
-  <div class="text-center container">
-    <div class="row gx-5 h-100 ">
-      <div class="col">
-        <div>
-          <%= form.label :firstname, style: "display: block" %>
-          <%= form.text_field :firstname %>
+    <div class="font-source-serif-pro px-6 py-4 rounded drop-shadow bg-white grid grid-cols-4 grid-rows-5">
+        <div class="col-span-2">
+          <%= form.label :firstname, style: "display: block", class: "mb-1" %>
+          <%= form.text_field :firstname, class: "mb-2 rounded bg-gray-100 border-gray-300 w-3/4"%>
+        </div>
+
+        <div class="col-span-2">
+          <%= form.label :lastname, style: "display: block", class: "mb-1" %>
+          <%= form.text_field :lastname, class: "mb-2 rounded bg-gray-100 border-gray-300 w-3/4" %>
+        </div>
+
+        <div class="col-span-2">
+          <%= form.label :email, style: "display: block", class: "mb-1" %>
+          <%= form.text_field :email, pattern: '^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$' , title: "Incorrect email format", class: "mb-2 rounded bg-gray-100 border-gray-300 w-3/4"  %>
         </div>
 
         <div>
-          <%= form.label :lastname, style: "display: block" %>
-          <%= form.text_field :lastname %>
+          <%= form.label :major, style: "display: block", class: "mb-1" %>
+          <%= form.text_field :major, pattern: '(\b[A-Za-z\s]+\b)', title: "([A-Za-z\s]+) For example MCS", class: "mb-2 rounded bg-gray-100 border-gray-300" %>
         </div>
 
         <div>
-          <%= form.label :uin, style: "display: block" %>
-          <%= form.text_field :uin, pattern: '\b[0-9]{9}\b', title: "UIN should be 9 digits" %>
-        </div>
-      </div>
-
-      <div class="col">
-        <div>
-          <%= form.label :email, style: "display: block" %>
-          <%= form.text_field :email, pattern: '^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$' , title: "Incorrect email format" %>
+          <%= form.label :classification, style: "display: block", class: "mb-1" %>
+          <%= form.text_field :classification, class: "mb-2 rounded bg-gray-100 border-gray-300" %>
         </div>
 
         <div>
-          <%= form.label :classification, style: "display: block" %>
-          <%= form.text_field :classification %>
-        </div>
-
-        <div>
-          <%= form.label :major, style: "display: block" %>
-          <%= form.text_field :major, pattern: '(\b[A-Za-z\s]+\b)', title: "([A-Za-z\s]+) For example MCS" %>
-        </div>
-
-        <div>
-            <%= form.label :image, style: "display: block" %>
-            <%= form.file_field :image %>
-        </div>
-      </div>
-
-      <div class="col">
-        <div>
-          <%= form.label :notes, style: "display: block" %>
-          <%= form.text_field :notes %>
+          <%= form.label :uin, style: "display: block", class: "mb-1" %>
+          <%= form.text_field :uin, pattern: '\b[0-9]{9}\b', title: "UIN should be 9 digits", class: "mb-2 rounded bg-gray-100 border-gray-300"  %>
         </div>
 
         <% if Tag.where(teacher: current_user.email).length > 0 %>
-        <div>
-          <%= form.label :tags, style: "display: block" %>
-          <i>(Hold ctrl to select or unselect tags)</i>
-          <br>
-          <% if StudentsTag.where(student_id: @student.id).length != 0 %>
-            <%= form.select :tags, options_for_select(Tag.where(teacher: current_user.email).map{ |tag| tag.tag_name }, selected: Tag.where(id: StudentsTag.where( student_id: @student.id).map { |record| record.tag_id }, teacher: current_user.email ).map { |tag| tag.tag_name }  ), {}, multiple: true %>
-          <% end %>
-        </div>
+          <div>
+            <%= form.label :tags, style: "display: block" %>
+            <i>(Hold ctrl to select or unselect tags)</i>
+            <br>
+            <% if StudentsTag.where(student_id: @student.id).length != 0 %>
+              <%= form.select :tags, options_for_select(Tag.where(teacher: current_user.email).map{ |tag| tag.tag_name }, selected: Tag.where(id: StudentsTag.where( student_id: @student.id).map { |record| record.tag_id }, teacher: current_user.email ).map { |tag| tag.tag_name }  ), {}, multiple: true, class: "mb-2 h-auto rounded bg-gray-100 border-gray-300" %>
+            <% end %>
+          </div>
         <% end %>
 
         <div>
-          <%= form.label :create_tag, style: "display: block" %>
-          <%= form.text_field :create_tag %>
+          <%= form.label :create_tag, style: "display: block", class: 'mb-2' %>
+          <%= form.text_field :create_tag, class: "mb-2 rounded bg-gray-100 border-gray-300"  %>
+        </div>
+        
+        <% if Tag.where(teacher: current_user.email).length > 0 %>
+          <div class="col-span-1">
+              <%= form.label :image, style: "display: block" %>
+              <%= form.file_field :image, class: "mb-2 mt-4" %>
+          </div>
+        <% else %>
+          <div class="col-span-2">
+              <%= form.label :image, style: "display: block" %>
+              <%= form.file_field :image, class: "mb-2 mt-4" %>
+          </div>
+        <% end %>
+
+        <div class="col-span-4">
+          <%= form.label :notes, style: "display: block", class: 'mb-2' %>
+          <%= form.text_field :notes, class: "mb-2 rounded bg-gray-100 border-gray-300 w-full h-1/2 overflow-x-scroll" %>
         </div>
 
         <%= form.hidden_field :last_practice_at, value: Time.now %>
 
-      </div>
     </div>
     <br>
     <div class="row">
-      <%= form.submit %>
+      <div class="col-span-4 mt-4 mb-2 rounded border-2 hover:underline border-[#500000] hover:bg-[#ca8484] flex justify-center bg-[#DBABAB]">
+        <%= form.submit %>
+      </div>
     </div>
-  </div>
 <% end %>

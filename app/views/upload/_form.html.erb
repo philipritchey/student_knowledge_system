@@ -1,6 +1,6 @@
 <%= form_with(model: @post) do |form| %>
-  <div>
-    <div style = "text-align: center">
+  <div class="w-full md:w-96 md:max-w-full mx-auto">
+    <div class="p-6 border border-gray-300 sm:rounded-md">
       <strong class = "message">Drag and Drop OR Click "Browse", then provide the course information</strong><br><br>
       
       <!--if the file uploaded, send message-->
@@ -8,41 +8,45 @@
         <p style="color: green"><%= notice %>File Uploaded</p>
       <% end %>
 
-      <div class="row">
-        <div class="col">
-          <div class="row">
-            <!--input course code-->
-            <p class = "message"> Course Code: </p>
-            <%= form.text_field :course_temp, pattern: '\b(?\w{3,4})V(?\d{3})\b', placeholder: "CSCE ###" %>
-          </div>
-
-          <div class="row">
-            <!--input section-->
-            <p class = "message"> Section: </p>
-            <%= form.text_field :section_temp, pattern: '\b(?\d{3})\b', placeholder: "###" %>      
-          </div>
-
-          <div class="row">
-            <!--input semester-->
-            <p class = "message"> Semester: </p>
-            <%= form.text_field :semester_temp, pattern: '\b(Fall|Spring)V(?\d{4})\b', placeholder: "Fall/Spring 20XX"%>
-          </div>
+      <!--input course code-->
+      <label class="block mb-6">
+        <span class="text-gray-700">Course Code: </span>
+        <div class="flex justify-center">
+          <%= form.text_field :course_temp, pattern: '\b(?\w{3,4})V(?\d{3})\b', placeholder: "CSCE ###",  class: "block w-half mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
         </div>
-        <div class="col">
-          <div class="row"></div>
-          <div class="row" style = "text-align: center">
-            <!--implement dropzone for submitting zip files-->
-            <%= form.file_field :file, accept: '.zip', multiple: false, class: "dropzone" %>
-          </div>
-          <div class="row"></div>
-        </div>
-      </div>
-    </div>
+      </label>
 
-    <div style= "text-align: center">
+
+      <!--input section-->
+      <label class="block mb-6">
+        <span class="text-gray-700">Section: </span>
+        <div class="flex justify-center">
+          <%= form.text_field :section_temp, pattern: '\b(?\d{3})\b', placeholder: "###", class: "block w-half mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>     
+        </div> 
+      </label>
+
+      <!--input semester-->
+      <label class="block mb-6">
+        <span class="text-gray-700">Semester: </span>
+        <div class="flex justify-center">
+          <%= form.text_field :semester_temp, pattern: '\b(Fall|Spring)V(?\d{4})\b', placeholder: "Fall/Spring 20XX", class: "block w-half mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"%>
+        </div>
+      </label>
+
+  
+      <!--implement dropzone for submitting zip files-->
+      <label class="block mb-6">
+        <div class="flex justify-center">
+          <%= form.file_field :file, accept: '.zip', multiple: false, class: "dropzone" %>
+        </div>
+      </label>
+
       <!--on submit, send user back to index page-->
-      <%= form.submit "Save", class: "btn btn-secondary" %>
-      <br>
-    </div>
+      <label class="block mb-6">
+        <div class="flex justify-center">
+          <%= form.submit "Save", class: "cursor-pointer hover:underline hover:underline-offset-4 py-1 px-3 mb-[1rem] border-2 rounded border-dotted border-[#500000]" %>
+        </div>  
+      </label>  
+    </div>        
   </div>
 <% end %>

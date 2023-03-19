@@ -1,3 +1,8 @@
+
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.1.4/tailwind.min.css">
+</head>
+
 <div class="flex flex-col justify-center my-3">
   <div class="mx-auto font-source-serif-pro font-semibold flex flex-row justify-between w-3/4 text-[#500000] text-[1rem] container">
     <div class="col">
@@ -17,16 +22,16 @@
     </div>
   </div>
   <div class="flex justify-center">
-    <div class="flex flex-row justify-between my-6 mx-10 w-full">
-      <div class="bg-white h-1/2 w-fixed rounded-xl py-3 px-4 flex flex-col">
-          <div class="mx-4 px-5 py-2 text-center w-auto my-2 bg-white border border-2 border-dashed border-gray-300 rounded font-source-serif-pro text-[2.5rem]">
+    <div class="bg-white flex flex-row justify-between my-6 w-full rounded-xl mx-10">
+      <div class="h-auto w-1/2 py-3 px-8 flex flex-col">
+          <div class="mx-4 px-5 py-2 text-center w-auto my-2 border border-2 border-dashed border-gray-300 rounded font-source-serif-pro text-[2.5rem] text-[#500000]">
             <h1> <%= @course.course_name %></h1>
           </div>
-        <div class="flex flex-col text-[#500000]">
+        <div class="flex flex-col w-auto text-[#500000]">
               <div class="rounded border border-dashed border-gray-400 mt-10 px-5 py-2 mb-4">
                 <h3 class="font-source-serif-pro text-center my-2 text-[1.25rem]">View Selection:</h3>
                 <div class="font-source-serif-pro flex flex-col">
-                  <div class="flex flex-row text-center">
+                  <div class="flex flex-row justify-between text-center w-full">
                     <div class="flex flex-col p-3">
                       Order:
                       <%= form_with(method: "get", class: "rounded-2xl") do |f| %>
@@ -57,7 +62,7 @@
               </div>
         </div>
       </div>
-      <div class = "bg-white rounded-xl py-3 px-6">
+      <div class = "w-1/2 py-3 px-6">
       <%= render partial: "courses/partials/students" %>
       </div>
     </div>
