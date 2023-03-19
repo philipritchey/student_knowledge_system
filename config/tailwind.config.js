@@ -17,6 +17,9 @@ module.exports = {
         'fira-sans': ['Fira Sans', 'sans-serif'],
         'source-serif-pro': ['Source Serif Pro', 'serif'],
       },
+      backgroundColor: {
+        'maroon': '#500000',
+      },
     },
   },
   plugins: [
