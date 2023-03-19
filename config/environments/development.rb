@@ -67,6 +67,7 @@ Rails.application.configure do
   
   # config.action_mailer.perform_deliveries = true
 #   config.action_mailer.raise_delivery_errors = true
+config.assets.css_compressor = nil
 
   config.action_mailer.default_url_options = {host: "localhost", port: 3000 }
   # config.active_support.report_deprecations = false

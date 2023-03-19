@@ -11,7 +11,9 @@ require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 RSpec.configure do |config|
-  config.include Devise::Test::ControllerHelpers, :type => :controller
+  # config.include Devise::Test::ControllerHelpers, :type => :controller
+  config.include Passwordless::ControllerHelpers, type: :controller
+  config.include Passwordless::Engine.routes.url_helpers, type: :controller
 end
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are

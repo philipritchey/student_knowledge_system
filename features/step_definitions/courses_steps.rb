@@ -26,10 +26,28 @@ Given(/students are enrolled in their respective courses/) do
 end
 
 When(/I sign in/) do
-    visit new_user_session_path()
-    fill_in("Email", with: "team_cluck_admin@gmail.com")
-    fill_in("Password", with: "team_cluck_12345!")
-    click_button("Log in")
+    email = "new@gmail.com"
+
+    visit root_path
+    click_link("Create Account")
+    fill_in("user_email", with: email)
+    click_button("Create account")
+    expect(page).to have_content("Your account has been created. Please sign in.")
+    click_link("Create Account")
+    fill_in("user_email", with: email)
+    click_button("Create account")
+    expect(page).to have_content("Your account already exists. Please sign in.")
+    click_link("Sign in")
+    fill_in("passwordless_email", with: email)
+    click_button("Send magic link") # email does not get sent or given to action mailer deliveries array
+    expect(page).to have_content("If we have found you in our system, you have been sent a link to log in!")
+    visit home_path
+
+    ## og thing
+    # visit new_user_session_path()
+    # fill_in("Email", with: "team_cluck_admin@gmail.com")
+    # fill_in("Password", with: "team_cluck_12345!")
+    # click_button("Log in")
 end 
 
 When(/I go to the courses page/) do

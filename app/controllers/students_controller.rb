@@ -7,6 +7,7 @@ class StudentsController < ApplicationController
         # make yearbook_style available to view
         @user = current_user
         @yearbook_style = @user.yearbook_style
+        @yearbook_style = params[:yearbook_style] == "true"
 
         @students = Student.search(params[:search], current_user.email)
         @emails = Set[]

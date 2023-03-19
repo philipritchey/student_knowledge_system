@@ -36,26 +36,31 @@ Scenario: Search by semester
     When I click save
     Then I should see the upload was successful
     And I go to the students page
-    And I select "Spring 2020" under semester
+    And I select "Spring 2023" under semester
     Then I submit the form
     Then I should see "Kunal"
 
-Scenario: Show a student
+Scenario: Search by tag
     When I sign in
+    Given I am on the upload page
+    When I upload a zip file
+    And I input form information
+    When I click save
+    Then I should see the upload was successful
     And I go to the students page
-    When I click show this student
-    Then I should see "Profile"
-
-Scenario: Edit a student
-    When I sign in
-    And I go to the students page
+    And I select "Spring 2023" under semester
+    Then I submit the form
+    Then I should see "Kunal"
     When I click show this student
     And I click "Edit this student"
-    Then I should see "Editing Student"
-    When I fill in student "firstname" with "EditTest"
+    When I fill in student "create_tag" with "test"
     And I click "Update Student"
-    Then I should see "EditTest"
-    And I should see "Student information was successfully updated."
+    Then I should see "test"
+    When I go to the students page
+    And I select "test" under tag
+    Then I submit the form
+    Then I should see "Kunal"
+
 
 Scenario: Add and Delete a student
     When I sign in
