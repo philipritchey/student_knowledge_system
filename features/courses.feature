@@ -73,3 +73,48 @@ Scenario: Filter courses by semester
     And I should not see "CSCE 411" offered in "Fall 2022"
     And I should see "CSCE 412" offered in "Spring 2023"
     
+Scenario: View A Course's History
+    When I sign in as "team_cluck_admin@gmail.com"
+    And I go to the courses page
+    And I fill in "Search by Name" with "CSCE 412"
+    And I click "Search Name"
+    And I click "View profile"
+    And I click "View course history"
+    Then I should see "CSCE 412 History"
+    And I should see "Show this course profile"
+
+Scenario: Add and Create a Course
+    When I sign in as "team_cluck_admin@gmail.com"
+    And I go to the courses page
+    And I click "New course"
+    When I upload a zip file with .display files
+    And I input 431 form information
+    When I click save
+    Then I should see the upload was successful
+
+Scenario: Edit A Course
+    When I sign in as "team_cluck_admin@gmail.com"
+    And I go to the courses page
+    And I fill in "Search by Name" with "CSCE 412"
+    And I click "Search Name"
+    And I click "View profile"
+    And I click "View course history"
+    Then I should see "CSCE 412 History"
+    And I should see "Show this course profile"
+    And I click "Edit this course"
+    Then I should see "Edit Course Section"
+    And I fill in "course_semester" with "Spring 2023"
+    And I click "Update Course"
+    Then I should see "Course was successfully updated."
+
+Scenario: Delete A Course
+    When I sign in as "team_cluck_admin@gmail.com"
+    And I go to the courses page
+    And I fill in "Search by Name" with "CSCE 412"
+    And I click "Search Name"
+    And I click "View profile"
+    And I click "View course history"
+    Then I should see "CSCE 412 History"
+    And I should see "Show this course profile"
+    And I click "Delete"
+    Then I should see "Course and its info were successfully deleted."
