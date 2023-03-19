@@ -33,6 +33,13 @@
             <strong>Major:</strong>
             <%= @student.major %>
           </p>
+
+          <p>
+          <strong>Time Until Next Practice:</strong>
+          <%=(((@student.last_practice_at + @student.curr_practice_interval.to_i.minutes) - Time.now) / 60).round  %> minutes
+        </p>
+
+
       </div>
     </div>
 

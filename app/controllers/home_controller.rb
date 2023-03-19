@@ -41,7 +41,7 @@ class HomeController < ApplicationController
       student = @dueStudents.sample
       return quiz_students_path(student)
     else
-      return "/"
+      return home_path
     end
   end
   helper_method :getDueStudentQuiz

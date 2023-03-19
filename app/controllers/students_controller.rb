@@ -212,7 +212,7 @@ class StudentsController < ApplicationController
         resp = params[:answer]
         @correctAnswer = nil
         
-        @choices = Student.where(teacher: current_user.email).shuffle.slice(0,7)
+        @choices = Student.where(teacher: current_user.email).where.not(id: @student.id).shuffle.slice(0,7)
         @choices.append(@student.id)
         @choices = @choices.shuffle
         
@@ -242,7 +242,7 @@ class StudentsController < ApplicationController
           student = @dueStudents.sample
           return quiz_students_path(student)
         else
-          return "/"
+          return home_path
         end
       end
       helper_method :getDueStudentQuiz
