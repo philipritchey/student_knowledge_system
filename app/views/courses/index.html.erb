@@ -33,7 +33,7 @@
       </tr>
     </thead>
 
-    <tbody class="bg-white font-source-serif-pro hover:bg-[#fdfdfd] border"> 
+    <tbody class="hover:bg-gray-300 font-source-serif-pro border"> 
       <tr class="py-2">
           <%= render partial: 'courses/partials/course', class: 'custom-tbody' %>
       </tr>
@@ -42,7 +42,7 @@
 </div>
 
 <footer class="flex justify-center hd footer mt-auto text-center ">
-  <div class="font-source-serif-pro font-semibold hover:bg-gray-400 text-[#500000] text-[1rem] container w-auto hover:underline hover:underline-offset-4 py-1 px-3 border-2 rounded border-dotted border-[#500000]">
+  <div class="font-source-serif-pro font-semibold hover:bg-gray-300 text-[#500000] text-[1rem] container w-auto hover:underline hover:underline-offset-4 py-1 px-3 border-2 rounded border-dotted border-[#500000]">
     <%= button_to "New course", upload_index_path, :method=>:get  %>
   </div>
 </footer>

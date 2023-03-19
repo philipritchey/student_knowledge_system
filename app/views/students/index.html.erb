@@ -1,56 +1,56 @@
-<div id="studentsDiv">
-  <table class="table table-striped table-hover text-center">
+<div class="bg-white p-2 flex flex-col mx-auto justify-center text-[#500000] w-5/6 drop-shadow-xl rounded mx-auto my-4 bg-gray-100">
+  <div class="w-4/5 my-2 py-2 mx-auto text-center border-2 border-dashed border-gray-400 rounded font-source-serif-pro text-[1.5rem] text-[#500000] font-bold">
+    <h1>Students</h1>
+  </div>
+  <table class="rounded mx-auto w-5/6 mt-2 mb-6 table table-striped table-hover text-center">
     <thead>
       <tr>
-        <th colspan="6">
-          <h1>Students</h1>
-        </th>
-      </tr>
-      <tr>
-        <th colspan="2">
-          Email: <br>
-          <%= form_tag('/students', method: :get) do %>
-            <%= text_field_tag :search, params[:search], placeholder: "Search by Email" %>
-            <%= submit_tag 'Search', :name => nil %>
-          <% end %>
-        </th>
-        <th colspan="2">
+        <th class="font-source-serif-pro" colspan="3">
           Course(s)/Semester(s): <br>
           <%= form_with(method: "get") do |f| %>
           <% selected_course = nil%>
-          <%= f.select("selected_course", @course_names, {:include_blank => true}, {:onchange => "selected_course=this.value;"}) %>
+          <%= f.select("selected_course", @course_names, {:include_blank => true}, {class: "mt-2 mb-2 rounded", :onchange => "selected_course=this.value;"}) %>
 
           <% selected_semester = nil%>
-          <%= f.select("selected_semester", @semesters, {:include_blank => true}, {:onchange => "selected_semester=this.value;"}) %>
+          <%= f.select("selected_semester", @semesters, {:include_blank => true}, {class: "mt-2 mb-2  rounded", :onchange => "selected_semester=this.value;"}) %>
         </th>
-        <th colspan="2">
+        <th class="font-source-serif-pro" colspan="3">
           Tags:
           <% selected_tag = nil%> <br>
-          <%= f.select("selected_tag", @tags, {:include_blank => true}, {:onchange => "selected_tag=this.value;"}) %>
+          <%= f.select("selected_tag", @tags, {:include_blank => true}, {class: "mt-2  mb-2 rounded", :onchange => "selected_tag=this.value;"}) %>
         </th>
       </tr>
-      <tr>
+      <tr class = "font-source-serif-pro">
         <th colspan="3">
-          <%= f.submit "Filter Students List"%>
+          <%= f.submit "Filter Students List", class: "cursor-pointer hover:underline hover:underline-offset-4 py-1 px-3 mb-[1rem] border-2 rounded border-dotted border-[#500000]"%>
           <% end %>
         </th>
         <th colspan="3">
           <%= form_with(url: students_path, method: :get, local: true) do |f| %>
           <%= f.hidden_field :yearbook_style, value: !@yearbook_style %>
-          <%= f.submit @yearbook_style ? "List View" : "Yearbook View", class: "btn btn-primary" %>
+          <%= f.submit @yearbook_style ? "List View" : "Yearbook View", class: "cursor-pointer hover:underline hover:underline-offset-4 py-1 px-3 mb-[1rem] border-2 rounded border-dotted border-[#500000]" %>
           <% end %>
         </th>
       </tr>
+
+      <tr class="bg-slate-400 font-medium font-source-serif-pro">
+        <th class="rounded-tl-lg px-auto py-2"> Image </th>
+        <th class="border-l-[0.05rem] border-r-[0.05rem] px-auto py-2"> Name </th>
+        <th class="border-l-[0.05rem] border-r-[0.05rem] px-auto py-2"> Email </th>
+        <th class="border-l-[0.05rem] border-r-[0.05rem] px-auto py-2"> Course(s)/Semester(s): </th>
+        <th class="border-l-[0.05rem] border-r-[0.05rem] px-auto py-2"> Tags </th>
+        <th class="rounded-tr-lg px-auto py-2"> View Student Profile: </th>
+      </tr>
     </thead>
 
-    <tbody id="students">
+    <tbody class="rounded font-source-serif-pro border"id="students">
     <% if !@yearbook_style %>
     <div id="tablestyle">
       <% @students.each do |student| %>
-        <tr>
+        <tr class="even:bg-white odd:bg-gray-100 hover:bg-gray-200">
           <td>
             <% if student.records[0].image.attached? %>
-                <%= image_tag student.records[0].image.variant(:thumb), class: 'bi bi-person rounded-circle d-block mx-auto', style: 'max-width: 4rem;' %>
+                <%= image_tag student.records[0].image.variant(:thumb), class: 'py-4 bi bi-person rounded-circle d-block mx-auto', style: 'max-width: 4rem;' %>
             <% else %>
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person rounded-circle" viewBox="0 0 16 16">
                     <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
@@ -78,7 +78,7 @@
             <% end %>
           </td>
           <td>
-            <%= button_to "Show this student", student.records[0], :method => :get %>
+            <%= button_to "Show this student", student.records[0], :method => :get, class: "hover:underline hover:underline-offset-4"%>
           </td>
         </tr>
       <% end %>
@@ -114,8 +114,8 @@
     
     <% end %>
 
-<footer class="hd footer mt-auto py-3 mt-2 text-center">
-  <div class="container">
+<footer class="flex justify-center hd footer mt-auto text-center mb-6">
+  <div class="font-source-serif-pro font-semibold hover:bg-gray-300 text-[#500000] text-[1rem] container w-auto hover:underline hover:underline-offset-4 py-1 px-3 border-2 rounded border-dotted border-[#500000]">
     <span><%= button_to "New student", new_student_path, :method => :get %></span>
   </div>
 </footer>
