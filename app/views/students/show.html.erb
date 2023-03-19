@@ -1,64 +1,71 @@
-<div class="text-center container">
-  <h1><%= @student.firstname%> <%= @student.lastname%>'s Profile</h1>
-  <div class="row gx-5 h-100 ">
-    <div class="col">
-      <div class="row">
-        <% if @student.image.attached? %>
-            <%= image_tag @student.image.variant(:thumb) %>
-        <% else %>
-            <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" fill="currentColor" class="bi bi-person rounded-circle" viewBox="0 0 16 16">
-                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
-            </svg>
-        <% end %>
-      </div>
-      <div class="row my-auto" id="<%= dom_id @student %>">
-        <h3>Student Information</h3>
-        <%# Removed render because info format isn't ideal %>
-          <p>
-            <strong>UIN:</strong>
-            <%= @student.uin %>
-          </p>
 
-          <p>
-            <strong>Email:</strong>
-            <%= @student.email %>
-          </p>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.1.4/tailwind.min.css">
+</head>
 
-          <p>
-            <strong>Classification:</strong>
-            <%= @student.classification %>
-          </p>
 
-          <p>
-            <strong>Major:</strong>
-            <%= @student.major %>
-          </p>
-      </div>
+<div class="bg-white py-8 flex flex-row mx-auto justify-center text-[#500000] w-5/6 h-3/4 drop-shadow-xl rounded my-4 bg-gray-100">
+  <div class="flex justify-center items-center w-1/4">
+    <div class="bg-blue-500 w-full h-full">
+      
     </div>
+  </div>
 
-    <div class="col my-auto">
-      <div class="row">
-        <h3>Course History:</h3>
-        <p><%=@course_history%></p>
-      </div>
-      <div class="row">
-        <h3>Tags:</h3>
-        <% if StudentsTag.where(student_id: @student.id).length == 0 %>
-                None
-            <% else %>
-                <% tag_display_array = [] %>
-                <% StudentsTag.where(student_id: @student.id).each do |association| %>
-                    <% tag_display_array.append(Tag.where(id: association.tag_id)[0].tag_name) %>
-                <% end %>
-                <p><%= tag_display_array.join(", ") %></p>
-            <% end %>
-      </div>
-    </div>
+    <h1><%= @student.firstname%> <%= @student.lastname%>'s Profile</h1>
+    <div class="row">
+      <div class="col">
+        <div class="row">
+        
+        </div>
+        <div class="row my-auto" id="<%= dom_id @student %>">
+          <h3>Student Information</h3>
+          <%# Removed render because info format isn't ideal %>
+            <p>
+              <strong>UIN:</strong>
+              <%= @student.uin %>
+            </p>
 
-    <div class="col my-auto">
-      <div class="row">
-        <h3>Notes:</h3>
-        <p><%= @student.notes %></p>
+            <p>
+              <strong>Email:</strong>
+              <%= @student.email %>
+            </p>
+
+            <p>
+              <strong>Classification:</strong>
+              <%= @student.classification %>
+            </p>
+
+            <p>
+              <strong>Major:</strong>
+              <%= @student.major %>
+            </p>
+        </div>
+      </div>
+
+      <div class="col my-auto">
+        <div class="row">
+          <h3>Course History:</h3>
+          <p><%=@course_history%></p>
+        </div>
+        <div class="row">
+          <h3>Tags:</h3>
+          <% if StudentsTag.where(student_id: @student.id).length == 0 %>
+                  None
+              <% else %>
+                  <% tag_display_array = [] %>
+                  <% StudentsTag.where(student_id: @student.id).each do |association| %>
+                      <% tag_display_array.append(Tag.where(id: association.tag_id)[0].tag_name) %>
+                  <% end %>
+                  <p><%= tag_display_array.join(", ") %></p>
+              <% end %>
+        </div>
+      </div>
+
+      <div class="col my-auto">
+        <div class="row">
+          <h3>Notes:</h3>
+          <p><%= @student.notes %></p>
+        </div>
       </div>
     </div>
   </div>

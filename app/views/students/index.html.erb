@@ -95,11 +95,11 @@
 
     <% if @yearbook_style %>
 
-    <div id="yearbookstyle" class="mx-4 grid grid-cols-3 gap-2">
+    <div id="yearbookstyle" class="mx-auto grid grid-cols-3 gap-2">
     <% @students.each do |student| %>
       <div class="text-center m-2 font-source-serif-pro bg-[#DBABAB] rounded">
           <% if student.records[0].image.attached? %>
-              <%= image_tag student.records[0].image.variant(:thumb), class: 'bi bi-person square d-block mx-auto', style: 'max-width: 12rem;' %>
+              <%= image_tag student.records[0].image.variant(:thumb), class: 'bi bi-person square d-block mx-auto py-4', style: 'max-width: 12rem;' %>
           <% else %>
               <svg xmlns="http://www.w3.org/2000/svg" width="12rem" height="12rem" class="bi bi-person rounded-square" viewBox="0 0 16 16">
                   <rect width="100%" height="100%" fill="gray" />
