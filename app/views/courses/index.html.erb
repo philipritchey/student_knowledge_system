@@ -1,6 +1,6 @@
 
 
-<div class="p-2 flex justify-center text-[#500000] w-[60rem] drop-shadow-xl rounded mx-auto my-4 bg-gray-100"id="coursesDiv">
+<div class="p-2 flex justify-center text-[#500000] w-[80rem] drop-shadow-xl rounded mx-auto my-4 bg-gray-100"id="coursesDiv">
   <table class="my-2 table table-striped table-hover text-center">
     <thead class="">
       <tr>
@@ -33,14 +33,16 @@
       </tr>
     </thead>
 
-    <tbody class="bg-white font-source-serif-pro hover:bg-[#fdfdfd] border-b"> 
-        <%= render partial: 'courses/partials/course' , class: "p-6 "%>
+    <tbody class="bg-white font-source-serif-pro hover:bg-[#fdfdfd] border"> 
+      <tr class="py-2">
+          <%= render partial: 'courses/partials/course', class: 'custom-tbody' %>
+      </tr>
     </tbody>
   </table>
 </div>
 
-<footer class="hd footer mt-auto py-3 text-center">
-  <div class="container">
+<footer class="flex justify-center hd footer mt-auto text-center ">
+  <div class="font-source-serif-pro font-semibold hover:bg-gray-400 text-[#500000] text-[1rem] container w-auto hover:underline hover:underline-offset-4 py-1 px-3 border-2 rounded border-dotted border-[#500000]">
     <%= button_to "New course", upload_index_path, :method=>:get  %>
   </div>
 </footer>

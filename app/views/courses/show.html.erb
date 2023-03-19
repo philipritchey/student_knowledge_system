@@ -1,62 +1,65 @@
-<div class="container text-center">
-  <div class="row gx-2">
+<div class="flex flex-col justify-center my-3">
+  <div class="mx-auto font-source-serif-pro font-semibold flex flex-row justify-between w-3/4 text-[#500000] text-[1rem] container">
     <div class="col">
-      <div class="row p-2 pt-0">
-        <%= button_to "View course history", courses_history_path(@course), :method => :get %>
+      <div class="row hover:bg-gray-300 w-auto py-1 px-3 border-2 rounded border-dotted border-[#500000]">
+        <%= button_to "View course history", courses_history_path(@course), :method => :get, class: "hover:underline hover:underline-offset-4" %>
       </div>
     </div>
     <div class="col">
-      <div class="row p-2 pt-0">
-        <%= button_to 'Create a quiz', {:controller => "quizzes", :action => "create", :quiz => {:course_id => @course.id, :correct => 0, :incorrect => 0, :score => 0, :longest_streak => 0, :teacher => current_user.email, :completed => false, :current_streak => 0, :validate_id => nil, :targeted => false}, :commit => "Create Quiz"}, :method=>:post  %>
+      <div class="row hover:bg-gray-300 w-auto py-1 px-3 border-2 rounded border-dotted border-[#500000]">
+        <%= button_to 'Create a quiz', {:controller => "quizzes", :action => "create", :quiz => {:course_id => @course.id, :correct => 0, :incorrect => 0, :score => 0, :longest_streak => 0, :teacher => current_user.email, :completed => false, :current_streak => 0, :validate_id => nil, :targeted => false}, :commit => "Create Quiz"}, :method=>:post, class: "hover:underline hover:underline-offset-4"  %>
       </div>
     </div>
     <div class="col">
-      <div class="row p-2 pt-0">
-        <%= button_to "Back to courses", courses_path, :method => :get %>
+      <div class="row hover:bg-gray-300 w-auto py-1 px-3 border-2 rounded border-dotted border-[#500000]">
+        <%= button_to "Back to courses", courses_path, :method => :get, class: "hover:underline hover:underline-offset-4" %>
       </div>
     </div>
   </div>
-  <div class="row gx-5">
-    <div class="col">
-      <div class="row p-5">
-        <div class="px-5 py-2 bg-light border rounded-3">
-          <h1> <%= @course.course_name %></h1>
+  <div class="flex justify-center">
+    <div class="flex flex-row justify-between my-6 mx-10 w-full">
+      <div class="bg-white h-1/2 w-fixed rounded-xl py-3 px-4 flex flex-col">
+          <div class="mx-4 px-5 py-2 text-center w-auto my-2 bg-white border border-2 border-dashed border-gray-300 rounded font-source-serif-pro text-[2.5rem]">
+            <h1> <%= @course.course_name %></h1>
+          </div>
+        <div class="flex flex-col text-[#500000]">
+              <div class="rounded border border-dashed border-gray-400 mt-10 px-5 py-2 mb-4">
+                <h3 class="font-source-serif-pro text-center my-2 text-[1.25rem]">View Selection:</h3>
+                <div class="font-source-serif-pro flex flex-col">
+                  <div class="flex flex-row text-center">
+                    <div class="flex flex-col p-3">
+                      Order:
+                      <%= form_with(method: "get", class: "rounded-2xl") do |f| %>
+                      <%= f.select("sortOrder", ["Alphabetical", "Reverse Alphabetical"], {}, class: "mt-2 rounded") %>
+                    </div>
+                    <div class="flex flex-col p-3">
+                        Semester:
+                        <% selected_semester = nil%>
+                        <%= f.select("selected_semester", @semesters, {:include_blank => true}, {class: "mt-2 rounded", :onchange => "selected_semester=this.value;"}) %>
+                    </div>
+                    <div class="flex flex-col p-3">
+                        Section: <br>
+                        <% selected_section = nil%>
+                        <%= f.select("selected_section", @sections, {:include_blank => true}, {class: "mt-2 rounded", :onchange => "selected_section=this.value;"}) %>
+                    </div>
+                    <div class="flex flex-col p-3">
+                        Tags: <br>
+                        <% selected_tag = nil%>
+                        <%= f.select("selected_tag", @tags, {:include_blank => true}, {class: "mt-2 rounded", :onchange => "selected_tag=this.value;"}) %>
+                    </div>
+                  </div>
+                  <div class="flex justify-center w-[10rem] mx-auto border border-[#500000] border-dashed py-[0.5rem] rounded mt-4 mb-4 bg-[#ebd1d1] hover:bg-[#e6c4c4] hover:border-solid hover:cursor-pointer">
+                    <%= f.submit "Filter Students List", class: "hover:cursor-pointer"%>
+                    <% end %>
+                  </div>
+                </div>
+                
+              </div>
         </div>
       </div>
-      <div class="row ">
-            <div class="px-5 py-2 bg-light border rounded-3">
-              <div class="row">
-                <h3>View Selection:</h3>
-              </div>
-              <div class="row">
-                <div class="col">
-                  Order:
-                  <%= form_with(method: "get") do |f| %>
-                  <%= f.select("sortOrder", ["Alphabetical", "Reverse Alphabetical"]) %>
-                </div>
-                <div class="col">
-                    Semester:
-                    <% selected_semester = nil%>
-                    <%= f.select("selected_semester", @semesters, {:include_blank => true}, {:onchange => "selected_semester=this.value;"}) %>
-                </div>
-                <div class="col">
-                    Section: <br>
-                    <% selected_section = nil%>
-                    <%= f.select("selected_section", @sections, {:include_blank => true}, {:onchange => "selected_section=this.value;"}) %>
-                </div>
-                <div class="col">
-                    Tags: <br>
-                    <% selected_tag = nil%>
-                    <%= f.select("selected_tag", @tags, {:include_blank => true}, {:onchange => "selected_tag=this.value;"}) %>
-                </div>
-                <div> <br>
-                <%= f.submit "Filter Students List"%>
-                <% end %>
-                </div>
-              </div>
-            </div>
+      <div class = "bg-white rounded-xl py-3 px-6">
+      <%= render partial: "courses/partials/students" %>
       </div>
     </div>
-    <%= render partial: "courses/partials/students" %>
   </div>
 </div>
