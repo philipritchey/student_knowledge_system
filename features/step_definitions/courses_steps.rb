@@ -44,8 +44,8 @@ When('I sign in as {string}') do |email|
     user = User.find_by(email: email)
     session = Passwordless::Session.new({
         authenticatable: user,
-    user_agent: 'Command Line',
-    remote_addr: 'unknown',
+        user_agent: 'Command Line',
+        remote_addr: 'unknown',
     })
     session.save!
     @magic_link = send(Passwordless.mounted_as).token_sign_in_url(session.token)
@@ -84,7 +84,7 @@ When('I click {string}') do |button|
 end
 
 When('I click the first {string}') do |button|
-    first(:button, 'View profile').click
+    first(:button, "#{button}").click
 end
 
 Then('I should not see {string} offered in {string}') do |course_name, semester|
