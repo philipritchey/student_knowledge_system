@@ -2,8 +2,28 @@ require 'rails_helper'
 
 RSpec.describe CoursesController, type: :controller do
     before do
-        @user = User.create(email:'student@gmail.com', confirmed_at:Time.now)
-        # authenticate_by_session(@user)
+        email = 'student@gmail.com'
+        @user = User.create(email: email, confirmed_at:Time.now)
+        
+        # TO DO SIGN IN, then copy and paste the sign in to other spec.
+        # @user = authenticate_by_session(@user)
+        # passwordless_sign_in(@user)
+
+
+        # @user = User.find_by(email: email)
+        # session = Passwordless::Session.new({
+        #     authenticatable: @user,
+        #     user_agent: 'Command Line',
+        #     remote_addr: 'unknown',
+        # })
+        # session.save!
+        # @magic_link = send(Passwordless.mounted_as).token_sign_in_url(session.token)
+        # visit "#{@magic_link}"
+        # expect(controller.current_user).to eq(@user)
+
+        # passwordless_sign_in(@user)
+        # sign_in(@user)
+
         @course1 = Course.create(course_name:"CSCE 411", teacher:'student@gmail.com', section:'501', semester:'Fall 2022')
         @course2 = Course.create(course_name:"CSCE 411", teacher:'student@gmail.com', section:'501', semester:'Spring 2023')
         @course3 = Course.create(course_name:"CSCE 412", teacher:'student@gmail.com', section:'501', semester:'Spring 2023')
@@ -32,6 +52,13 @@ RSpec.describe CoursesController, type: :controller do
             end
 
             it "assigns @courses with the matching course and its details" do
+              # expect(controller.current_user).to eq(@user)
+              # puts "accessed controller with session"
+              # puts "current_user: #{current_user.inspect}"
+              # puts "@user: #{@user.inspect}"  
+              
+              #   puts "course1: #{@course1.inspect}"
+              #   puts "course2: #{@course2.inspect}"
                 expect(assigns(:courses_db_result)).to match_array([@course1, @course2])
             end
         end
