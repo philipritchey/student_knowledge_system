@@ -16,7 +16,7 @@
     </div>
   <% end %>
 
-    <div class="font-source-serif-pro px-6 py-4 rounded drop-shadow bg-white grid grid-cols-4 grid-rows-5">
+    <div class="font-source-serif-pro px-6 py-4 rounded drop-shadow bg-white grid grid-cols-4 grid-rows-4">
         <div class="col-span-2">
           <%= form.label :firstname, style: "display: block", class: "mb-1" %>
           <%= form.text_field :firstname, class: "mb-2 rounded bg-gray-100 border-gray-300 w-3/4"%>
@@ -82,11 +82,11 @@
 
         <%= form.hidden_field :last_practice_at, value: Time.now %>
 
-    </div>
-    <br>
-    <div class="row">
-      <div class="col-span-4 mt-4 mb-2 rounded border-2 hover:underline border-[#500000] hover:bg-[#ca8484] flex justify-center bg-[#DBABAB]">
-        <%= form.submit %>
+      <div class="col-span-4 flex justify-center hover:underline h-full">
+        <div class="text-center p-2 w-1/4 font-source-serif-pro mt-2 mb-2 rounded border-2 border-[#500000] hover:bg-[#ca8484] bg-[#DBABAB]">
+          <%= form.submit %>
+        </div>
       </div>
     </div>
+    
 <% end %>
