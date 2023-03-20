@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
     private
 
       def current_user
+        # puts "User: #{User.inspect}"
         @current_user ||= authenticate_by_session(User)
       end
 
