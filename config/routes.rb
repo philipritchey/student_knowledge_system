@@ -46,4 +46,5 @@ Rails.application.routes.draw do
   # end
 
   get '/auth/google_oauth2/callback', to: 'sessions#create'
+  get 'users/auth/google_oauth2/callback', to: 'sessions#create'
 end

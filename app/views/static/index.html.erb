@@ -10,6 +10,30 @@
             <div class="text-[#500000] flex flex-col items-center">
                 <%= link_to "Sign in", users.sign_in_path, class:"rounded-md text-[1rem] font-serif p-1 bg-gray-200 w-1/2 border-2 border-[#9B6262] hover:bg-gray-300 mb-1" %>
                 <%= link_to "Create Account", new_user_path, class:"rounded-md text-[1rem] font-serif p-1 bg-gray-200 w-1/2 border-2 border-[#9B6262] hover:bg-gray-300 " %>
+                  
+                  
+      <div class="flex flex-col items-center font-serif mt-4">
+      <script src="https://accounts.google.com/gsi/client"></script>
+      <%= content_tag(:div, "", id: "g_id_onload", 
+                      data: {client_id: Rails.application.credentials[:GOOGLE_CLIENT_ID], 
+                            login_uri:  "#{Rails.application.credentials.dig(Rails.env.to_sym, :domain)}/auth/google_oauth2/callback",
+                            auto_prompt: "false",
+                            ux_mode: "redirect"}) %>
+      <%= content_tag(:div, "", class: "g_id_signin",
+                      data: {type: "standard",
+                            size: "large",
+                            theme: "outline",
+                            text: "sign_in_with",
+                            shape: "rectangular",
+                            logo_alignment: "left",
+                            ux_mode: "redirect"}) %>
+
+      </div>
+
+      <%= link_to "Sign in with Google", "http://127.0.0.1:3000/auth/google_oauth2/callback"%>
+
+
+
             </div>
         </div>
     </div>
