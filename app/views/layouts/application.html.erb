@@ -56,10 +56,10 @@
     </header>
     <% end %>
     <% if notice %>
-        <p class="alert alert-success"><%= notice %></p>
+        <p class="alert alert-success m-2 font-mono font-medium bg-[#DBABAB] pt-3 pl-3 pr-3 pb-4 rounded-xl underline underline-offset-4 nav-link px-2 link-light"><%= notice %></p>
     <% end %>
     <% if alert %>
-        <p class="alert alert-danger"><%= alert %></p>
+        <p class="alert alert-danger m-2 font-mono font-medium bg-[#ca8484] pt-3 pl-3 pr-3 pb-4 rounded-xl underline underline-offset-4 nav-link px-2 link-light"><%= alert %></p>
     <% end %>
 
     <%= yield %>

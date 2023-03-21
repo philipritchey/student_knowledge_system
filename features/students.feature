@@ -76,3 +76,36 @@ Scenario: Add and Delete a student
     And I should see "New Student's Profile"
     And I click "Delete this student"
     Then I should see "New student"
+
+Scenario: Update Student Course
+    When I sign in as "team_cluck_admin@gmail.com"
+    Given I am on the upload page
+    When I upload a zip file
+    And I input form information
+    When I click save
+    And I go to the students page
+    And I select "Spring 2023" under semester
+    Then I submit the form
+    And I click the first "Show this student"
+    And I click "Edit this student"
+    Then I should see "Edit Student Course History"
+    And I fill in the first student course "final_grade" with "A"
+    And I click the first "Update Grade"
+    Then I should see "Student information was successfully updated."
+
+Scenario: Delete Student Course
+    When I sign in as "team_cluck_admin@gmail.com"
+    Given I am on the upload page
+    When I upload a zip file
+    And I input form information
+    When I click save
+    Then I should see the upload was successful
+    And I go to the students page
+    And I select "Spring 2023" under semester
+    Then I submit the form
+    Then I should see "Kunal"
+    And I click the first "Show this student"
+    And I click "Edit this student"
+    Then I should see "Edit Student Course History"
+    And I click the first "Delete this course of student"
+    Then I should see "Given student in a course is deleted."
