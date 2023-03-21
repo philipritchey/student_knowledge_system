@@ -44,4 +44,6 @@ Rails.application.routes.draw do
   #       root 'devise/sessions#new', as: :unauthenticated_root
   #   end
   # end
+
+  get '/auth/google_oauth2/callback', to: 'sessions#create'
 end
