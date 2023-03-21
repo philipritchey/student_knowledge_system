@@ -1,4 +1,5 @@
 sudo apt install imagemagick
+bundle install
 bundle exec rake assets:precompile
 
 rake db:migrate 

@@ -20,10 +20,18 @@
     <div class="row">
         <div class="font-source-serif-pro" id="<%= dom_id @student %>">
           <%# Removed render because info format isn't ideal %>
-            <p class="font-source-serif-pro">
-              <strong>Time Until Next Practice:</strong>
-              <%=(((@student.last_practice_at + @student.curr_practice_interval.to_i.minutes) - Time.now) / 60).round  %> minutes
-            </p>
+          <p class="font-source-serif-pro">
+            <strong>Time Until Next Practice:</strong>
+            <% seconds_remaining = (@student.last_practice_at + @student.curr_practice_interval.to_i.minutes) - Time.now %>
+            <% if seconds_remaining >= 0 %>
+              <% days = (seconds_remaining / 1.day).floor %>
+              <% hours = ((seconds_remaining % 1.day) / 1.hour).floor %>
+              <% minutes = ((seconds_remaining % 1.hour) / 1.minute).floor %>
+              <%= "#{days} day#{days == 1 ? '' : 's'} #{hours} hour#{hours == 1 ? '' : 's'} #{minutes} minute#{minutes == 1 ? '' : 's'}" %>
+            <% else %>
+              Practice Now!
+            <% end %>
+          </p>
 
             <p class="font-source-serif-pro">
               <strong>UIN:</strong>
