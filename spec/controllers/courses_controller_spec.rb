@@ -5,24 +5,7 @@ RSpec.describe CoursesController, type: :controller do
         email = 'student@gmail.com'
         @user = User.create(email: email, confirmed_at:Time.now)
         
-        # TO DO SIGN IN, then copy and paste the sign in to other spec.
-        # @user = authenticate_by_session(@user)
-        # passwordless_sign_in(@user)
-
-
-        # @user = User.find_by(email: email)
-        # session = Passwordless::Session.new({
-        #     authenticatable: @user,
-        #     user_agent: 'Command Line',
-        #     remote_addr: 'unknown',
-        # })
-        # session.save!
-        # @magic_link = send(Passwordless.mounted_as).token_sign_in_url(session.token)
-        # visit "#{@magic_link}"
-        # expect(controller.current_user).to eq(@user)
-
-        # passwordless_sign_in(@user)
-        # sign_in(@user)
+        allow(controller).to receive(:current_user).and_return(@user)
 
         @course1 = Course.create(course_name:"CSCE 411", teacher:'student@gmail.com', section:'501', semester:'Fall 2022')
         @course2 = Course.create(course_name:"CSCE 411", teacher:'student@gmail.com', section:'501', semester:'Spring 2023')

@@ -5,6 +5,7 @@ RSpec.describe StudentsController, type: :controller do
     before do
       @user = User.create(email:'student@gmail.com', confirmed_at:Time.now)
       # authenticate_by_session(@user)
+      allow(controller).to receive(:current_user).and_return(@user)
       @course1 = Course.create(course_name:"CSCE 411", teacher:'student@gmail.com', section:'501', semester:'Spring 2023')
       @course2 = Course.create(course_name:"CSCE 411", teacher:'student@gmail.com', section:'501', semester:'Fall 2023')
       @course3 = Course.create(course_name:"CSCE 412", teacher:'student@gmail.com', section:'501', semester:'Spring 2024')
