@@ -13,7 +13,6 @@
 
       </div>
 
-      <%= button_to "Sign in with Google", "/auth/google_oauth2"%>
 
 <%#      <div class="flex flex-col items-center font-serif mt-4">
 <%#      <script src="https://accounts.google.com/gsi/client"></script>
@@ -36,5 +35,6 @@
       <%# <%= link_to "Sign in with Google", user_google_oauth2_omniauth_authorize_path %>
 
     <% end %>
+      <%= button_to "Sign in with Google", "/auth/google_oauth2", class: "rounded-md text-[1rem] font-serif p-2 bg-gray-200 border-2 w-3/4 border-[#9B6262] hover:bg-gray-300 mt-5"%>
   </div>
 </div>
