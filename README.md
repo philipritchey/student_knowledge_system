@@ -85,6 +85,8 @@ https://tamu-sks.herokuapp.com
 * deploy to heroku: `git push heroku master`
 * run migrations on heroku: `heroku run rails db:migrate`
 * seed database on heroku: `heroku run rails db:seed`
+* poke around the deployed app
+* don't forget to also push to your github repo: `git push`
 
 ## Previous Teams
 ### Team Cluck - CSCE 431 2023A
