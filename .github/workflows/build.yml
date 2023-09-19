@@ -58,11 +58,11 @@ jobs:
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: shockwave-kickers
-          heroku_email: kvudathu@tamu.edu
+          heroku_app_name: sks-tamu-dev
+          heroku_email: vivekn@tamu.edu
       - name: Add Heroku remote
-        run: heroku git:remote --app shockwave-kickers
+        run: heroku git:remote --app sks-tamu-dev
         env:
-          HEROKU_APP_NAME: shockwave-kickers
+          HEROKU_APP_NAME: sks-tamu-dev
       - name: Migrate DB if needed
         run: heroku run rails db:migrate
