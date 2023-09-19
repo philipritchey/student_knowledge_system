@@ -1,6 +1,6 @@
 production:
   url: <%= ENV['DATABASE_URL'] %>
-  adapter: postgresql
+
 development:
   adapter: sqlite3
   encoding: unicode
