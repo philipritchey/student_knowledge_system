@@ -32,10 +32,10 @@ jobs:
      - name: Setup Database
        run: |
           # cp config/database.yml.github-actions config/database.yml
-          bundle exec rails db:create
-          bundle exec rails db:schema:load
+          bundle exec rails db:create RAILS_ENV=test
+          bundle exec rails db:schema:load RAILS_ENV=test
        env:
-          RAILS_ENV: test
+          #RAILS_ENV: test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
      - name: run-frontend-backend-tests
