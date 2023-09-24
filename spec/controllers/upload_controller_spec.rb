@@ -52,6 +52,8 @@ RSpec.describe UploadController, type: :controller do
         post :parse, params: params
         uploaded_student = Student.find_by firstname: 'Ethan'
         puts "ups: #{uploaded_student.inspect}"
+        puts "Prev Student Email: #{@prev_student.email}"
+        puts "Uploaded Student Email: #{uploaded_student.email}"
         expect(@prev_student.email).not_to eq(uploaded_student.email)
         expect(flash[:notice]).to eq("Upload successful!")
       end
