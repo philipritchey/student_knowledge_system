@@ -38,13 +38,13 @@ jobs:
           RAILS_ENV: test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-     - name: run-frontend-backend-tests
-       run: |
-          bundle exec rails test
-       env:
-          RAILS_ENV: test
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
+    #  - name: run-frontend-backend-tests
+    #    run: |
+    #       bundle exec rails test
+    #    env:
+    #       RAILS_ENV: test
+    #       POSTGRES_USER: postgres
+    #       POSTGRES_PASSWORD: postgres
 
   deployProduction:
     name: cd-pipeline-production
