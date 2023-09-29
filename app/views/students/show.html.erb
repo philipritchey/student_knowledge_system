@@ -72,9 +72,14 @@
             </p>
 
             <p>
-              <strong>Notes:</strong>
-              <%= @student.notes %>
+            <strong>Notes:</strong>
+            <% if @student.notes.present? %>
+              <%= @student.notes.map(&:content).join("<br>") %>
+            <% else %>
+              No notes available.
+            <% end %>
             </p>
+
 
         </div>
 
