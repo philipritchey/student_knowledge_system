@@ -40,7 +40,7 @@ jobs:
           POSTGRES_PASSWORD: postgres
      - name: run-frontend-backend-tests
        run: |
-          bundle exec rails test
+          bundle exec rails spec
        env:
           RAILS_ENV: test
           POSTGRES_USER: postgres

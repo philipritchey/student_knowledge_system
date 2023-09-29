@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_02_225124) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_25_033806) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -46,6 +46,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_02_225124) do
     t.string "course_name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "notes", force: :cascade do |t|
+    t.text "content"
+    t.integer "student_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["student_id"], name: "index_notes_on_student_id"
   end
 
   create_table "passwordless_sessions", force: :cascade do |t|
@@ -126,6 +134,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_02_225124) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "notes", "students"
   add_foreign_key "student_courses", "courses"
   add_foreign_key "student_courses", "students"
   add_foreign_key "students", "users", column: "teacher", primary_key: "email"
