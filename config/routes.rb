@@ -19,6 +19,18 @@ Rails.application.routes.draw do
 
   resources :students
   get 'students/:id/quiz', to: 'students#quiz', as: 'quiz_students'
+  # config/routes.rb
+  # config/routes.rb
+
+  #get 'students/:id/add_notes', to: 'notes#new', as: 'add_notes'
+
+  resources :students do
+    # Nested route for adding notes
+    resources :notes, only: [:new, :create]
+    get 'students/:id/add_notes', to: 'notes#new', as: 'add_notes'
+    post 'create_note', to: 'notes#create', as: 'create_note'
+  end
+  # Define a resource for students
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")

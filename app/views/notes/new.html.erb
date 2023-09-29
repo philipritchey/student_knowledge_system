@@ -1,0 +1,11 @@
+<!-- app/views/notes/new.html.erb -->
+<h2>Add Notes for <%= @student.firstname %></h2>
+<%= form_for [@student, @note] do |f| %>
+  <div class="field">
+    <%= f.label :content %>
+    <%= f.text_area :content %>
+    <input type="hidden" name="note[student_id]" value="<%= @student.id %>">
+  </div>
+  <%= f.submit 'Add Note', class: 'btn btn-primary' %>
+<% end %>
+
