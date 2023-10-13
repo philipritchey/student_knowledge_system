@@ -1,4 +1,6 @@
 class Course < ApplicationRecord
+  attribute :archived, :boolean, default: false
+  validates :archived, inclusion: { in: [true, false] }
   def self.search_course(search, teacher)
       if search
         search_type = Course.where(course_name: search, teacher: teacher).all

@@ -1,0 +1,20 @@
+<% @archived_courses.each do |course| %>
+    <tr class="even:bg-white odd:bg-gray-100 custom-tr hover:bg-gray-200">
+      <td>
+        <div class="custom-td">
+          <%# <strong>Course name:</strong> %>
+          <%= course.course_name %>
+          <td>
+          <div class="font-source-serif-pro font-semibold hover:bg-gray-300 text-[#500000] text-[1rem] container w-auto hover:underline hover:underline-offset-4 py-1 px-3 border-2 rounded border-dotted border-[#500000]">
+          <%= form_with(model: course, url: unarchive_course_path(course), method: :post) do |form| %>
+            <%= form.submit 'Unarchive', authenticity_token: form_authenticity_token, class: 'btn btn-primary' %>
+          <% end %>
+          </div>
+          </td>
+        </div>
+      </td>
+  
+      
+    </tr>
+  <% end %>
+  
