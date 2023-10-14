@@ -139,19 +139,59 @@ class CoursesController < ApplicationController
   end
 
   # POST /courses or /courses.json
+  # POST /courses or /courses.json
+
   def create
     @course = Course.new(course_params)
-
+    # puts "HELLO"
     respond_to do |format|
-      if @course.save
-        format.html { redirect_to course_url(@course), notice: "Course was successfully created." }
-        format.json { render :show, status: :created, location: @course }
-      else
+      if valid_course_code?(@course.course_name) && valid_section?(@course.section) && valid_semester?(@course.semester)
+      # puts "HELLO"
+        if @course.save
+          format.html { redirect_to course_url(@course), notice: "Course was successfully created." }
+          format.json { render :show, status: :created, location: @course }
+        else
+          format.html { render :new, status: :unprocessable_entity }
+          format.json { render json: @course.errors, status: :unprocessable_entity }
+        end
+       else
+        render :new
+      
+        errors = []
+  
+        errors << "Invalid course code format. It should be in the format 'CSCE ###' where ### is a three-digit course number." unless valid_course_code?(@course.course_name)
+        errors << "Invalid section format. It should be in the format '###'." unless valid_section?(@course.section)
+        errors << "Invalid semester format. It should be in the format 'Fall 20XX' or 'Spring 20XX'." unless valid_semester?(@course.semester)
+  
+        @course.errors.add(:base, errors.join(", "))
+  
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @course.errors, status: :unprocessable_entity }
-      end
+        format.json { render json: { errors: errors }, status: :unprocessable_entity }
+       end
     end
   end
+  
+
+
+# Helper method to validate the course code format
+def valid_course_code?(course_name)
+  course_code_pattern = /\ACSCE \d{3}\z/i
+  course_name.match(course_code_pattern)
+end
+
+# Helper method to validate the section format
+def valid_section?(section)
+  # section_pattern = /\A\d{3}\z/i
+  
+  section.match(section_pattern)
+end
+
+# Helper method to validate the semester format
+def valid_semester?(semester)
+  semester_pattern = /\A(Fall|Spring) 20\d{2}\z/i
+  semester.match(semester_pattern)
+end
+
 
   # PATCH/PUT /courses/1 or /courses/1.json
   def update

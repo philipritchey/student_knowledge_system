@@ -11,6 +11,7 @@ RSpec.describe CoursesController, type: :controller do
         @course2 = Course.create(course_name:"CSCE 411", teacher:'student@gmail.com', section:'501', semester:'Spring 2023')
         @course3 = Course.create(course_name:"CSCE 412", teacher:'student@gmail.com', section:'501', semester:'Spring 2023')
         
+        
         @student1 = Student.create(firstname:'Zebulun', lastname:'Oliphant', uin:'734826482', email:'zeb@tamu.edu', classification:'U2', major:'CPSC', teacher:'student@gmail.com')
         @student2 = Student.create(firstname:'Batmo', lastname:'Biel', uin:'274027450', email:'speedwagon@tamu.edu', classification:'U1', major:'CPSC', teacher:'student@gmail.com')
         @student3 = Student.create(firstname:'Ima', lastname:'Hogg', uin:'926409274', email:'piglet@tamu.edu', classification:'U1', major:'CPSC', teacher:'student@gmail.com')
@@ -127,6 +128,10 @@ RSpec.describe CoursesController, type: :controller do
             get :show, params: { id: @course1.id, sortOrder: "Reverse Alphabetical" }
             expect(assigns(:student_records).first.records.first.lastname).to eq("Oliphant")
         end
+
+
+        
+
     end
 
     describe "GET #new" do
@@ -161,6 +166,34 @@ RSpec.describe CoursesController, type: :controller do
         expect(response).to redirect_to(course_path(assigns[:course]))
       end
     end
+
+    context "when archiving a course" do
+      it "should archive the course" do
+       
+        @course4 = Course.create(course_name:"CSCE 606", teacher:'yetchy@gmail.com', section:'501', semester:'Spring 2023', archived: false)
+
+        post :archive, params: { id: @course4.id }
+    
+        # Reload the course from the database to get the updated value
+        @course4.reload
+    
+        expect(@course4.archived).to be(true)
+      end
+    end
+
+    context "when unarchiving a course" do
+      it "should unarchive the course" do
+        #archiving the course before unarchiving
+        @course5 = Course.create(course_name:"CSCE 666", teacher:'yetchy@gmail.com', section:'501', semester:'Spring 2023', archived:true)
+        # Reload the course from the database to get the updated value
+        post :unarchive, params: { id: @course5.id }
+        @course5.reload
+        expect(@course5.archived).to be(false)
+      end
+    end
+
+
+    
 
 
 

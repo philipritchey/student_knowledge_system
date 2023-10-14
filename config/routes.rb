@@ -19,12 +19,25 @@ Rails.application.routes.draw do
 
   resources :students
   get 'students/:id/quiz', to: 'students#quiz', as: 'quiz_students'
+  # config/routes.rb
+  # config/routes.rb
+
+  #get 'students/:id/add_notes', to: 'notes#new', as: 'add_notes'
+
+  resources :students do
+    # Nested route for adding notes
+    resources :notes, only: [:new, :create]
+    get 'students/:id/add_notes', to: 'notes#new', as: 'add_notes'
+    #post 'create_note', to: 'notes#create', as: 'create_note'
+    post 'create_note/:student_id', to: 'notes#create', on: :member, as: 'create_note'
+  end
+  # Define a resource for students
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
 
   # root 'home#index'
-
+   
   passwordless_for :users
   resources :users
   root to: 'static#index'
@@ -44,7 +57,16 @@ Rails.application.routes.draw do
   #       root 'devise/sessions#new', as: :unauthenticated_root
   #   end
   # end
+  # archive functionality
+  resources :courses do
+    member do
+      get 'archive'  
+    end
+  end
 
   get '/auth/google_oauth2/callback', to: 'sessions#create'
   get 'users/auth/google_oauth2/callback', to: 'sessions#create'
+  ##getting archived
+  get 'archived_courses', to: 'courses#archived_courses'
+  post 'courses/:id/unarchive', to: 'courses#unarchive', as: 'unarchive_course'
 end
