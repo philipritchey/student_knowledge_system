@@ -1,6 +1,10 @@
 class Course < ApplicationRecord
-  attribute :archived, :boolean, default: false
-  validates :archived, inclusion: { in: [true, false] }
+
+  validates :course_name, format: { with: /\A[A-Z]{4} \d{3}\z/, message: "Invalid course code format. It should be in the format 'CSCE 123' where 123 is a three-digit course number." }
+  validates :section, format: { with: /\A\d{3}\z/, message: "Invalid section format. It should be in the format '123'." }
+  validates :semester, format: { with: /\A(Fall|Spring) 20\d{2}\z/, message: "Invalid semester format. It should be in the format 'Fall 20XX' or 'Spring 20XX'." }
+
+  # Your existing methods here
   def self.search_course(search, teacher)
       if search
         search_type = Course.where(course_name: search, teacher: teacher).all
