@@ -5,14 +5,15 @@ Deployed App : https://hive-sks-c9da748e2491.herokuapp.com
 Code Climate Report : https://codeclimate.com/github/nishant-basu-tamu3/student_knowledge_system
 
 ## CSCE 606 2024 Fall - Team Hive
-* [Team Working Agreement - ](documentation/Fall2024/Team_Working_Agreement.txt)
-* [Nishant Basu](mailto:nishant.basu3@tamu.edu)
-* [Aum Palande](mailto:aumpalande@tamu.edu)
-* [Ellika Mishra](mailto:ellikamishra@tamu.edu)
-* [Raunak Kharbanda](mailto:raunak@tamu.edu)
-* [Mukil Senthilkumar](mailto:mukilsenthil@tamu.edu)
-* [Susheel Vadakkekuruppath](mailto:susheelvk@tamu.edu)
-* [Prakhar Suryavansh](mailto:ps41@tamu.edu)
+* [Team Working Agreement](documentation/Fall2024/Team_Working_Agreement.txt)
+* Team Members
+  * [Nishant Basu](mailto:nishant.basu3@tamu.edu)
+  * [Aum Palande](mailto:aumpalande@tamu.edu)
+  * [Ellika Mishra](mailto:ellikamishra@tamu.edu)
+  * [Raunak Kharbanda](mailto:raunak@tamu.edu)
+  * [Mukil Senthilkumar](mailto:mukilsenthil@tamu.edu)
+  * [Susheel Vadakkekuruppath](mailto:susheelvk@tamu.edu)
+  * [Prakhar Suryavansh](mailto:ps41@tamu.edu)
 
 ## Getting Started 
 * be in your dev machine, e.g. a fresh VPS or container (recommend Ubuntu 20+ with >=2 GB RAM)
