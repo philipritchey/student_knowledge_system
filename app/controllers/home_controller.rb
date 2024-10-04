@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class HomeController < ApplicationController
   before_action :require_user!
   # before_action :authenticate_user!
@@ -10,40 +12,35 @@ class HomeController < ApplicationController
 
   def stripYear(var)
     tmp = var.strip
-    idx = tmp.rindex(" ")
-    if idx.nil?
-    else
-      idx = idx + 1
-      tmp = tmp[idx..-1].strip
+    idx = tmp.rindex(' ')
+    unless idx.nil?
+      idx += 1
+      tmp = tmp[idx..].strip
     end
-    return tmp
+    tmp
   end
 
   def getYears
-    sems = Course.where(teacher:@id)
+    sems = Course.where(teacher: @id)
     uniqSems = Set.new
     sems.each do |s|
       year = stripYear(s.semester)
       uniqSems << year
     end
-    return uniqSems.length()
+    uniqSems.length
   end
   helper_method :getYears
 
-
-  def getNumDue()
-    return @dueStudents.length
+  def getNumDue
+    @dueStudents.length
   end
   helper_method :getNumDue
 
-  def getDueStudentQuiz()
-    path = ""
-    if @dueStudents.length > 0
-      student = @dueStudents.sample
-      return quiz_students_path(student)
-    else
-      return home_path
-    end
+  def getDueStudentQuiz
+    return home_path unless @dueStudents.length.positive?
+
+    student = @dueStudents.sample
+    quiz_students_path(student)
   end
   helper_method :getDueStudentQuiz
 end
