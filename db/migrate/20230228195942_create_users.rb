@@ -27,4 +27,4 @@ class CreateUsers < ActiveRecord::Migration[6.1]
         t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
       end
     end
-  end
+end

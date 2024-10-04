@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe HomeController, type: :controller do
     before :each do
         @user = User.create(email:'student@gmail.com', confirmed_at:Time.now)
+        # @user = User.create(email:'student@gmail.com', firstname: 'alice', lastname: 'bob', department: 'CSCE', confirmed_at:Time.now)
 
         @course1 = Course.create(course_name:"CSCE 411", teacher:'student@gmail.com', section:'501', semester:'Spring 2023')
         @course2 = Course.create(course_name:"CSCE 411", teacher:'student@gmail.com', section:'501', semester:'Fall 2023')

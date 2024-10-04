@@ -119,7 +119,7 @@ Scenario: Delete A Course
     And I click "Delete"
     Then I should see "Course and its info were successfully deleted."
 
-Scenario: Sort Students In A Course
+Scenario: Sort Students In A Cours
     Given students are enrolled in their respective courses
     When I sign in as "team_cluck_admin@gmail.com"
     And I go to the courses page

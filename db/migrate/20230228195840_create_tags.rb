@@ -9,4 +9,4 @@ class CreateTags < ActiveRecord::Migration[6.1]
   
       # add_foreign_key :tags, :users, column: :teacher, primary_key: "email"
     end
-  end
+end
