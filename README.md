@@ -1,6 +1,7 @@
 # Student Knowledge System
 
 Deployed App : https://hive-sks-c9da748e2491.herokuapp.com
+
 Code Climate Report : https://codeclimate.com/github/nishant-basu-tamu3/student_knowledge_system
 
 ## CSCE 606 2024 Fall - Team Hive
@@ -109,7 +110,8 @@ Code Climate Report : https://codeclimate.com/github/nishant-basu-tamu3/student_
   * `export SENDMAIL_PASSWORD=the app password you just created (app password)`
   * `export MAIL_HOST="gmail.com"`
   * the link will be generated in console.
-  
+
+## Re-Deploy
 * stage changes: `git add .`
 * commit changes: `git commit -m "ready to push to heroku"`
 * deploy to heroku: `git push heroku master`
