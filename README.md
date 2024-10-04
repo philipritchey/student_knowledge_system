@@ -104,6 +104,8 @@ https://tamu-sks.herokuapp.com
 
 
 ## User Documentation
+[CSCE 606 2024 Fall]
+* [Team Working Agreement](documentation/Fall2024/Team_Working_Agreement.txt)
 
 [CSCE 431 2023A](https://docs.google.com/document/d/13YEn9vxi73LRq51pw2A23WnFRuGfTe4LMNbsMm7367E/edit#)
 
