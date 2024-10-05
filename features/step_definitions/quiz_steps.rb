@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Given('I am on the quiz page for student with existing id') do
-  @student = Student.order("RANDOM()").first
+  @student = Student.order('RANDOM()').first
   visit quiz_students_path(@student.id)
 end
 

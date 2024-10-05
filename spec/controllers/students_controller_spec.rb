@@ -57,7 +57,7 @@ RSpec.describe StudentsController, type: :controller do
   #   before do
   #     @user = User.create(email: 'teacher@gmail.com', confirmed_at: Time.now)
   #     allow(controller).to receive(:current_user).and_return(@user)
-      
+
   #     @student = Student.create(
   #                               firstname: 'Zebulun',
   #                               lastname: 'Oliphant',
@@ -82,7 +82,7 @@ RSpec.describe StudentsController, type: :controller do
   #       expect {
   #         get :quiz, params: { id: @student.id, answer: @student.id }
   #       }.to change { @student.reload.curr_practice_interval.to_i }.by(10)
-        
+
   #       expect(assigns(:correctAnswer)).to be true
   #     end
   #   end
@@ -90,17 +90,17 @@ RSpec.describe StudentsController, type: :controller do
   #   context 'when answer is incorrect' do
   #     it 'halves the current practice interval if it is greater than 15' do
   #       @student.update(curr_practice_interval: '30')
-        
+
   #       expect {
   #         get :quiz, params: { id: @student.id, answer: 'wrong_id' }
   #       }.to change { @student.reload.curr_practice_interval.to_i }.by(-15)
-        
+
   #       expect(assigns(:correctAnswer)).to be false
   #     end
 
   #     it 'does not change the current practice interval if it is 15 or less' do
   #       @student.update(curr_practice_interval: '10')
-        
+
   #       expect {
   #         get :quiz, params: { id: @student.id, answer: 'wrong_id' }
   #       }.not_to change { @student.reload.curr_practice_interval.to_i }
@@ -121,8 +121,10 @@ RSpec.describe StudentsController, type: :controller do
       @user = User.create(email: 'teacher@gmail.com', confirmed_at: Time.now)
       allow(controller).to receive(:current_user).and_return(@user)
 
-      @course1 = Course.create(course_name: 'CSCE 411', teacher: 'teacher@gmail.com', section: '501', semester: 'Spring 2023')
-      @course2 = Course.create(course_name: 'CSCE 411', teacher: 'teacher@gmail.com', section: '501', semester: 'Fall 2023')
+      @course1 = Course.create(course_name: 'CSCE 411', teacher: 'teacher@gmail.com', section: '501',
+                               semester: 'Spring 2023')
+      @course2 = Course.create(course_name: 'CSCE 411', teacher: 'teacher@gmail.com', section: '501',
+                               semester: 'Fall 2023')
 
       @student1 = Student.create(
         firstname: 'Alice',
@@ -152,9 +154,9 @@ RSpec.describe StudentsController, type: :controller do
 
     it 'displays only students enrolled in the selected course and semester' do
       get :index, params: @params
-      expect(assigns(:students)).not_to include(@student2)  # Bob should not be included
+      expect(assigns(:students)).not_to include(@student2) # Bob should not be included
     end
-    
+
     it 'calls index successfully' do
       get :index
       expect(response).to have_http_status(:success)
@@ -168,12 +170,10 @@ RSpec.describe StudentsController, type: :controller do
 
       it 'does not include students without the selected tag' do
         get :index, params: { selected_tag: 'Nonexistent Tag' }
-        
+
         expect(assigns(:students)).not_to include(@student1)
         expect(assigns(:students)).not_to include(@student2)
       end
     end
   end
 end
-
-
