@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Student Model Class
 class Student < ApplicationRecord
 
   # validates :firstname, :lastname, :email, :major, :classification, :uin, :create_tag, presence: true

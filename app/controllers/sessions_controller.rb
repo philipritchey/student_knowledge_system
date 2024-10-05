@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Session Controller class
 class SessionsController < ApplicationController
   def create
     email = request.env['omniauth.auth']['info']['email']
