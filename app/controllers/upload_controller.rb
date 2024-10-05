@@ -20,8 +20,9 @@ class UploadController < ApplicationController
     Zip::File.open(params[:file]) do |zip_file|
       # if the zip file contains a csv file, parse it
       images_paths = []
+
       zip_file.each do |entry|
-        # puts entry.name
+        Rails.logger.debug "\n\n#######ZIP entry: #{entry.name} ##############\n\n\n"
 
         if entry.name.include? '.htm'
           # parse html doc for correct order of pictures, csv & images zip is mismatched but html gets order correct
@@ -29,6 +30,7 @@ class UploadController < ApplicationController
           images_paths = html_doc.search('img/@src').map { |s| s.text.strip }
 
           images_paths.each do |path|
+            Rails.logger.debug "\n\n\n\n################Trying to find image with path: #{path}\n\n\n\n"
             # error handling .display as path pushed to images_paths doesn't match entry.name,so find_entry doen't work without modyifying path
             if path.include? '.display'
               full_path = path.split('/', 2)
@@ -36,6 +38,7 @@ class UploadController < ApplicationController
               # puts full_path[1]
               images.push(zip_file.find_entry(full_path[1]))
             else
+              Rails.logger.debug "\n\n\n\n\n\n##################### hereererer  #######################3\n\n\n\n\n\n\n"
               images.push(zip_file.find_entry(path))
             end
           end
