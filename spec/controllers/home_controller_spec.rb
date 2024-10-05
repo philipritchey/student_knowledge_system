@@ -4,7 +4,8 @@ require 'rails_helper'
 
 RSpec.describe HomeController, type: :controller do
   before :each do
-    @user = User.create(email: 'student@gmail.com', confirmed_at: Time.now)
+    @user = User.create(email: 'student@gmail.com', firstname: 'Alice', lastname: 'Bob',
+                        department: 'computer science', confirmed_at: Time.now)
 
     @course1 = Course.create(course_name: 'CSCE 411', teacher: 'student@gmail.com', section: '501',
                              semester: 'Spring 2023')
@@ -34,6 +35,11 @@ RSpec.describe HomeController, type: :controller do
       it 'assigns @id to current_user email' do
         get :index
         expect(assigns(:id)).to eq(@user.email)
+      end
+
+      it 'see lastname in home page' do
+        get :index
+        expect(assigns(:current_user).lastname).to eq(@user.lastname)
       end
 
       it 'assigns @dueStudents with due students' do

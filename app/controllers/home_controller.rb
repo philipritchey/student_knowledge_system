@@ -6,6 +6,7 @@ class HomeController < ApplicationController
   # before_action :authenticate_by_session
 
   def index
+    @current_user = current_user
     @id = current_user.email
     @dueStudents = Student.getDue(@id)
   end
