@@ -56,12 +56,12 @@
           <% if Tag.where(teacher: current_user.email).length > 0 %>
             <div class="col-span-1">
                 <%= form.label :image, style: "display: block" %>
-                <%= form.file_field :image, class: "mb-2 mt-4" %>
+                <%= form.file_field :image, class: "mb-2 mt-4", accept: 'image/png,image/gif,image/jpeg, image/jpg'%>
             </div>
           <% else %>
             <div class="col-span-2">
                 <%= form.label :image, style: "display: block" %>
-                <%= form.file_field :image, class: "mb-2 mt-4" %>
+                <%= form.file_field :image, class: "mb-2 mt-4", accept: 'image/png,image/gif,image/jpeg,image/jpg'%>
             </div>
           <% end %>
       </div>
