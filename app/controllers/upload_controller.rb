@@ -20,13 +20,8 @@ class UploadController < ApplicationController
       # if the zip file contains a csv file, parse it
       images_paths = []
 
-
       zip_file.each do |entry|
         Rails.logger.debug "\n\n#######ZIP entry: #{entry.name} ##############\n\n\n"
-      end
-
-      zip_file.each do |entry|
-        # puts entry.name
 
         if entry.name.include? '.htm'
           # parse html doc for correct order of pictures, csv and images zip is mismatched but the html gets the order correct
