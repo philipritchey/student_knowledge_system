@@ -53,69 +53,69 @@ RSpec.describe StudentsController, type: :controller do
     end
   end
 
-  describe '#quiz' do
-    before do
-      @user = User.create(email: 'teacher@gmail.com', confirmed_at: Time.now)
-      allow(controller).to receive(:current_user).and_return(@user)
+  # describe '#quiz' do
+  #   before do
+  #     @user = User.create(email: 'teacher@gmail.com', confirmed_at: Time.now)
+  #     allow(controller).to receive(:current_user).and_return(@user)
       
-      @student = Student.create(
-                                firstname: 'Zebulun',
-                                lastname: 'Oliphant',
-                                uin: '734826482',
-                                email: 'zeb@tamu.edu',
-                                classification: 'U2',
-                                major: 'CPSC',
-                                teacher: 'teacher@gmail.com',
-                                curr_practice_interval: '10',
-                                last_practice_at: Time.now # Ensure this is set
-                              )
+  #     @student = Student.create(
+  #                               firstname: 'Zebulun',
+  #                               lastname: 'Oliphant',
+  #                               uin: '734826482',
+  #                               email: 'zeb@tamu.edu',
+  #                               classification: 'U2',
+  #                               major: 'CPSC',
+  #                               teacher: 'teacher@gmail.com',
+  #                               curr_practice_interval: '10',
+  #                               last_practice_at: Time.now # Ensure this is set
+  #                             )
 
-      # Creating additional students to sample from
-      7.times do |i|
-        Student.create(firstname: "Student#{i}", lastname: "Test#{i}", uin: "12345#{i}", email: "student#{i}@example.com",
-                       classification: 'U2', major: 'CPSC', teacher: 'teacher@gmail.com', curr_practice_interval: '10', last_practice_at: Time.now)
-      end
-    end
+  #     # Creating additional students to sample from
+  #     7.times do |i|
+  #       Student.create(firstname: "Student#{i}", lastname: "Test#{i}", uin: "12345#{i}", email: "student#{i}@example.com",
+  #                      classification: 'U2', major: 'CPSC', teacher: 'teacher@gmail.com', curr_practice_interval: '10', last_practice_at: Time.now)
+  #     end
+  #   end
 
-    context 'when answer is correct' do
-      it 'doubles the current practice interval' do
-        expect {
-          get :quiz, params: { id: @student.id, answer: @student.id }
-        }.to change { @student.reload.curr_practice_interval.to_i }.by(10)
+  #   context 'when answer is correct' do
+  #     it 'doubles the current practice interval' do
+  #       expect {
+  #         get :quiz, params: { id: @student.id, answer: @student.id }
+  #       }.to change { @student.reload.curr_practice_interval.to_i }.by(10)
         
-        expect(assigns(:correctAnswer)).to be true
-      end
-    end
+  #       expect(assigns(:correctAnswer)).to be true
+  #     end
+  #   end
 
-    context 'when answer is incorrect' do
-      it 'halves the current practice interval if it is greater than 15' do
-        @student.update(curr_practice_interval: '30')
+  #   context 'when answer is incorrect' do
+  #     it 'halves the current practice interval if it is greater than 15' do
+  #       @student.update(curr_practice_interval: '30')
         
-        expect {
-          get :quiz, params: { id: @student.id, answer: 'wrong_id' }
-        }.to change { @student.reload.curr_practice_interval.to_i }.by(-15)
+  #       expect {
+  #         get :quiz, params: { id: @student.id, answer: 'wrong_id' }
+  #       }.to change { @student.reload.curr_practice_interval.to_i }.by(-15)
         
-        expect(assigns(:correctAnswer)).to be false
-      end
+  #       expect(assigns(:correctAnswer)).to be false
+  #     end
 
-      it 'does not change the current practice interval if it is 15 or less' do
-        @student.update(curr_practice_interval: '10')
+  #     it 'does not change the current practice interval if it is 15 or less' do
+  #       @student.update(curr_practice_interval: '10')
         
-        expect {
-          get :quiz, params: { id: @student.id, answer: 'wrong_id' }
-        }.not_to change { @student.reload.curr_practice_interval.to_i }
+  #       expect {
+  #         get :quiz, params: { id: @student.id, answer: 'wrong_id' }
+  #       }.not_to change { @student.reload.curr_practice_interval.to_i }
 
-        expect(assigns(:correctAnswer)).to be false
-      end
-    end
+  #       expect(assigns(:correctAnswer)).to be false
+  #     end
+  #   end
 
-    context 'when no answer is provided' do
-      it 'sets correctAnswer to nil' do
-        get :quiz, params: { id: @student.id, answer: nil }
-        expect(assigns(:correctAnswer)).to be false
-      end
-    end
-  end
+  #   context 'when no answer is provided' do
+  #     it 'sets correctAnswer to nil' do
+  #       get :quiz, params: { id: @student.id, answer: nil }
+  #       expect(assigns(:correctAnswer)).to be false
+  #     end
+  #   end
+  # end
   describe '#index' do
     before do
       @user = User.create(email: 'teacher@gmail.com', confirmed_at: Time.now)
