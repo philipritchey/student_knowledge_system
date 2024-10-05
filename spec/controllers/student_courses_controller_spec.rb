@@ -21,22 +21,21 @@ RSpec.describe StudentCoursesController, type: :controller do
   end
 
   describe '#update' do
-      it 'redirects to sign in page' do
-        get :update, params: { id: @student1.id, student_course: 'A' }
-        expect (redirect_to student_url(@student1))
-      end
+    it 'redirects to sign in page' do
+      get :update, params: { id: @student1.id, student_course: 'A' }
+      expect(redirect_to(student_url(@student1)))
     end
+  end
 
-    describe '#destroy' do
-      it 'deletes the course' do
-        get :destroy, params: { id: @student2.id }
-        expect (redirect_to student_url(@student2))
-      end
+  describe '#destroy' do
+    it 'deletes the course' do
+      get :destroy, params: { id: @student2.id }
+      expect(redirect_to(student_url(@student2)))
+    end
 
     #   it 'returns the entire string if the string has only one word' do
     #     controller = HomeController.new
     #     expect(controller.stripYear('Spring')).to eq('Spring')
     #   end
-
   end
 end

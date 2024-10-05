@@ -17,18 +17,17 @@ if Rails.env.test?
 
   # Mock authentication data in tests
   OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new({
-    provider: 'google_oauth2',
-    uid: '123456',
-    info: {
-      email: 'testuser@example.com',
-      name: 'Test User',
-      image: 'https://via.placeholder.com/200'
-    },
-    credentials: {
-      token: 'mock_token',
-      refresh_token: 'mock_refresh_token',
-      expires_at: Time.now + 1.week
-    }
-  })
+                                                                       provider: 'google_oauth2',
+                                                                       uid: '123456',
+                                                                       info: {
+                                                                         email: 'testuser@example.com',
+                                                                         name: 'Test User',
+                                                                         image: 'https://via.placeholder.com/200'
+                                                                       },
+                                                                       credentials: {
+                                                                         token: 'mock_token',
+                                                                         refresh_token: 'mock_refresh_token',
+                                                                         expires_at: Time.now + 1.week
+                                                                       }
+                                                                     })
 end
-

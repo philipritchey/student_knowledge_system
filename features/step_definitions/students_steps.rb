@@ -33,4 +33,3 @@ When('I fill in the first student course {string} with {string}') do |string, st
   # fill_in "student_course[#{string}]", with: string2
   all("input[name='student_course[#{string}]']").first.fill_in with: string2
 end
-

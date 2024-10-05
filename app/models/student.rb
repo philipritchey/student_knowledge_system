@@ -2,7 +2,6 @@
 
 # Student Model Class
 class Student < ApplicationRecord
-
   # validates :firstname, :lastname, :email, :major, :classification, :uin, :create_tag, presence: true
   # validate :check_all_fields
 
