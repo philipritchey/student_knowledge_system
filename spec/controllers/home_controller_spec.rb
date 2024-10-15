@@ -54,12 +54,12 @@ RSpec.describe HomeController, type: :controller do
     describe '#stripYear' do
       it 'returns the last word of the string if the string has multiple words' do
         controller = HomeController.new
-        expect(controller.stripYear('Spring 2023')).to eq('2023')
+        expect(controller.strip_year('Spring 2023')).to eq('2023')
       end
 
       it 'returns the entire string if the string has only one word' do
         controller = HomeController.new
-        expect(controller.stripYear('Spring')).to eq('Spring')
+        expect(controller.strip_year('Spring')).to eq('Spring')
       end
     end
 
@@ -70,7 +70,7 @@ RSpec.describe HomeController, type: :controller do
 
       it "returns the number of unique years in the teacher's courses" do
         get :index
-        expect(controller.getYears).to eq(2)
+        expect(controller.years).to eq(2)
       end
     end
   end
