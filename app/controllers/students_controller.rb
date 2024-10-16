@@ -74,7 +74,7 @@ class StudentsController < ApplicationController
         course = Course.where(id: student_course.course_id)
         if !@student_records_hash[student.uin]
           student_entry = StudentEntries.new
-          student_entry.initializeUsingStudentModel(student, course[0])
+          student_entry.initialize_using_student_model(student, course[0])
           @student_records_hash[student.uin] = student_entry
         else
           student_entry = @student_records_hash[student.uin]
@@ -221,7 +221,7 @@ class StudentsController < ApplicationController
   def quiz
     @student = Student.find_by(id: params[:id])
     @id = current_user.email
-    @due_students = Student.getDue(@id)
+    @due_students = Student.get_due(@id)
 
     resp = params[:answer]
     @correct_answer = nil
@@ -248,13 +248,13 @@ class StudentsController < ApplicationController
     end
   end
 
-  def getDueStudentQuiz
+  def get_due_student_quiz
     return home_path unless @due_students.length.positive?
 
     student = @due_students.sample
     quiz_students_path(student)
   end
-  helper_method :getDueStudentQuiz
+  helper_method :get_due_student_quiz
 
   private
 

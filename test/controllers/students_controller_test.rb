@@ -6,8 +6,8 @@ class StudentsControllerTest < ActionDispatch::IntegrationTest
   setup do
     sign_in users(:userOne)
     @student = students(:studentOne)
-    @studentOneCourseOne = student_courses(:studentOneCourseOne)
-    @studentOneCourseTwo = student_courses(:studentOneCourseTwo)
+    @student_one_course_one = student_courses(:studentOneCourseOne)
+    @student_one_course_two = student_courses(:studentOneCourseTwo)
     @course = courses(:courseOne)
     @tag = tags(:tagOne)
     @tag2 = tags(:tagTwo)

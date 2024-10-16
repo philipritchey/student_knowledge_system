@@ -9,7 +9,7 @@ class HomeController < ApplicationController
   def index
     @current_user = current_user
     @id = current_user.email
-    @due_students = Student.getDue(@id)
+    @due_students = Student.get_due(@id)
   end
 
   def strip_year(var)

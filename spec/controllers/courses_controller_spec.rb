@@ -167,7 +167,7 @@ RSpec.describe CoursesController, type: :controller do
       existing_student_courses.each do |student_course|
         course = Course.find_by(id: student_course.course_id)
         student_entry = @student_records_hash[existing_student.uin] || StudentEntries.new
-        student_entry.initializeUsingStudentModel(existing_student, course)
+        student_entry.initialize_using_student_model(existing_student, course)
         @student_records_hash[existing_student.uin] = student_entry
       end
 
