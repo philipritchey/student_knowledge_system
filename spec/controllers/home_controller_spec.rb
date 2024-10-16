@@ -15,9 +15,11 @@ RSpec.describe HomeController, type: :controller do
                              semester: 'Spring 2024')
 
     @student1 = Student.create(firstname: 'Zebulun', lastname: 'Oliphant', uin: '734826482', email: 'zeb@tamu.edu',
-                               classification: 'U2', major: 'CPSC', teacher: 'student@gmail.com', last_practice_at: Time.now)
+                               classification: 'U2', major: 'CPSC', teacher: 'student@gmail.com',
+                               last_practice_at: Time.now)
     @student2 = Student.create(firstname: 'Webulun', lastname: 'Woliphant', uin: '734826483', email: 'web@tamu.edu',
-                               classification: 'U2', major: 'CPSC', teacher: 'student@gmail.com', last_practice_at: Time.now)
+                               classification: 'U2', major: 'CPSC', teacher: 'student@gmail.com',
+                               last_practice_at: Time.now)
   end
 
   describe 'GET index' do
@@ -45,7 +47,8 @@ RSpec.describe HomeController, type: :controller do
       it 'assigns @due_students with due students' do
         # Add due students
         Student.create(firstname: 'Due', lastname: 'Student', uin: '123456789', email: 'due@student.com',
-                       classification: 'U1', major: 'CPSC', teacher: @user.email, last_practice_at: Time.now, curr_practice_interval: 0)
+                       classification: 'U1', major: 'CPSC', teacher: @user.email,
+                       last_practice_at: Time.now, curr_practice_interval: 0)
         get :index
         expect(assigns(:due_students).count).to eq(3)
       end

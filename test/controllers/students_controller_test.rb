@@ -26,8 +26,9 @@ class StudentsControllerTest < ActionDispatch::IntegrationTest
   test 'should create student' do
     before_student_count = Student.count
     post students_url,
-         params: { student: { firstname: @student.firstname, lastname: @student.lastname, uin: '123456', email: @student.email,
-                              classification: @student.classification, major: @student.major, notes: @student.notes } }
+         params: { student: { firstname: @student.firstname, lastname: @student.lastname, uin: '123456',
+                              email: @student.email, classification: @student.classification, major: @student.major,
+                              notes: @student.notes } }
     after_student_count = Student.count
     assert_equal before_student_count + 1, after_student_count
 
@@ -49,8 +50,9 @@ class StudentsControllerTest < ActionDispatch::IntegrationTest
   test 'should create student with tag' do
     before_student_count = Student.count
     post students_url,
-         params: { student: { firstname: @student.firstname, lastname: @student.lastname, uin: '123456', email: @student.email,
-                              classification: @student.classification, major: @student.major, notes: @student.notes, tags: [@tag.tag_name, @tag2.tag_name, ''] } }
+         params: { student: { firstname: @student.firstname, lastname: @student.lastname, uin: '123456',
+                              email: @student.email, classification: @student.classification, major: @student.major,
+                              notes: @student.notes, tags: [@tag.tag_name, @tag2.tag_name, ''] } }
     after_student_count = Student.count
     assert_equal before_student_count + 1, after_student_count
 
@@ -60,8 +62,9 @@ class StudentsControllerTest < ActionDispatch::IntegrationTest
   test 'should create student with new tag' do
     before_student_count = Student.count
     post students_url,
-         params: { student: { firstname: @student.firstname, lastname: @student.lastname, uin: '123456', email: @student.email,
-                              classification: @student.classification, major: @student.major, notes: @student.notes, create_tag: 'test' } }
+         params: { student: { firstname: @student.firstname, lastname: @student.lastname, uin: '123456',
+                              email: @student.email, classification: @student.classification, major: @student.major,
+                              notes: @student.notes, create_tag: 'test' } }
     after_student_count = Student.count
     assert_equal before_student_count + 1, after_student_count
 
@@ -95,21 +98,24 @@ class StudentsControllerTest < ActionDispatch::IntegrationTest
   test 'should update student' do
     patch student_url(@student),
           params: { student: { firstname: @student.firstname, lastname: @student.lastname, uin: @student.uin,
-                               email: @student.email, classification: @student.classification, major: @student.major, notes: @student.notes } }
+                               email: @student.email, classification: @student.classification, major: @student.major,
+                               notes: @student.notes } }
     assert_redirected_to student_url(@student)
   end
 
   test 'should update student with tags' do
     patch student_url(@student),
           params: { student: { firstname: @student.firstname, lastname: @student.lastname, uin: @student.uin,
-                               email: @student.email, classification: @student.classification, major: @student.major, notes: @student.notes, tags: [@tag.tag_name, @tag2.tag_name, ''] } }
+                               email: @student.email, classification: @student.classification, major: @student.major,
+                               notes: @student.notes, tags: [@tag.tag_name, @tag2.tag_name, ''] } }
     assert_redirected_to student_url(@student)
   end
 
   test 'should update student with new tag' do
     patch student_url(@student),
           params: { student: { firstname: @student.firstname, lastname: @student.lastname, uin: @student.uin,
-                               email: @student.email, classification: @student.classification, major: @student.major, notes: @student.notes, create_tag: 'test' } }
+                               email: @student.email, classification: @student.classification, major: @student.major,
+                               notes: @student.notes, create_tag: 'test' } }
     assert_redirected_to student_url(@student)
   end
 
