@@ -40,7 +40,7 @@
   </div>
   <% if !@correct_answer.nil?%>
   <div class="container">
-  <%= button_to "Next Student", getDueStudentQuiz() , class:"mt-4 font-source-serif-pro px-4 py-2 font-semibold text-[#500000] border-[#500000] hover:bg-[#ca8484] bg-[#DBABAB] hover:cursor-pointer rounded", :method=>:get  %>
+  <%= button_to "Next Student", get_due_student_quiz() , class:"mt-4 font-source-serif-pro px-4 py-2 font-semibold text-[#500000] border-[#500000] hover:bg-[#ca8484] bg-[#DBABAB] hover:cursor-pointer rounded", :method=>:get  %>
   </div>
   <% end %>
 </div>

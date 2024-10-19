@@ -15,9 +15,11 @@ RSpec.describe StudentCoursesController, type: :controller do
                              semester: 'Spring 2024')
 
     @student1 = Student.create(firstname: 'Zebulun', lastname: 'Oliphant', uin: '734826482', email: 'zeb@tamu.edu',
-                               classification: 'U2', major: 'CPSC', teacher: 'student@gmail.com', last_practice_at: Time.now)
+                               classification: 'U2', major: 'CPSC', teacher: 'student@gmail.com',
+                               last_practice_at: Time.now)
     @student2 = Student.create(firstname: 'Webulun', lastname: 'Woliphant', uin: '734826483', email: 'web@tamu.edu',
-                               classification: 'U2', major: 'CPSC', teacher: 'student@gmail.com', last_practice_at: Time.now)
+                               classification: 'U2', major: 'CPSC', teacher: 'student@gmail.com',
+                               last_practice_at: Time.now)
   end
 
   describe '#update' do

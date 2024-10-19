@@ -32,12 +32,12 @@ class Student < ApplicationRecord
   end
 
   # get the number of students due for quizzing
-  def self.getDue(teacher)
+  def self.get_due(teacher)
     students = Student.where(teacher:)
-    dueStudents = []
+    due_students = []
     students.each do |student|
-      dueStudents += [student] if (student.last_practice_at + student.curr_practice_interval.to_i.minutes) < Time.now
+      due_students += [student] if (student.last_practice_at + student.curr_practice_interval.to_i.minutes) < Time.now
     end
-    dueStudents
+    due_students
   end
 end
