@@ -83,8 +83,8 @@ class UploadController < ApplicationController
   def process_students(names, images)
     names.each do |name|
       name_parts = name.strip.split(' ', 2)
-      firstname = name_parts[0]
-      lastname = name_parts[1] || ''
+      firstname = name_parts[1]
+      lastname = name_parts[0] || ''
       student_data = extract_row_data_for_name(name)
 
       next unless student_data

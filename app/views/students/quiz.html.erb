@@ -7,7 +7,11 @@
 
   <div class="flex mt-6 flex-row justify-between bg-white p-4 rounded-xl drop-shadow-xl font-source-serif-pro font-light">
       <div class="rounded-xl">
-        <%= image_tag student.records[0].base64_image, size: "128x128" %>
+        <% if @student.base64_image.present? %>
+          <%= image_tag @student.base64_image, size: "128x128" %>
+        <% else %>
+          <p>No image available</p>
+        <% end %>
       </div>
 
       <div class="flex mx-4 w-full flex-col justify-center">

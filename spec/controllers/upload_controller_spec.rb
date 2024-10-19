@@ -30,34 +30,26 @@ RSpec.describe UploadController, type: :controller do
                                  semester: 'Fall 2002')
       end
 
-      it 'creates student entries for a zip with .jpg' do
-        file = fixture_file_upload('ProfRitchey_Template.zip', 'application/zip')
-        params = { file:, course_temp: @course.course_name, section_temp: @course.section,
+      it 'creates student entries after uploading a valid csv and .htm file' do
+        csv = fixture_file_upload('export.csv', 'text/csv')
+        complete_webpage_file = fixture_file_upload('Howdy Dashboard _ Howdy.htm', 'text/html')
+        params = { csv_file: csv, complete_webpage_file:, course_temp: @course.course_name, section_temp: @course.section,
                    semester_temp: @course.semester }
         post(:parse, params:)
-        kunal = Student.find_by firstname: 'Kunal'
-        expect(kunal.firstname).to eq('Kunal')
-        expect(flash[:notice]).to eq('Upload successful!')
-      end
-
-      it 'creates student entries for a zip with .display' do
-        file = fixture_file_upload('431_image_roster_with_chrome_files.zip', 'application/zip')
-        params = { file:, course_temp: @course1.course_name, section_temp: @course1.section,
-                   semester_temp: @course1.semester }
-        post(:parse, params:)
-        uploaded_student = Student.find_by firstname: 'Ethan'
-        expect(uploaded_student.firstname).to eq('Ethan')
+        susheel = Student.find_by firstname: 'Susheel'
+        expect(susheel.firstname).to eq('Susheel')
         expect(flash[:notice]).to eq('Upload successful!')
       end
 
       it 'updates students that already exist' do
-        @prev_student = Student.create(firstname: 'Ethan', lastname: 'Novicio', uin: '830005524', email: 'zeb@tamu.edu',
-                                       classification: 'U2', major: 'CPSC', teacher: @user.email)
-        file = fixture_file_upload('431_image_roster_with_chrome_files.zip', 'application/zip')
-        params = { file:, course_temp: @course1.course_name, section_temp: @course1.section,
+        @prev_student = Student.create(firstname: 'Susheel', lastname: 'Vadakkekuruppath', uin: '236002222', email: 'zeb@tamu.edu',
+                                       classification: 'G7', major: 'CPSC', teacher: @user.email)
+        csv = fixture_file_upload('export.csv', 'text/csv')
+        complete_webpage_file = fixture_file_upload('Howdy Dashboard _ Howdy.htm', 'text/html')
+        params = { csv_file: csv, complete_webpage_file:, course_temp: @course1.course_name, section_temp: @course1.section,
                    semester_temp: @course1.semester }
         post(:parse, params:)
-        uploaded_student = Student.find_by uin: '830005524'
+        uploaded_student = Student.find_by uin: '236002222'
         puts "ups: #{uploaded_student.inspect}"
         expect(@prev_student.email).not_to eq(uploaded_student.email)
         expect(flash[:notice]).to eq('Upload successful!')

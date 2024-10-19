@@ -15,7 +15,11 @@
               <% @student_records.each do |student| %>
                     <tr class="even:bg-gray-100 odd:bg-gray-200 hover:bg-gray-300">
                         <td class="p-4">
-                          <%= image_tag student.records[0].base64_image, size: "128x128" %>
+                          <% if student.records[0].base64_image.present? %>
+                            <%= image_tag student.records[0].base64_image, size: "128x128" %>
+                          <% else %>
+                            <p>No image available</p>
+                          <% end %>
                         </td>
                       <td class="font-source-serif-pro font-light">
                         <%=student.records[0].lastname %>, <%=student.records[0].firstname %>

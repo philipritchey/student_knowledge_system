@@ -33,26 +33,28 @@ Scenario: All students viewable
 Scenario: Search by semester
     When I sign in as "team_cluck_admin@gmail.com"
     Given I am on the upload page
-    When I upload a zip file
+    When I upload a csv file
+    When I upload a htm file
     And I input form information
     When I click save
     Then I should see the upload was successful
     And I go to the students page
-    And I select "Spring 2023" under semester
+    And I select "Fall 2024" under semester
     Then I submit the form
-    Then I should see "Kunal"
+    Then I should see "Susheel"
 
 Scenario: Search by tag
     When I sign in as "team_cluck_admin@gmail.com"
     Given I am on the upload page
-    When I upload a zip file
+    When I upload a csv file
+    When I upload a htm file
     And I input form information
     When I click save
     Then I should see the upload was successful
     And I go to the students page
-    And I select "Spring 2023" under semester
+    And I select "Fall 2024" under semester
     Then I submit the form
-    Then I should see "Kunal"
+    Then I should see "Susheel"
     When I click show this student
     And I click "Edit this student"
     When I fill in student "create_tag" with "test"
@@ -61,7 +63,7 @@ Scenario: Search by tag
     When I go to the students page
     And I select "test" under tag
     Then I submit the form
-    Then I should see "Kunal"
+    Then I should see "Susheel"
 
 
 Scenario: Add and Delete a student
@@ -80,11 +82,12 @@ Scenario: Add and Delete a student
 Scenario: Update Student Course
     When I sign in as "team_cluck_admin@gmail.com"
     Given I am on the upload page
-    When I upload a zip file
+    When I upload a csv file
+    When I upload a htm file
     And I input form information
     When I click save
     And I go to the students page
-    And I select "Spring 2023" under semester
+    And I select "Fall 2024" under semester
     Then I submit the form
     And I click the first "Show this student"
     And I click "Edit this student"
@@ -96,14 +99,15 @@ Scenario: Update Student Course
 Scenario: Delete Student Course
     When I sign in as "team_cluck_admin@gmail.com"
     Given I am on the upload page
-    When I upload a zip file
+    When I upload a csv file
+    When I upload a htm file
     And I input form information
     When I click save
     Then I should see the upload was successful
     And I go to the students page
-    And I select "Spring 2023" under semester
+    And I select "Fall 2024" under semester
     Then I submit the form
-    Then I should see "Kunal"
+    Then I should see "Susheel"
     And I click the first "Show this student"
     And I click "Edit this student"
     Then I should see "Edit Student Course History"
