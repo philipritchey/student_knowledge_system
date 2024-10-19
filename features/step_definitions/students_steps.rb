@@ -37,6 +37,6 @@ end
 And(/^I click the delete button for student "(.*?)"$/) do |student_name|
   student_row = find('tr', text: student_name)
   within(student_row) do
-    click_button "Delete this student"
+    click_button 'Delete this student'
   end
 end

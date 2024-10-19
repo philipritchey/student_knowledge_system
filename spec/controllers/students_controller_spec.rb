@@ -72,8 +72,9 @@ RSpec.describe StudentsController, type: :controller do
 
   #     # Creating additional students to sample from
   #     7.times do |i|
-  #       Student.create(firstname: "Student#{i}", lastname: "Test#{i}", uin: "12345#{i}", email: "student#{i}@example.com",
-  #                      classification: 'U2', major: 'CPSC', teacher: 'teacher@gmail.com', curr_practice_interval: '10', last_practice_at: Time.now)
+  #       Student.create(firstname: "Student#{i}", lastname: "Test#{i}", uin: "12345#{i}",
+  #                      email: "student#{i}@example.com", classification: 'U2', major: 'CPSC',
+  #                      teacher: 'teacher@gmail.com', curr_practice_interval: '10', last_practice_at: Time.now)
   #     end
   #   end
 
