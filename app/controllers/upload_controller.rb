@@ -13,13 +13,14 @@ class UploadController < ApplicationController
     require 'csv'
     require 'securerandom'
     require 'nokogiri'
-    require 'base64'
 
-    names = extract_names_from_csv if params[:csv_file].present?
+    names = extract_data_from_csv('Name') if params[:csv_file].present?
     images = extract_images_from_html(names) if params[:complete_webpage_file].present?
     if names.present? && images.present? && names.length == images.length
       @course = create_course
-      StudentCourse.where(course_id: @course.id).destroy_all
+      destroy_existing_students_from_course(@course.id)
+      process_students(names, images)
+      redirect_to courses_url, notice: 'Upload successful!'
     else
       redirect_to upload_index_path, notice: 'Number of images does not match number of students'
     end
@@ -36,20 +37,20 @@ class UploadController < ApplicationController
     )
   end
 
-  def extract_names_from_csv
-    names = []
+  def extract_data_from_csv(column_key)
+    data = []
     csv_file = params[:csv_file]
     file_contents = File.read(csv_file.path)
     cleaned_contents = file_contents.gsub("\r\n", "\n")
-
+  
     CSV.parse(cleaned_contents, headers: true, liberal_parsing: true) do |row|
       cleaned_row = row.to_h
-      name_key = cleaned_row.keys.find { |key| key.include?("Name") }
-      name = cleaned_row[name_key] if name_key
-      names << name unless name.nil? || name.empty?
+      key = cleaned_row.keys.find { |k| k.include?(column_key) }
+      value = cleaned_row[key] if key
+      data << value unless value.nil? || value.empty?
     end
-
-    names
+  
+    data
   end
 
 
@@ -70,5 +71,80 @@ class UploadController < ApplicationController
     end
 
     images
+  end
+
+  def get_existing_student(uin)
+    Student.where(uin: uin, teacher: current_user.email).first
+  end
+
+  def destroy_existing_students_from_course(course_id)
+    StudentCourse.where(course_id: course_id).destroy_all
+  end
+
+  def process_students(names, images)
+    names.each do |name|
+      name_parts = name.strip.split(' ', 2)
+      firstname = name_parts[0]
+      lastname = name_parts[1] || ''
+      student_data = extract_row_data_for_name(name)
+  
+      if student_data
+        @student = get_existing_student(student_data['UIN'])
+  
+        if @student.nil?
+          @student = Student.new(
+            firstname: firstname,
+            lastname: lastname,
+            uin: student_data['UIN'],
+            major: student_data['MAJOR'],
+            email: student_data['EMAIL'],
+            classification: 'Students',
+            teacher: current_user.email,
+            base64_image: images[name],
+            last_practice_at: Time.now - 121.minutes,
+            curr_practice_interval: 120
+          )
+          @student.save
+        else
+          @student.update(
+            firstname: firstname,
+            lastname: lastname,
+            uin: student_data['UIN'],
+            major: student_data['MAJOR'],
+            email: student_data['EMAIL'],
+            classification: student_data['CLASS'],
+            teacher: current_user.email,
+            base64_image: images[name]
+          )
+        end
+  
+        StudentCourse.find_or_create_by(course_id: @course.id, student_id: @student.id,
+                                        final_grade: 'A')
+      end
+    end
+  end
+
+  def extract_row_data_for_name(name)
+    csv_file = params[:csv_file]
+    file_contents = File.read(csv_file.path)
+    cleaned_contents = file_contents.gsub("\r\n", "\n")
+  
+    CSV.parse(cleaned_contents, headers: true, liberal_parsing: true) do |row|
+      name_key = row.headers.find { |h| h.include?('Name') }
+  
+      if row[name_key].strip == name.strip
+        email_key = row.headers.find { |h| h.include?('Email') }
+        major_key = row.headers.find { |h| h.include?('Major') }
+        uin_key = row.headers.find { |h| h.include?('UIN') }
+        class_key = row.headers.find { |h| h.include?('Class') }
+        return {
+          'EMAIL' => row[email_key].strip,
+          'MAJOR' => row[major_key].strip,
+          'UIN' => row[uin_key].strip,
+          'CLASS' => row[class_key].strip
+        }
+      end
+    end
+    nil
   end
 end
