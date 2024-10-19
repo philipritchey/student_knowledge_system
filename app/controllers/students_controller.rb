@@ -210,7 +210,7 @@ class StudentsController < ApplicationController
     end
   end
 
-  # DELETE student/1
+  # DELETE student/id
   # Removes student and all it's courses. Or remove course of a student.
   def destroy
     @student = Student.find_by(id: params[:id])
@@ -259,7 +259,7 @@ class StudentsController < ApplicationController
     student = @due_students.sample
     quiz_students_path(student)
   end
-  helper_method :getDueStudentQuiz
+  helper_method :getDueStudentQuiz 
 
   private
 
