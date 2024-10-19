@@ -42,17 +42,16 @@ class UploadController < ApplicationController
     csv_file = params[:csv_file]
     file_contents = File.read(csv_file.path)
     cleaned_contents = file_contents.gsub("\r\n", "\n")
-  
+
     CSV.parse(cleaned_contents, headers: true, liberal_parsing: true) do |row|
       cleaned_row = row.to_h
       key = cleaned_row.keys.find { |k| k.include?(column_key) }
       value = cleaned_row[key] if key
       data << value unless value.nil? || value.empty?
     end
-  
+
     data
   end
-
 
   def extract_images_from_html(names)
     html_file = params[:complete_webpage_file]
@@ -61,12 +60,12 @@ class UploadController < ApplicationController
 
     names.each do |name|
       name_div = html_doc.at_xpath("//div[contains(text(), '#{name}')]")
-      if name_div
-        previous_element = name_div.previous_element
-        if previous_element && previous_element.name == 'app-imagerosterformatter'
-          img_tag = previous_element.at_xpath('.//img')
-          images[name] = img_tag.attr('src') if img_tag
-        end
+      next unless name_div
+
+      previous_element = name_div.previous_element
+      if previous_element && previous_element.name == 'app-imagerosterformatter'
+        img_tag = previous_element.at_xpath('.//img')
+        images[name] = img_tag.attr('src') if img_tag
       end
     end
 
@@ -74,11 +73,11 @@ class UploadController < ApplicationController
   end
 
   def get_existing_student(uin)
-    Student.where(uin: uin, teacher: current_user.email).first
+    Student.where(uin:, teacher: current_user.email).first
   end
 
   def destroy_existing_students_from_course(course_id)
-    StudentCourse.where(course_id: course_id).destroy_all
+    StudentCourse.where(course_id:).destroy_all
   end
 
   def process_students(names, images)
@@ -87,40 +86,40 @@ class UploadController < ApplicationController
       firstname = name_parts[0]
       lastname = name_parts[1] || ''
       student_data = extract_row_data_for_name(name)
-  
-      if student_data
-        @student = get_existing_student(student_data['UIN'])
-  
-        if @student.nil?
-          @student = Student.new(
-            firstname: firstname,
-            lastname: lastname,
-            uin: student_data['UIN'],
-            major: student_data['MAJOR'],
-            email: student_data['EMAIL'],
-            classification: 'Students',
-            teacher: current_user.email,
-            base64_image: images[name],
-            last_practice_at: Time.now - 121.minutes,
-            curr_practice_interval: 120
-          )
-          @student.save
-        else
-          @student.update(
-            firstname: firstname,
-            lastname: lastname,
-            uin: student_data['UIN'],
-            major: student_data['MAJOR'],
-            email: student_data['EMAIL'],
-            classification: student_data['CLASS'],
-            teacher: current_user.email,
-            base64_image: images[name]
-          )
-        end
-  
-        StudentCourse.find_or_create_by(course_id: @course.id, student_id: @student.id,
-                                        final_grade: 'A')
+
+      next unless student_data
+
+      @student = get_existing_student(student_data['UIN'])
+
+      if @student.nil?
+        @student = Student.new(
+          firstname:,
+          lastname:,
+          uin: student_data['UIN'],
+          major: student_data['MAJOR'],
+          email: student_data['EMAIL'],
+          classification: 'Students',
+          teacher: current_user.email,
+          base64_image: images[name],
+          last_practice_at: Time.now - 121.minutes,
+          curr_practice_interval: 120
+        )
+        @student.save
+      else
+        @student.update(
+          firstname:,
+          lastname:,
+          uin: student_data['UIN'],
+          major: student_data['MAJOR'],
+          email: student_data['EMAIL'],
+          classification: student_data['CLASS'],
+          teacher: current_user.email,
+          base64_image: images[name]
+        )
       end
+
+      StudentCourse.find_or_create_by(course_id: @course.id, student_id: @student.id,
+                                      final_grade: 'A')
     end
   end
 
@@ -128,10 +127,10 @@ class UploadController < ApplicationController
     csv_file = params[:csv_file]
     file_contents = File.read(csv_file.path)
     cleaned_contents = file_contents.gsub("\r\n", "\n")
-  
+
     CSV.parse(cleaned_contents, headers: true, liberal_parsing: true) do |row|
       name_key = row.headers.find { |h| h.include?('Name') }
-  
+
       if row[name_key].strip == name.strip
         email_key = row.headers.find { |h| h.include?('Email') }
         major_key = row.headers.find { |h| h.include?('Major') }
