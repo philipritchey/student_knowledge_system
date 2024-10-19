@@ -11,7 +11,7 @@ end
 
 Then('I submit the form') do
   find("[value='Filter Students List']").click
-  expect(page).to have_content('Kunal')
+  expect(page).to have_content('Susheel')
 end
 
 When('I click show this student') do

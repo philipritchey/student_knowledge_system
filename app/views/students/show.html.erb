@@ -6,7 +6,11 @@
 <div class="bg-white py-8 flex flex-row mx-auto justify-center text-[#500000] w-3/4 drop-shadow-xl rounded my-4 bg-gray-100">
   <div class="flex justify-center items-center w-1/4 p-8">
     <div class="w-full h-full">
-     <%= image_tag @student.base64_image, size: "128x128" %>
+     <% if @student.base64_image.present? %>
+      <%= image_tag @student.base64_image, size: "128x128" %>
+     <% else %>
+       <p>No image available</p>
+     <% end %>
     </div>
   </div>
   <div class="w-3/4">
