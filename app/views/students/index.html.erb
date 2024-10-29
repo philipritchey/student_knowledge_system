@@ -23,6 +23,7 @@
           <%= f.select("selected_tag", @tags, {:include_blank => true}, {class: "mt-2  mb-2 rounded", :onchange => "selected_tag=this.value;"}) %>
         </th>
       </tr>
+
       <tr class = "font-source-serif-pro">
         <th colspan="3">
           <%= f.submit "Filter Students List", class: "cursor-pointer hover:underline hover:underline-offset-4 py-1 px-3 mb-[1rem] border-2 rounded border-dotted border-[#500000]"%>
@@ -36,6 +37,26 @@
         </th>
       </tr>
     
+      <tr class = "font-source-serif-pro">
+        <%= form_tag('/students', method: :get) do %>
+          <th class="font-source-serif-pro" colspan="0">
+            Student Name: <br>
+              <%= text_field_tag :input_name, params[:input_name], placeholder: "Search by Name", class: "rounded w-3/4 mt-2 mb-3"%>
+          </th>
+          <th class="font-source-serif-pro" colspan="1">
+            Student email: <br>
+              <%= text_field_tag :input_email, params[:input_email], placeholder: "Search by email", class: "rounded w-3/4 mt-2 mb-3" %>
+          </th>
+          <th class="font-source-serif-pro" colspan="2">
+            Student UIN: <br>
+              <%= text_field_tag :input_UIN, params[:input_UIN], placeholder: "Search by UIN", class: "rounded w-3/4 mt-2 mb-3" %>
+          </th>
+          <th colspan="3" class="center">
+            <%= submit_tag 'Search Student', :name => nil, class: "cursor-pointer hover:underline hover:underline-offset-4 size-full py-1 px-3 border-2 rounded border-dotted border-[#500000] center" %>
+          </th>
+        <% end %>
+      </tr>
+
     <% if !@yearbook_style %>
       <tr class="bg-slate-400 font-medium font-source-serif-pro">
         <th class="rounded-tl-lg px-auto py-2"> Image </th>
