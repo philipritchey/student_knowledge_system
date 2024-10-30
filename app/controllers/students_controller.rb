@@ -67,6 +67,18 @@ class StudentsController < ApplicationController
     else
       @target_course_id = @course_ids
     end
+    if params[:input_name].present?
+      name = params[:input_name].split
+      firstname, lastname = name[0], name[1]
+      @students = @students.where(firstname: firstname, lastname: lastname)
+    end
+    if params[:input_email].present?
+      @students = @students.where(email: params[:input_email])
+    end
+    if params[:input_UIN].present?
+      uin = params[:input_UIN]
+      @students = @students.where(uin: uin)
+    end
     @student_records_hash = {}
     @students&.each do |student|
       @student_courses = StudentCourse.where(student_id: student.id, course_id: @target_course_id)
