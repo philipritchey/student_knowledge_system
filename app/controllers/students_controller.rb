@@ -68,9 +68,8 @@ class StudentsController < ApplicationController
       @target_course_id = @course_ids
     end
     if params[:input_name].present?
-      name = params[:input_name].split
-      firstname, lastname = name[0], name[1]
-      @students = @students.where(firstname: firstname, lastname: lastname)
+      name_pattern = "%#{params[:input_name]}%"
+      @students = @students.where("firstname LIKE ? OR lastname LIKE ?", name_pattern, name_pattern)
     end
     if params[:input_email].present?
       @students = @students.where(email: params[:input_email])
@@ -97,6 +96,7 @@ class StudentsController < ApplicationController
       end
     end
     @students = @student_records_hash.values
+    @no_students_found = @students.empty?
   end
 
   # GET /students/1

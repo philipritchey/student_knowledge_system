@@ -59,7 +59,7 @@
 
     <table>
       <thead>
-        <% if !@yearbook_style %>
+        <% if !@yearbook_style and !@no_students_found%>
           <tr class="bg-slate-400 font-medium font-source-serif-pro">
             <th class="rounded-tl-lg px-auto py-2"> Image </th>
             <th class="border-l-[0.05rem] border-r-[0.05rem] px-auto py-2"> Name </th>
@@ -70,7 +70,9 @@
           </tr>
         <%end%>
       </thead>
-
+      <% if @no_students_found %>
+        <p class="alert" style="font-size: 1.5em; font-weight: bold; text-align: center; padding: 20px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 8px; max-width: 80%; margin: 20px auto;">No students found that match the input.</p>
+      <% end %>
       <tbody class="rounded font-source-serif-pro border"id="students">
       <% if !@yearbook_style %>
         <div>
