@@ -272,6 +272,13 @@ class StudentsController < ApplicationController
   end
   helper_method :get_due_student_quiz
 
+  def get_all_classification
+    all_classification = {"U1": "U1", "U2": "U2", "U3": "U3", "U4": "U4", "U5": "U5",
+                            "G6": "G6", "G7": "G7", "G8": "G8", "G9": "G9"}
+    all_classification
+  end
+  helper_method :get_all_classification
+
   private
 
   # Use callbacks to share common setup or constraints between actions.

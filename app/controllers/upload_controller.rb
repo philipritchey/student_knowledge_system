@@ -98,7 +98,7 @@ class UploadController < ApplicationController
           uin: student_data['UIN'],
           major: student_data['MAJOR'],
           email: student_data['EMAIL'],
-          classification: 'Students',
+          classification: student_data['CLASS'],
           teacher: current_user.email,
           base64_image: images[name],
           last_practice_at: Time.now - 121.minutes,

@@ -68,6 +68,14 @@ RSpec.describe StudentsController, type: :controller do
     end
   end
 
+  describe '#get_all_classification' do
+    it "gets the correct classifications" do
+        expect(subject.get_all_classification).to include(:U1 => "U1")
+        expect(subject.get_all_classification).to include(:G7 => "G7")
+        expect(subject.get_all_classification).to_not include(:U6 => "U6")
+    end
+  end
+
   describe '#quiz' do
     before do
       @user = User.create(email: 'teacher@gmail.com', confirmed_at: Time.now)
