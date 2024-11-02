@@ -124,12 +124,12 @@ RSpec.describe StudentsController, type: :controller do
         major: 'CPSC',
         teacher: 'teacher@gmail.com'
       )
-      
+
       @course = Course.create(course_name: 'CSCE 606', teacher: 'teacher@gmail.com', section: '600',
-                               semester: 'Fall 2024')
+                              semester: 'Fall 2024')
 
       StudentCourse.create(student_id: @student1.id, course_id: @course.id)
-      
+
       7.times do |i|
         Student.create(firstname: "Student#{i}", lastname: "Test#{i}", uin: "12345#{i}", email: "student#{i}@example.com",
                        classification: 'U2', major: 'CPSC', teacher: 'teacher@gmail.com', curr_practice_interval: '10', last_practice_at: Time.now)
@@ -147,7 +147,6 @@ RSpec.describe StudentsController, type: :controller do
             semesters: @course.semester
           }
         end.to change { @student1.reload.curr_practice_interval.to_i }.by(10)
-        
 
         expect(assigns(:correctAnswer)).to be nil
       end
