@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # spec/controllers/sessions_controller_spec.rb
 
 require 'rails_helper'
@@ -21,9 +23,9 @@ RSpec.describe SessionsController, type: :controller do
       end
 
       it 'creates a new Passwordless session' do
-        expect {
+        expect do
           post :create
-        }.to change { Passwordless::Session.count }.by(0)
+        end.to change { Passwordless::Session.count }.by(0)
       end
     end
 
@@ -48,10 +50,10 @@ RSpec.describe SessionsController, type: :controller do
         # Simulating the absence of omniauth data
         request.env['omniauth.auth'] = nil
       end
-    
+
       it 'redirects to sign in path with an alert' do
         post :create
-        expect(response).to redirect_to(sign_in_path)  # Use the correct helper
+        expect(response).to redirect_to(sign_in_path) # Use the correct helper
         expect(flash[:alert]).to eq('Failed to authenticate with Google')
       end
     end
