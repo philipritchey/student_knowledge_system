@@ -311,9 +311,17 @@ class StudentsController < ApplicationController
     @selected_student = Student.find(session[:answer] || params[:answer])
 
     if @correct_student.id == @selected_student.id
+      old_interval = @correct_student.curr_practice_interval.to_i
+      @correct_student.update(curr_practice_interval: (old_interval * 2).to_s, last_practice_at: Time.now)
       render :correct_answer,
              locals: { courses: @courses_param, semesters: @semesters_param, sections: @sections_param }
     else
+      old_interval = @correct_student.curr_practice_interval.to_i
+      if old_interval > 15
+        @correct_student.update(curr_practice_interval: (old_interval / 2).to_s, last_practice_at: Time.now)
+      else
+        @correct_student.update( last_practice_at: Time.now)
+      end
       render :incorrect_answer,
              locals: { courses: @courses_param, semesters: @semesters_param, sections: @sections_param }
     end
