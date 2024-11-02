@@ -103,7 +103,7 @@ RSpec.describe StudentsController, type: :controller do
       @user = User.create(email: 'teacher@gmail.com', confirmed_at: Time.now)
       allow(controller).to receive(:current_user).and_return(@user)
 
-      @student = Student.create(
+      @student1 = Student.create(
         firstname: 'Zebulun',
         lastname: 'Oliphant',
         uin: '734826482',
@@ -115,6 +115,21 @@ RSpec.describe StudentsController, type: :controller do
         last_practice_at: Time.now # Ensure this is set
       )
 
+      @student2 = Student.create(
+        firstname: 'Bob',
+        lastname: 'Johnson',
+        uin: '987654321',
+        email: 'bob@example.com',
+        classification: 'U2',
+        major: 'CPSC',
+        teacher: 'teacher@gmail.com'
+      )
+      
+      @course = Course.create(course_name: 'CSCE 606', teacher: 'teacher@gmail.com', section: '600',
+                               semester: 'Fall 2024')
+
+      StudentCourse.create(student_id: @student1.id, course_id: @course.id)
+      
       7.times do |i|
         Student.create(firstname: "Student#{i}", lastname: "Test#{i}", uin: "12345#{i}", email: "student#{i}@example.com",
                        classification: 'U2', major: 'CPSC', teacher: 'teacher@gmail.com', curr_practice_interval: '10', last_practice_at: Time.now)
@@ -124,8 +139,15 @@ RSpec.describe StudentsController, type: :controller do
     context 'when answer is correct' do
       it 'doubles the current practice interval' do
         expect do
-          get :quiz, params: { id: @student.id, answer: @student.id }
-        end.to change { @student.reload.curr_practice_interval.to_i }.by(10)
+          post :check_answer, params: {
+            correct_student_id: @student1.id,
+            answer: @student1.id,
+            courses: @course.course_name,
+            sections: @course.section,
+            semesters: @course.semester
+          }
+        end.to change { @student1.reload.curr_practice_interval.to_i }.by(10)
+        
 
         expect(assigns(:correctAnswer)).to be nil
       end
@@ -133,21 +155,27 @@ RSpec.describe StudentsController, type: :controller do
 
     context 'when answer is incorrect' do
       it 'halves the current practice interval if it is greater than 15' do
-        @student.update(curr_practice_interval: '30')
+        @student1.update(curr_practice_interval: '30')
 
         expect do
-          get :quiz, params: { id: @student.id, answer: 'wrong_id' }
-        end.to change { @student.reload.curr_practice_interval.to_i }.by(-15)
+          post :check_answer, params: {
+            correct_student_id: @student1.id,
+            answer: @student2.id,
+            courses: @course.course_name,
+            sections: @course.section,
+            semesters: @course.semester
+          }
+        end.to change { @student1.reload.curr_practice_interval.to_i }.by(-15)
 
         expect(assigns(:correctAnswer)).to be nil
       end
 
       it 'does not change the current practice interval if it is 15 or less' do
-        @student.update(curr_practice_interval: '10')
+        @student1.update(curr_practice_interval: '10')
 
         expect do
-          get :quiz, params: { id: @student.id, answer: 'wrong_id' }
-        end.not_to(change { @student.reload.curr_practice_interval.to_i })
+          get :quiz, params: { id: @student1.id, answer: 'wrong_id' }
+        end.not_to(change { @student1.reload.curr_practice_interval.to_i })
 
         expect(assigns(:correctAnswer)).to be nil
       end
@@ -155,7 +183,7 @@ RSpec.describe StudentsController, type: :controller do
 
     context 'when no answer is provided' do
       it 'sets correctAnswer to nil' do
-        get :quiz, params: { id: @student.id, answer: nil }
+        get :quiz, params: { id: @student1.id, answer: nil }
         expect(assigns(:correctAnswer)).to be nil
       end
     end
