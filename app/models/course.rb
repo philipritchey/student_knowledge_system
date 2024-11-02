@@ -4,15 +4,12 @@
 class Course < ApplicationRecord
   def self.search_course(search, teacher)
     if search.present?
-      search_type = Course.where(course_name: search, teacher: teacher)
+      search_type = Course.where(course_name: search, teacher:)
       return search_type if search_type.any?
-      
-      Course.where(teacher: teacher) # Return all courses if no match found
-    else
-      Course.where(teacher: teacher) # Return courses by teacher if search is nil or empty
+
     end
+    Course.where(teacher:)
   end
-  
 
   def self.search_semester(search, teacher)
     if search

@@ -6,6 +6,15 @@ class StudentsController < ApplicationController
   # before_action :authenticate_by_session
   before_action :set_student, only: %i[show edit update destroy]
   before_action :require_user!
+  def quiz_filters
+    @selected_courses = params[:courses] || []
+    @selected_semesters = params[:semesters] || []
+    @selected_sections = params[:sections] || []
+
+    @courses_options = Course.pluck(:course_name).uniq
+    @semesters_options = Course.pluck(:semester).uniq
+    @sections_options = Course.pluck(:section).uniq
+  end
 
   # GET /student
   def index
@@ -69,14 +78,12 @@ class StudentsController < ApplicationController
     end
     if params[:input_name].present?
       name_pattern = "%#{params[:input_name]}%"
-      @students = @students.where("firstname LIKE ? OR lastname LIKE ?", name_pattern, name_pattern)
+      @students = @students.where('firstname LIKE ? OR lastname LIKE ?', name_pattern, name_pattern)
     end
-    if params[:input_email].present?
-      @students = @students.where(email: params[:input_email])
-    end
+    @students = @students.where(email: params[:input_email]) if params[:input_email].present?
     if params[:input_UIN].present?
       uin = params[:input_UIN]
-      @students = @students.where(uin: uin)
+      @students = @students.where(uin:)
     end
     @student_records_hash = {}
     @students&.each do |student|
@@ -233,34 +240,82 @@ class StudentsController < ApplicationController
     redirect_to action: 'index'
   end
 
-  # GET students/1/quiz
   def quiz
-    @student = Student.find_by(id: params[:id])
-    @id = current_user.email
-    @due_students = Student.get_due(@id)
+    @courses_param = []
+    @semesters_param = []
+    @sections_param = []
 
-    resp = params[:answer]
-    @correct_answer = nil
-
-    @choices = Student.where(teacher: current_user.email).where.not(id: @student.id).sample(7)
-    @choices.append(@student.id)
-    @choices = @choices.shuffle
-
-    if resp.nil?
-      @correct_answer = nil
-    elsif resp.to_i == @student.id
-      @correct_answer = true
-      old_interval = @student.curr_practice_interval.to_i
-      @student.update(curr_practice_interval: (old_interval * 2).to_s, last_practice_at: Time.now)
-
-    else
-      @correct_answer = false
-      old_interval = @student.curr_practice_interval.to_i
-      if old_interval > 15
-        @student.update(curr_practice_interval: (old_interval / 2).to_s, last_practice_at: Time.now)
+    if request.get?
+      if session[:courses] && session[:semesters] && session[:sections]
+        @courses_param = session[:courses]
+        @semesters_param = session[:semesters]
+        @sections_param = session[:sections]
       else
-        @student.update(last_practice_at: Time.now)
+        redirect_to quiz_filters_path, alert: 'Please apply filters before starting the quiz.' and return
       end
+    else
+      session[:courses] = params[:courses_text].split(',').map(&:strip) if params[:courses_text]
+      session[:semesters] = params[:semesters_text].split(',').map(&:strip) if params[:semesters_text]
+      session[:sections] = params[:sections_text].split(',').map(&:strip) if params[:sections_text]
+
+      @courses_param = params[:courses]
+      @semesters_param = params[:semesters]
+      @sections_param = params[:sections]
+    end
+
+    @target_courses = Course.where(course_name: @courses_param)
+                            .or(Course.where(semester: @semesters_param))
+                            .or(Course.where(section: @sections_param))
+
+    @student_ids = StudentCourse.where(course_id: @target_courses.pluck(:id)).pluck(:student_id)
+    @students = Student.where(id: @student_ids)
+
+    @random_student = @students.sample
+
+    if @random_student.nil?
+      flash[:alert] = 'No students found for the selected filters.'
+      redirect_to quiz_filters_path and return
+    end
+
+    @choices = Student.where(teacher: current_user.email)
+                      .where.not(id: @random_student.id)
+                      .sample(7)
+
+    while @choices.count < 7
+      additional_choice = Student.where(teacher: current_user.email)
+                                 .where.not(id: @choices.pluck(:id) + [@random_student.id])
+                                 .sample
+
+      break if additional_choice.nil?
+
+      @choices.append(additional_choice)
+    end
+
+    @choices.append(@random_student)
+    @choices.shuffle!
+  end
+
+  def check_answer
+    if request.post?
+      session[:courses] = params[:courses]
+      session[:semesters] = params[:semesters]
+      session[:sections] = params[:sections]
+      session[:correct_student_id] = params[:correct_student_id]
+      session[:answer] = params[:answer]
+    end
+
+    @courses_param = session[:courses] || params[:courses]
+    @semesters_param = session[:semesters] || params[:semesters]
+    @sections_param = session[:sections] || params[:sections]
+    @correct_student = Student.find(session[:correct_student_id] || params[:correct_student_id])
+    @selected_student = Student.find(session[:answer] || params[:answer])
+
+    if @correct_student.id == @selected_student.id
+      render :correct_answer,
+             locals: { courses: @courses_param, semesters: @semesters_param, sections: @sections_param }
+    else
+      render :incorrect_answer,
+             locals: { courses: @courses_param, semesters: @semesters_param, sections: @sections_param }
     end
   end
 
@@ -273,9 +328,8 @@ class StudentsController < ApplicationController
   helper_method :get_due_student_quiz
 
   def get_all_classification
-    all_classification = {"U1": "U1", "U2": "U2", "U3": "U3", "U4": "U4", "U5": "U5",
-                            "G6": "G6", "G7": "G7", "G8": "G8", "G9": "G9"}
-    all_classification
+    { "U1": 'U1', "U2": 'U2', "U3": 'U3', "U4": 'U4', "U5": 'U5',
+      "G6": 'G6', "G7": 'G7', "G8": 'G8', "G9": 'G9' }
   end
   helper_method :get_all_classification
 
@@ -283,14 +337,13 @@ class StudentsController < ApplicationController
     @student = Student.find(params[:id])
     render json: { notes: @student.notes }
   end
-  
 
   # Update notes for a student
   def update_notes
     @student = Student.find(params[:id])
-    if @student.update(notes: params[:notes])
-      render json: { success: true }
-    end
+    return unless @student.update(notes: params[:notes])
+
+    render json: { success: true }
   end
 
   private

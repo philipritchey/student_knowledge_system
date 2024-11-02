@@ -4,12 +4,20 @@ require 'rails_helper'
 
 RSpec.describe Course, type: :model do
   let!(:teacher) { User.create(email: 'teacher@example.com') }
-  let!(:student1) { Student.create(firstname: 'John', lastname: 'Doe', uin: '12345', email: 'john@example.com', classification: 'Freshman', major: 'Math', teacher: teacher.email) }
-  let!(:student2) { Student.create(firstname: 'Jane', lastname: 'Smith', uin: '67890', email: 'jane@example.com', classification: 'Sophomore', major: 'Science', teacher: teacher.email) }
-  
+  let!(:student1) do
+    Student.create(firstname: 'John', lastname: 'Doe', uin: '12345', email: 'john@example.com',
+                   classification: 'Freshman', major: 'Math', teacher: teacher.email)
+  end
+  let!(:student2) do
+    Student.create(firstname: 'Jane', lastname: 'Smith', uin: '67890', email: 'jane@example.com',
+                   classification: 'Sophomore', major: 'Science', teacher: teacher.email)
+  end
+
   let!(:course1) { Course.create(semester: 'Fall 2024', teacher: teacher.email, section: 1, course_name: 'Math 101') }
-  let!(:course2) { Course.create(semester: 'Fall 2024', teacher: teacher.email, section: 2, course_name: 'Science 101') }
-  
+  let!(:course2) do
+    Course.create(semester: 'Fall 2024', teacher: teacher.email, section: 2, course_name: 'Science 101')
+  end
+
   let!(:student_course1) { StudentCourse.create(student_id: student1.id, course_id: course1.id) }
   let!(:student_course2) { StudentCourse.create(student_id: student2.id, course_id: course2.id) }
 

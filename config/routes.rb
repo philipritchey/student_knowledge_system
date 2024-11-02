@@ -17,6 +17,9 @@ Rails.application.routes.draw do
     resources :history, only: [:show]
   end
 
+  match 'students/quiz', to: 'students#quiz', via: %i[get post], as: 'quiz_students'
+  match 'quiz/check_answer', to: 'students#check_answer', via: %i[get post], as: 'quiz_check_answer'
+
   resources :student_courses
 
   resources :students do
@@ -26,7 +29,7 @@ Rails.application.routes.draw do
     end
   end
 
-  get 'students/:id/quiz', to: 'students#quiz', as: 'quiz_students'
+  get 'quiz/filters', to: 'students#quiz_filters', as: 'quiz_filters'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")

@@ -91,10 +91,10 @@ RSpec.describe StudentsController, type: :controller do
   end
 
   describe '#get_all_classification' do
-    it "gets the correct classifications" do
-        expect(subject.get_all_classification).to include(:U1 => "U1")
-        expect(subject.get_all_classification).to include(:G7 => "G7")
-        expect(subject.get_all_classification).to_not include(:U6 => "U6")
+    it 'gets the correct classifications' do
+      expect(subject.get_all_classification).to include(U1: 'U1')
+      expect(subject.get_all_classification).to include(G7: 'G7')
+      expect(subject.get_all_classification).to_not include(U6: 'U6')
     end
   end
 
@@ -102,18 +102,18 @@ RSpec.describe StudentsController, type: :controller do
     before do
       @user = User.create(email: 'teacher@gmail.com', confirmed_at: Time.now)
       allow(controller).to receive(:current_user).and_return(@user)
-      
+
       @student = Student.create(
-                                firstname: 'Zebulun',
-                                lastname: 'Oliphant',
-                                uin: '734826482',
-                                email: 'zeb@tamu.edu',
-                                classification: 'U2',
-                                major: 'CPSC',
-                                teacher: 'teacher@gmail.com',
-                                curr_practice_interval: '10',
-                                last_practice_at: Time.now # Ensure this is set
-                              )
+        firstname: 'Zebulun',
+        lastname: 'Oliphant',
+        uin: '734826482',
+        email: 'zeb@tamu.edu',
+        classification: 'U2',
+        major: 'CPSC',
+        teacher: 'teacher@gmail.com',
+        curr_practice_interval: '10',
+        last_practice_at: Time.now # Ensure this is set
+      )
 
       7.times do |i|
         Student.create(firstname: "Student#{i}", lastname: "Test#{i}", uin: "12345#{i}", email: "student#{i}@example.com",
@@ -123,10 +123,10 @@ RSpec.describe StudentsController, type: :controller do
 
     context 'when answer is correct' do
       it 'doubles the current practice interval' do
-        expect {
+        expect do
           get :quiz, params: { id: @student.id, answer: @student.id }
-        }.to change { @student.reload.curr_practice_interval.to_i }.by(10)
-        
+        end.to change { @student.reload.curr_practice_interval.to_i }.by(10)
+
         expect(assigns(:correctAnswer)).to be nil
       end
     end
@@ -134,20 +134,20 @@ RSpec.describe StudentsController, type: :controller do
     context 'when answer is incorrect' do
       it 'halves the current practice interval if it is greater than 15' do
         @student.update(curr_practice_interval: '30')
-        
-        expect {
+
+        expect do
           get :quiz, params: { id: @student.id, answer: 'wrong_id' }
-        }.to change { @student.reload.curr_practice_interval.to_i }.by(-15)
-        
+        end.to change { @student.reload.curr_practice_interval.to_i }.by(-15)
+
         expect(assigns(:correctAnswer)).to be nil
       end
 
       it 'does not change the current practice interval if it is 15 or less' do
         @student.update(curr_practice_interval: '10')
-        
-        expect {
+
+        expect do
           get :quiz, params: { id: @student.id, answer: 'wrong_id' }
-        }.not_to change { @student.reload.curr_practice_interval.to_i }
+        end.not_to(change { @student.reload.curr_practice_interval.to_i })
 
         expect(assigns(:correctAnswer)).to be nil
       end
@@ -166,8 +166,10 @@ RSpec.describe StudentsController, type: :controller do
       @user = User.create(email: 'teacher@gmail.com', confirmed_at: Time.now)
       allow(controller).to receive(:current_user).and_return(@user)
 
-      @course1 = Course.create(course_name: 'CSCE 411', teacher: 'teacher@gmail.com', section: '501', semester: 'Spring 2023')
-      @course2 = Course.create(course_name: 'CSCE 411', teacher: 'teacher@gmail.com', section: '501', semester: 'Fall 2023')
+      @course1 = Course.create(course_name: 'CSCE 411', teacher: 'teacher@gmail.com', section: '501',
+                               semester: 'Spring 2023')
+      @course2 = Course.create(course_name: 'CSCE 411', teacher: 'teacher@gmail.com', section: '501',
+                               semester: 'Fall 2023')
 
       @student1 = Student.create(
         firstname: 'Alice',
@@ -192,16 +194,16 @@ RSpec.describe StudentsController, type: :controller do
       # Uncomment the next line if you want to enroll Bob in a different course
       # StudentCourse.create(student_id: @student2.id, course_id: @course2.id) # Bob enrolled in CSCE 412
 
-      @params = { selected_course: @course1.course_name, selected_semester: @course1.semester}
-      @params_name = {input_name: @student1.firstname}
-      @params_email = {input_email: @student2.email}
-      @params_uin = {input_UIN: @student2.uin}
-      @params_wrong = {input_UIN: '111111111'}
+      @params = { selected_course: @course1.course_name, selected_semester: @course1.semester }
+      @params_name = { input_name: @student1.firstname }
+      @params_email = { input_email: @student2.email }
+      @params_uin = { input_UIN: @student2.uin }
+      @params_wrong = { input_UIN: '111111111' }
     end
 
     it 'displays only students enrolled in the selected course and semester' do
       get :index, params: @params
-      expect(assigns(:students)).not_to include(@student2)  # Bob should not be included
+      expect(assigns(:students)).not_to include(@student2) # Bob should not be included
     end
 
     it 'displays only students with the correct name' do
@@ -223,7 +225,7 @@ RSpec.describe StudentsController, type: :controller do
       get :index, params: @params_wrong
       expect(assigns(:no_students_found)).to be true
     end
-    
+
     it 'calls index successfully' do
       get :index
       expect(response).to have_http_status(:success)
@@ -237,19 +239,19 @@ RSpec.describe StudentsController, type: :controller do
 
       it 'does not include students without the selected tag' do
         get :index, params: { selected_tag: 'Nonexistent Tag' }
-        
+
         expect(assigns(:students)).not_to include(@student1)
         expect(assigns(:students)).not_to include(@student2)
       end
     end
     it 'redirects with a notice when student not found (HTML)' do
-      get :show, params: { id: 'nonexistent_id' }, format: :html 
-        expect(response).to redirect_to(students_url) 
-        expect(flash[:notice]).to eq('Given student not found.')
+      get :show, params: { id: 'nonexistent_id' }, format: :html
+      expect(response).to redirect_to(students_url)
+      expect(flash[:notice]).to eq('Given student not found.')
     end
     it 'responds with no content when student not found (JSON)' do
       get :show, params: { id: 'nonexistent_id' }, format: :json
-    
+
       expect(response).to have_http_status(:no_content)
     end
   end

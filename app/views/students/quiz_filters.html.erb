@@ -1,0 +1,53 @@
+<div class="bg-white p-4 flex flex-col mx-auto justify-center text-[#500000] w-5/6 drop-shadow-xl rounded my-6 bg-gray-100">
+  <div class="w-4/5 my-4 py-4 mx-auto text-center border-2 border-dashed border-gray-400 rounded-lg font-source-serif-pro text-[1.75rem] text-[#500000] font-bold shadow-md">
+    <h1>Quiz Setup</h1>
+  </div>
+  
+  <%= form_with url: quiz_students_path, method: :post, local: true do %>
+    <div class="w-5/6 mx-auto">
+      <div class="text-center mb-4 text-sm text-gray-600">
+        <p>Double-click the options to add them to the text areas below.</p>
+      </div>
+      <div class="grid grid-cols-3 gap-6 mt-4 text-center">
+        <div class="flex flex-col p-4 rounded-lg bg-gray-50">
+          <label class="font-source-serif-pro mb-2">Course:</label>
+          <%= select_tag 'courses[]', options_for_select(@courses_options, @selected_courses), { multiple: true, class: 'mt-2 mb-2 rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-[#500000]', ondblclick: "updateTextarea('courses[]', 'course-textarea')" } %>
+          <textarea name="courses_text" id="course-textarea" class="mt-2 p-2 rounded border border-gray-300" rows="3"><%= @selected_courses.join(", ") %></textarea>
+        </div>
+        
+        <div class="flex flex-col p-4 rounded-lg bg-gray-50">
+          <label class="font-source-serif-pro mb-2">Semester:</label>
+          <%= select_tag 'semesters[]', options_for_select(@semesters_options, @selected_semesters), { multiple: true, class: 'mt-2 mb-2 rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-[#500000]', ondblclick: "updateTextarea('semesters[]', 'semester-textarea')" } %>
+          <textarea name="semesters_text" id="semester-textarea" class="mt-2 p-2 rounded border border-gray-300" rows="3"><%= @selected_semesters.join(", ") %></textarea>
+        </div>
+        
+        <div class="flex flex-col p-4 rounded-lg bg-gray-50">
+          <label class="font-source-serif-pro mb-2">Section:</label>
+          <%= select_tag 'sections[]', options_for_select(@sections_options, @selected_sections), { multiple: true, class: 'mt-2 mb-2 rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-[#500000]', ondblclick: "updateTextarea('sections[]', 'section-textarea')" } %>
+          <textarea name="sections_text" id="section-textarea" class="mt-2 p-2 rounded border border-gray-300" rows="3"><%= @selected_sections.join(", ") %></textarea>
+        </div>
+      </div>
+      
+      <div class="flex justify-center mt-8 mb-6">
+        <button type="submit" class="cursor-pointer hover:underline hover:underline-offset-4 py-2 px-6 border-2 rounded border-dotted border-[#500000] font-source-serif-pro font-semibold shadow-lg hover:shadow-xl transition duration-300 ease-in-out">
+          Start the Quiz
+        </button>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<script>
+  function updateTextarea(selectName, textareaId) {
+    const select = document.getElementsByName(selectName)[0];
+    const textarea = document.getElementById(textareaId);
+    const currentValues = textarea.value.split(',').map(value => value.trim());
+
+    Array.from(select.selectedOptions).forEach(option => {
+      const optionText = option.text;
+      if (!currentValues.some(value => value === optionText.trim())) {
+        textarea.value += (textarea.value ? ", " : "") + optionText;
+      }
+    });
+  }
+</script>

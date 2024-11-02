@@ -152,39 +152,39 @@ RSpec.describe CoursesController, type: :controller do
 
     it 'initializes new student entry when student is not in @student_records_hash' do
       get :show, params: { id: @course1.id }
-      
+
       # Check if the student is initialized correctly
       student_entry = assigns(:student_records_hash)[@student2.uin]
       expect(student_entry).to be_present
     end
-  
+
     it 'appends student records when student already exists in @student_records_hash' do
       # Create a situation where the student already has an entry
       @student_records_hash = {}
       existing_student = @student1 # Assume @student1 is already in the hash
       existing_student_courses = StudentCourse.where(student_id: existing_student.id, course_id: @course1.id)
-  
+
       existing_student_courses.each do |student_course|
         course = Course.find_by(id: student_course.course_id)
         student_entry = @student_records_hash[existing_student.uin] || StudentEntries.new
         student_entry.initialize_using_student_model(existing_student, course)
         @student_records_hash[existing_student.uin] = student_entry
       end
-  
+
       # Now get the show action again to simulate adding the existing student
       get :show, params: { id: @course1.id }
-      
+
       # Check if the existing student entry has been updated
       student_entry = assigns(:student_records_hash)[existing_student.uin]
       expect(student_entry.records).to include(existing_student)
       expect(student_entry.semester_section).to include("#{@course1.semester} - #{@course1.section}")
       expect(student_entry.course_semester).to include("#{@course1.course_name} - #{@course1.semester}")
     end
-  
+
     it 'sorts the list of students based on sort order' do
       get :show, params: { id: @course1.id, sortOrder: 'Alphabetical' }
       expect(assigns(:student_records).first.records.first.lastname).to eq('Biel')
-  
+
       get :show, params: { id: @course1.id, sortOrder: 'Reverse Alphabetical' }
       expect(assigns(:student_records).first.records.first.lastname).to eq('Oliphant')
     end
