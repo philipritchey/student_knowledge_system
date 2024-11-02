@@ -78,14 +78,12 @@ class StudentsController < ApplicationController
     end
     if params[:input_name].present?
       name_pattern = "%#{params[:input_name]}%"
-      @students = @students.where("firstname LIKE ? OR lastname LIKE ?", name_pattern, name_pattern)
+      @students = @students.where('firstname LIKE ? OR lastname LIKE ?', name_pattern, name_pattern)
     end
-    if params[:input_email].present?
-      @students = @students.where(email: params[:input_email])
-    end
+    @students = @students.where(email: params[:input_email]) if params[:input_email].present?
     if params[:input_UIN].present?
       uin = params[:input_UIN]
-      @students = @students.where(uin: uin)
+      @students = @students.where(uin:)
     end
     @student_records_hash = {}
     @students&.each do |student|
@@ -339,14 +337,13 @@ class StudentsController < ApplicationController
     @student = Student.find(params[:id])
     render json: { notes: @student.notes }
   end
-  
 
   # Update notes for a student
   def update_notes
     @student = Student.find(params[:id])
-    if @student.update(notes: params[:notes])
-      render json: { success: true }
-    end
+    return unless @student.update(notes: params[:notes])
+
+    render json: { success: true }
   end
 
   private

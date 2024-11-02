@@ -14,7 +14,7 @@ Then('I submit the filter form') do
 end
 
 Then('I submit the search students form') do
-   click_button 'Search Student'
+  click_button 'Search Student'
 end
 
 When('I click show this student') do

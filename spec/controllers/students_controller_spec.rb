@@ -194,11 +194,11 @@ RSpec.describe StudentsController, type: :controller do
       # Uncomment the next line if you want to enroll Bob in a different course
       # StudentCourse.create(student_id: @student2.id, course_id: @course2.id) # Bob enrolled in CSCE 412
 
-      @params = { selected_course: @course1.course_name, selected_semester: @course1.semester}
-      @params_name = {input_name: @student1.firstname}
-      @params_email = {input_email: @student2.email}
-      @params_uin = {input_UIN: @student2.uin}
-      @params_wrong = {input_UIN: '111111111'}
+      @params = { selected_course: @course1.course_name, selected_semester: @course1.semester }
+      @params_name = { input_name: @student1.firstname }
+      @params_email = { input_email: @student2.email }
+      @params_uin = { input_UIN: @student2.uin }
+      @params_wrong = { input_UIN: '111111111' }
     end
 
     it 'displays only students enrolled in the selected course and semester' do
@@ -225,7 +225,7 @@ RSpec.describe StudentsController, type: :controller do
       get :index, params: @params_wrong
       expect(assigns(:no_students_found)).to be true
     end
-    
+
     it 'calls index successfully' do
       get :index
       expect(response).to have_http_status(:success)
