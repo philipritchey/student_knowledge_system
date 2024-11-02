@@ -9,9 +9,12 @@ Then('I select {string} under semester') do |string|
   find('#selected_semester').select(string)
 end
 
-Then('I submit the form') do
+Then('I submit the filter form') do
   find("[value='Filter Students List']").click
-  expect(page).to have_content('Susheel')
+end
+
+Then('I submit the search students form') do
+   click_button 'Search Student'
 end
 
 When('I click show this student') do
