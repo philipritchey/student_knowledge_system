@@ -78,7 +78,7 @@ class StudentsController < ApplicationController
     end
     if params[:input_name].present?
       name_pattern = "%#{params[:input_name]}%"
-      @students = @students.where('firstname LIKE ? OR lastname LIKE ?', name_pattern, name_pattern)
+      @students = @students.where('LOWER(firstname) LIKE LOWER(?) OR LOWER(lastname) LIKE LOWER(?)', name_pattern, name_pattern)
     end
     @students = @students.where(email: params[:input_email]) if params[:input_email].present?
     if params[:input_UIN].present?
@@ -310,17 +310,10 @@ class StudentsController < ApplicationController
     @correct_student = Student.find(session[:correct_student_id] || params[:correct_student_id])
     @selected_student = Student.find(session[:answer] || params[:answer])
 
-    old_interval = @correct_student.curr_practice_interval.to_i
     if @correct_student.id == @selected_student.id
-      @correct_student.update(curr_practice_interval: (old_interval * 2).to_s, last_practice_at: Time.now)
       render :correct_answer,
              locals: { courses: @courses_param, semesters: @semesters_param, sections: @sections_param }
     else
-      if old_interval > 15
-        @correct_student.update(curr_practice_interval: (old_interval / 2).to_s, last_practice_at: Time.now)
-      else
-        @correct_student.update(last_practice_at: Time.now)
-      end
       render :incorrect_answer,
              locals: { courses: @courses_param, semesters: @semesters_param, sections: @sections_param }
     end
