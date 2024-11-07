@@ -6,6 +6,16 @@ class StudentsController < ApplicationController
   # before_action :authenticate_by_session
   before_action :set_student, only: %i[show edit update destroy]
   before_action :require_user!
+  before_action :clear_session_if_needed
+
+  def clear_session_if_needed
+    unless request.path.include?("/students/quiz")
+      session[:courses] = nil
+      session[:semesters] = nil
+      session[:sections] = nil
+    end
+  end
+
   def quiz_filters
     @selected_courses = params[:courses] || []
     @selected_semesters = params[:semesters] || []
@@ -246,26 +256,37 @@ class StudentsController < ApplicationController
     @sections_param = []
 
     if request.get?
-      if session[:courses] && session[:semesters] && session[:sections]
-        @courses_param = session[:courses]
-        @semesters_param = session[:semesters]
-        @sections_param = session[:sections]
+      if session[:courses] || session[:semesters] || session[:sections]
+        @courses_param = session[:courses].split(',') if session[:courses].present?
+        @semesters_param = session[:semesters].split(',') if session[:semesters].present?
+        @sections_param = session[:sections].split(',') if session[:sections].present?
       else
         redirect_to quiz_filters_path, alert: 'Please apply filters before starting the quiz.' and return
       end
     else
-      session[:courses] = params[:courses_text].split(',').map(&:strip) if params[:courses_text]
-      session[:semesters] = params[:semesters_text].split(',').map(&:strip) if params[:semesters_text]
-      session[:sections] = params[:sections_text].split(',').map(&:strip) if params[:sections_text]
+      session[:courses] = params[:courses_text].split(',').map(&:strip).join(',') if params[:courses_text].present?
+      session[:semesters] = params[:semesters_text].split(',').map(&:strip).join(',') if params[:semesters_text].present?
+      session[:sections] = params[:sections_text].split(',').map(&:strip).join(',') if params[:sections_text].present?
 
-      @courses_param = params[:courses]
-      @semesters_param = params[:semesters]
-      @sections_param = params[:sections]
+    @courses_param = session[:courses].split(',') if session[:courses].present?
+    @semesters_param = session[:semesters].split(',') if session[:semesters].present?
+    @sections_param = session[:sections].split(',') if session[:sections].present?
+    end
+    
+    @target_courses = Course.all
+
+    if @courses_param.present?
+      @target_courses = @target_courses.where(course_name: @courses_param)
+    end
+  
+    if @semesters_param.present?
+      @target_courses = @target_courses.where(semester: @semesters_param)
+    end
+    
+    if @sections_param.present?
+      @target_courses = @target_courses.where(section: @sections_param)
     end
 
-    @target_courses = Course.where(course_name: @courses_param)
-                            .or(Course.where(semester: @semesters_param))
-                            .or(Course.where(section: @sections_param))
 
     @student_ids = StudentCourse.where(course_id: @target_courses.pluck(:id)).pluck(:student_id)
     @students = Student.where(id: @student_ids)
