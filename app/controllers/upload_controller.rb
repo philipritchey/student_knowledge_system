@@ -59,7 +59,13 @@ class UploadController < ApplicationController
     images = {}
 
     names.each do |name|
-      name_div = html_doc.at_xpath("//div[contains(text(), '#{name}')]")
+      if name.include?("'")
+        parts = name.split("'")
+        xpath_expression = "//div[contains(text(), concat('#{parts[0]}', \"'\", '#{parts[1]}'))]"
+      else
+        xpath_expression = "//div[contains(text(), '#{name}')]"
+      end
+      name_div = html_doc.at_xpath(xpath_expression)
       next unless name_div
 
       previous_element = name_div.previous_element
