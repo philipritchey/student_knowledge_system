@@ -8,13 +8,37 @@
     <div class="grid">
       <div  class="">
         <h2 class="text-[1.5rem] font-source-serif-pro mt-2">Welcome Back!</h2>
-        <p class="text-[1.15rem] font-source-serif-pro mt-2 mb-6"><b>Students due for you to practice:</b> <%= num_due() %></p>
+        <p class="text-[1.15rem] font-source-serif-pro mt-2 mb-6"><b>Students are due for practice!</b></p>
         <% if num_due() > 0 %>
         <a  class="font-fira-sans px-4 py-3 bg-[#eacece] hover:bg-[#DBABAB] drop-shadow rounded-xl border-2 border-[#e5c2c2]" href= <%= quiz_filters_path %> >Practice now!</a>
         <% end %>
       </div>
 
     </div>
+  </div>
+    <!-- New Quiz Statistics Section (Smaller Width) -->
+      <div class="flex justify-center items-center container w-auto mt-6">
+  <div class="container mt-6 mb-6 max-w-md w-full bg-white p-4 border-2 border-[#e5c2c2] drop-shadow-xl rounded-xl">
+    <h3 class="text-[1.5rem] font-source-serif-pro">Quiz Statistics</h3>
+    <% quiz_session = QuizSession.find_by(user: current_user) %>
+    <% if quiz_session %>
+      <div class="grid grid-cols-2 gap-4 mt-4">
+        <div class="p-3 bg-gray-100 rounded-lg">
+          <p><b>Total Attempted:</b> <%= quiz_session.total_questions %></p>
+          <p><b>Total Correct:</b> <%= quiz_session.correct_answers %></p>
+          <p><b>Total Incorrect:</b> <%= quiz_session.total_questions - quiz_session.correct_answers %></p>
+        </div>
+        <div class="p-3 bg-gray-100 rounded-lg">
+          <p><b>Accuracy:</b> <%= quiz_session.accuracy %> %</p>
+        </div>
+        <div class="p-3 bg-gray-100 rounded-lg">
+          <p><b>Current Streak:</b> <%= quiz_session.streak %></p>
+        </div>
+      </div>
+    <% else %>
+      <p>No quiz session data available.</p>
+    <% end %>
+  </div>
   </div>
   <div class="flex justify-center items-center container w-auto mt-6">
     <details class="font-fira-sans mt-1 mb-8 bg-gray-200 hover:bg-gray-300 px-4 py-3 drop-shadow rounded-xl border-2 flex items-center container">

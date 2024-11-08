@@ -9,17 +9,17 @@ class StudentsController < ApplicationController
   before_action :clear_session_if_needed
 
   def clear_session_if_needed
-    unless request.path.include?("/students/quiz")
-      session[:courses] = nil
-      session[:semesters] = nil
-      session[:sections] = nil
+    @quiz_session = QuizSession.find_by(user: current_user)
+    if @quiz_session && request.path.include?("/quiz/filters")
+      Rails.logger.info 'Inside Clear'
+      @quiz_session.update(courses_filter: [], semesters_filter: [], sections_filter: [])
     end
   end
 
   def quiz_filters
-    @selected_courses = params[:courses] || []
-    @selected_semesters = params[:semesters] || []
-    @selected_sections = params[:sections] || []
+    @selected_courses = params[:courses_text] || []
+    @selected_semesters = params[:semesters_text] || []
+    @selected_sections = params[:sections_text] || []
 
     @courses_options = Course.pluck(:course_name).uniq
     @semesters_options = Course.pluck(:semester).uniq
@@ -251,27 +251,18 @@ class StudentsController < ApplicationController
   end
 
   def quiz
-    @courses_param = []
-    @semesters_param = []
-    @sections_param = []
-
-    if request.get?
-      if session[:courses] || session[:semesters] || session[:sections]
-        @courses_param = session[:courses].split(',') if session[:courses].present?
-        @semesters_param = session[:semesters].split(',') if session[:semesters].present?
-        @sections_param = session[:sections].split(',') if session[:sections].present?
-      else
-        redirect_to quiz_filters_path, alert: 'Please apply filters before starting the quiz.' and return
-      end
-    else
-      session[:courses] = params[:courses_text].split(',').map(&:strip).join(',') if params[:courses_text].present?
-      session[:semesters] = params[:semesters_text].split(',').map(&:strip).join(',') if params[:semesters_text].present?
-      session[:sections] = params[:sections_text].split(',').map(&:strip).join(',') if params[:sections_text].present?
-
-    @courses_param = session[:courses].split(',') if session[:courses].present?
-    @semesters_param = session[:semesters].split(',') if session[:semesters].present?
-    @sections_param = session[:sections].split(',') if session[:sections].present?
+    @quiz_session = QuizSession.find_or_create_by(user: current_user)
+    if request.post?
+      @quiz_session.update(
+        courses_filter: params[:courses_text]&.split(',')&.map(&:strip) || [],
+        semesters_filter: params[:semesters_text]&.split(',')&.map(&:strip) || [],
+        sections_filter: params[:sections_text]&.split(',')&.map(&:strip) || []
+      )
     end
+
+    @courses_param = @quiz_session.courses_filter
+    @semesters_param = @quiz_session.semesters_filter
+    @sections_param = @quiz_session.sections_filter
     
     @target_courses = Course.all
 
@@ -317,23 +308,28 @@ class StudentsController < ApplicationController
   end
 
   def check_answer
+    @quiz_session = QuizSession.find_by(user: current_user)
     if request.post?
-      session[:courses] = params[:courses]
-      session[:semesters] = params[:semesters]
-      session[:sections] = params[:sections]
-      session[:correct_student_id] = params[:correct_student_id]
-      session[:answer] = params[:answer]
+      @quiz_session.update(
+        courses_filter: params[:courses_text]&.split(',')&.map(&:strip) || [],
+        semesters_filter: params[:semesters_text]&.split(',')&.map(&:strip) || [],
+        sections_filter: params[:sections_text]&.split(',')&.map(&:strip) || [],
+        correct_student_id: params[:correct_student_id],
+        answer: params[:answer]
+      )
     end
 
-    @courses_param = session[:courses] || params[:courses]
-    @semesters_param = session[:semesters] || params[:semesters]
-    @sections_param = session[:sections] || params[:sections]
-    @correct_student = Student.find(session[:correct_student_id] || params[:correct_student_id])
-    @selected_student = Student.find(session[:answer] || params[:answer])
+    @courses_param = @quiz_session.courses_filter
+    @semesters_param = @quiz_session.semesters_filter
+    @sections_param = @quiz_session.sections_filter
+    @correct_student = Student.find(@quiz_session.correct_student_id)
+    @selected_student = Student.find(@quiz_session.answer)
 
     old_interval = @correct_student.curr_practice_interval.to_i
     if @correct_student.id == @selected_student.id
       @correct_student.update(curr_practice_interval: (old_interval * 2).to_s, last_practice_at: Time.now)
+      @quiz_session.increment_streak
+      @quiz_session.increment_total_questions(correct: true)
       render :correct_answer,
              locals: { courses: @courses_param, semesters: @semesters_param, sections: @sections_param }
     else
@@ -342,8 +338,10 @@ class StudentsController < ApplicationController
       else
         @correct_student.update(last_practice_at: Time.now)
       end
+      @quiz_session.increment_total_questions
       render :incorrect_answer,
              locals: { courses: @courses_param, semesters: @semesters_param, sections: @sections_param }
+      @quiz_session.reset_streak
     end
   end
 
