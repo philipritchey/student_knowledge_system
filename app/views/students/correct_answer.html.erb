@@ -21,10 +21,14 @@
     <p class="text-2xl font-semibold text-[#500000] mb-6">Correct Answer!</p>
 
     <!-- Streak Counter Display -->
-    <div id="streak-counter" class="streak-display">
-      <span class="streak-icon">🔥</span>
-      <span id="streak-number"><%= @quiz_session.streak %></span>  Correct in a row! Streak Started.
-    </div>
+<div id="streak-counter" class="streak-display">
+  <span class="streak-icon">🔥</span>
+  <span id="streak-number"><%= @quiz_session.streak %></span> Correct in a row!
+  
+  <% if @quiz_session.streak == 1 %>
+    <span class="text-green-500 font-semibold ml-2">Streak Started!</span>
+  <% end %>
+</div>
 
     <%= form_with url: quiz_students_path, method: :post, local: true do %>
       <input type="hidden" name="courses_text" value="<%= @courses_param.is_a?(Array) ? @courses_param.join(',') : @courses_param %>">

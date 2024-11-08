@@ -8,8 +8,8 @@
     <div class="grid">
       <div  class="">
         <h2 class="text-[1.5rem] font-source-serif-pro mt-2">Welcome Back!</h2>
-        <p class="text-[1.15rem] font-source-serif-pro mt-2 mb-6"><b>Students are due for practice!</b></p>
         <% if num_due() > 0 %>
+        <p class="text-[1.15rem] font-source-serif-pro mt-2 mb-6"><b>Students are due for practice!</b></p>
         <a  class="font-fira-sans px-4 py-3 bg-[#eacece] hover:bg-[#DBABAB] drop-shadow rounded-xl border-2 border-[#e5c2c2]" href= <%= quiz_filters_path %> >Practice now!</a>
         <% end %>
       </div>
