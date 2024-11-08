@@ -10,7 +10,7 @@ class StudentsController < ApplicationController
 
   def clear_session_if_needed
     @quiz_session = QuizSession.find_by(user: current_user)
-    if request.path.include?("/quiz/filters")
+    if quiz_session && request.path.include?("/quiz/filters")
       Rails.logger.info 'Inside Clear'
       @quiz_session.update(courses_filter: [], semesters_filter: [], sections_filter: [])
     end
