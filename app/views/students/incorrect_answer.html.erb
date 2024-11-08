@@ -6,6 +6,15 @@
 <div class="mx-auto w-3/4 text-center mt-10">
   <div class="bg-white p-6 flex flex-col justify-center items-center rounded-xl shadow-md">
     <p class="text-2xl font-semibold text-[#500000] mb-6">Incorrect Answer.</p>
+
+    <% if @quiz_session.streak >= 1 %>
+      <div id="streak-lost" class="streak-display">
+        <span class="streak-icon text-red-500">💔</span>
+        <span id="streak-lost-number" class="text-red-500 font-semibold text-xl">Streak Lost!</span>
+      </div>
+    <% end %>
+    </br>
+
     <div class="rounded-xl mb-4">
       <% if @correct_student.base64_image.present? %>
         <%= image_tag @correct_student.base64_image, size: "128x128", class: "rounded-full border-2 border-gray-300" %>

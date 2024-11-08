@@ -1,14 +1,14 @@
 <head>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.1.4/tailwind.min.css">
-  <style>
+<style>
     #confetti-canvas {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      pointer-events: none; /* Prevent interaction with the canvas */
-      z-index: 50; /* Ensure it's above everything else */
+      pointer-events: none;
+      z-index: 50;
     }
   </style>
 </head>
@@ -19,6 +19,12 @@
 <div class="mx-auto w-3/4 text-center mt-10">
   <div class="bg-white p-6 flex flex-col justify-center items-center rounded-xl shadow-md">
     <p class="text-2xl font-semibold text-[#500000] mb-6">Correct Answer!</p>
+
+    <!-- Streak Counter Display -->
+    <div id="streak-counter" class="streak-display">
+      <span class="streak-icon">🔥</span>
+      <span id="streak-number"><%= @quiz_session.streak %></span>  Correct in a row! Streak Started.
+    </div>
 
     <%= form_with url: quiz_students_path, method: :post, local: true do %>
       <input type="hidden" name="courses_text" value="<%= @courses_param.is_a?(Array) ? @courses_param.join(',') : @courses_param %>">
@@ -74,10 +80,10 @@
 
         piece.x += piece.velocity.x;
         piece.y += piece.velocity.y;
-        piece.velocity.y += 0.1; // Gravity effect
+        piece.velocity.y += 0.1;
 
         if (piece.y > canvas.height) {
-          confettiPieces[index] = createConfettiPiece(); // Reset piece to top
+          confettiPieces[index] = createConfettiPiece();
         }
       });
 
@@ -86,11 +92,10 @@
 
     animateConfetti();
 
-    // Stop confetti after 5 seconds
     setTimeout(() => {
-      cancelAnimationFrame(animationId); // Stop the animation
-      ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
-    }, 5000); // Duration in milliseconds
+      cancelAnimationFrame(animationId);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }, 5000);
   }
 </script>
 
