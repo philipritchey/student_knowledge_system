@@ -324,7 +324,7 @@ class StudentsController < ApplicationController
     @sections_param = @quiz_session.sections_filter
     @correct_student = Student.find(@quiz_session.correct_student_id)
     @selected_student = Student.find(@quiz_session.answer)
-
+    old_interval = @correct_student.curr_practice_interval.to_i
     if @correct_student.id == @selected_student.id
       @correct_student.update(curr_practice_interval: (old_interval * 2).to_s, last_practice_at: Time.now)
       @quiz_session.increment_streak
