@@ -21,9 +21,9 @@ class StudentsController < ApplicationController
     @selected_semesters = params[:semesters_text] || []
     @selected_sections = params[:sections_text] || []
 
-    @courses_options = Course.pluck(:course_name).uniq
-    @semesters_options = Course.pluck(:semester).uniq
-    @sections_options = Course.pluck(:section).uniq
+    @courses_options = Course.where(teacher: current_user.email).pluck(:course_name).uniq
+    @semesters_options = Course.where(teacher: current_user.email).pluck(:semester).uniq
+    @sections_options = Course.where(teacher: current_user.email).pluck(:section).uniq
   end
 
   # GET /student
