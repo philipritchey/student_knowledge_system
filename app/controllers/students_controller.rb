@@ -327,8 +327,10 @@ class StudentsController < ApplicationController
     old_interval = @correct_student.curr_practice_interval.to_i
     if @correct_student.id == @selected_student.id
       @correct_student.update(curr_practice_interval: (old_interval * 2).to_s, last_practice_at: Time.now)
-      @quiz_session.increment_streak
-      @quiz_session.increment_total_questions(correct: true)
+      if request.post?
+        @quiz_session.increment_streak
+        @quiz_session.increment_total_questions(correct: true)
+      end
       render :correct_answer,
              locals: { courses: @courses_param, semesters: @semesters_param, sections: @sections_param }
     else
@@ -337,7 +339,9 @@ class StudentsController < ApplicationController
       else
         @correct_student.update(last_practice_at: Time.now)
       end
-      @quiz_session.increment_total_questions
+      if request.post?
+        @quiz_session.increment_total_questions
+      end
       render :incorrect_answer,
              locals: { courses: @courses_param, semesters: @semesters_param, sections: @sections_param }
       @quiz_session.reset_streak
