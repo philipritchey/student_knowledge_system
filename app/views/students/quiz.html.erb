@@ -17,8 +17,7 @@
 
     <%= form_with url: quiz_check_answer_path, method: :post, local: true do %>
       <% @choices.each do |choice| %>
-        <% name = Student.where(id: choice, teacher: current_user.email).pick(:firstname, :lastname) %>
-        <% name = name[0] + " " + name[1] %>
+        <% name = choice.firstname + " " + choice.lastname %>
         <div class="flex items-center mb-3">
           <input type="radio" name="answer" value="<%= choice.id %>" class="ml-2" id="choice-<%= choice %>" required />
           <label for="choice-<%= choice %>" class="ml-2 text-sm text-gray-700"><%= name %></label>
