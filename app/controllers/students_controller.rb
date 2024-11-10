@@ -282,7 +282,16 @@ class StudentsController < ApplicationController
     @student_ids = StudentCourse.where(course_id: @target_courses.pluck(:id)).pluck(:student_id)
     @students = Student.where(id: @student_ids)
 
-    @random_student = @students.sample
+    @due_students = Student.get_due(current_user.email)
+
+    @due_students = @due_students.select { |student| @students.include?(student) }
+  
+    if @due_students.empty?
+      flash[:alert] = 'No students found for the selected filters.'
+      redirect_to quiz_filters_path and return
+    end
+  
+    @random_student = @due_students.sample
 
     if @random_student.nil?
       flash[:alert] = 'No students found for the selected filters.'
