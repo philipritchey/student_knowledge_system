@@ -98,11 +98,76 @@ RSpec.describe StudentsController, type: :controller do
     end
   end
 
-  describe '#quiz' do
+  describe 'GET #quiz' do
+    before do
+      # Set up user and mock current_user
+      @user = User.create!(email: 'teacher@gmail.com', confirmed_at: Time.now)
+      allow(controller).to receive(:current_user).and_return(@user)
+
+      @course = Course.create(course_name: 'CSCE 606', teacher: 'teacher@gmail.com', section: '600',
+                              semester: 'Fall 2024')
+
+      @students = 8.times.map do |i|
+        Student.create!(
+          firstname: "Student#{i}",
+          lastname: "Test#{i}",
+          uin: "12345#{i}",
+          email: "student#{i}@example.com",
+          classification: 'U2',
+          major: 'CPSC',
+          teacher: 'teacher@gmail.com',
+          curr_practice_interval: '10',
+          last_practice_at: Time.now
+        )
+      end
+
+      # Loop through each student and associate with the course
+      @students.each do |student|
+        StudentCourse.create(student_id: student.id, course_id: @course.id)
+      end
+      # Stub get_due method to return students due for practice
+      allow(Student).to receive(:get_due).with(@user.email).and_return(@students)
+
+      # Create or find the QuizSession
+      @quiz_session = QuizSession.create!(user: @user, courses_filter: ['CSCE 606'], semesters_filter: ['Fall 2024'],
+                                          sections_filter: ['600'])
+    end
+
+    it 'creates or finds a QuizSession for the current user' do
+      get :quiz
+      expect(assigns(:quiz_session)).to eq(@quiz_session)
+    end
+
+    it 'filters courses based on parameters and updates @target_courses' do
+      get :quiz
+      expect(assigns(:target_courses)).to include(@course)
+    end
+
+    it 'filters students and selects a random due student' do
+      get :quiz
+      expect(assigns(:students)).to include(@students[0])
+      expect(assigns(:random_student)).to be_in(assigns(:due_students))
+    end
+
+    it 'redirects to quiz filters path if no due students match filters' do
+      allow(Student).to receive(:get_due).with(@user.email).and_return([])
+      get :quiz
+      expect(flash[:alert]).to eq('No students found for the selected filters.')
+      expect(response).to redirect_to(quiz_filters_path)
+    end
+
+    it 'creates a list of 7 choices plus the random student' do
+      get :quiz
+      expect(assigns(:choices).size).to eq(8)
+      expect(assigns(:choices)).to include(assigns(:random_student))
+    end
+  end
+
+  describe '#check_answer' do
     before do
       @user = User.create(email: 'teacher@gmail.com', confirmed_at: Time.now)
       allow(controller).to receive(:current_user).and_return(@user)
-
+      @quiz_session = QuizSession.create(user: @user, streak: 0, total_questions: 0)
       @student1 = Student.create(
         firstname: 'Zebulun',
         lastname: 'Oliphant',
@@ -129,11 +194,6 @@ RSpec.describe StudentsController, type: :controller do
                               semester: 'Fall 2024')
 
       StudentCourse.create(student_id: @student1.id, course_id: @course.id)
-
-      7.times do |i|
-        Student.create(firstname: "Student#{i}", lastname: "Test#{i}", uin: "12345#{i}", email: "student#{i}@example.com",
-                       classification: 'U2', major: 'CPSC', teacher: 'teacher@gmail.com', curr_practice_interval: '10', last_practice_at: Time.now)
-      end
     end
 
     context 'when answer is correct' do
@@ -142,13 +202,16 @@ RSpec.describe StudentsController, type: :controller do
           post :check_answer, params: {
             correct_student_id: @student1.id,
             answer: @student1.id,
-            courses: @course.course_name,
-            sections: @course.section,
-            semesters: @course.semester
+            courses_text: @course.course_name,
+            sections_text: @course.section,
+            semesters_text: @course.semester
           }
         end.to change { @student1.reload.curr_practice_interval.to_i }.by(10)
 
         expect(assigns(:correctAnswer)).to be nil
+        quiz_session = QuizSession.find_by(user: @user)
+        expect(quiz_session.streak).to eq(1) # replace with expected streak value
+        expect(quiz_session.total_questions).to eq(1)
       end
     end
 
@@ -173,16 +236,15 @@ RSpec.describe StudentsController, type: :controller do
         @student1.update(curr_practice_interval: '10')
 
         expect do
-          get :quiz, params: { id: @student1.id, answer: 'wrong_id' }
+          post :check_answer, params: {
+            correct_student_id: @student1.id,
+            answer: @student2.id,
+            courses: @course.course_name,
+            sections: @course.section,
+            semesters: @course.semester
+          }
         end.not_to(change { @student1.reload.curr_practice_interval.to_i })
 
-        expect(assigns(:correctAnswer)).to be nil
-      end
-    end
-
-    context 'when no answer is provided' do
-      it 'sets correctAnswer to nil' do
-        get :quiz, params: { id: @student1.id, answer: nil }
         expect(assigns(:correctAnswer)).to be nil
       end
     end
