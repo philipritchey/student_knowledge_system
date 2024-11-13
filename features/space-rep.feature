@@ -25,8 +25,8 @@ Given the following students exist:
 | Joe       | Mama      | 720401677 | howisjoe@tamu.edu     | U1             | ENGR  | team_cluck_admin@gmail.com | 2023-01-25 19:11:11.111111    | 120                    |
 | Sheev     | Palpatine | 983650274 | senate@tamu.edu       | U2             | CPSC  | team_cluck_admin@gmail.com | 2023-01-25 17:11:11.111111    | 119                    |
 
-Scenario: Due students display on home page
+Scenario: Quiz link display on home page
     Given students are enrolled in their respective courses
     When I sign in as "team_cluck_admin@gmail.com"
     Then I should not see "Quizzes"
-    And I should see "Students due for you to practice:"
+    And I should see "Practice now!"
