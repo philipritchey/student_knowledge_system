@@ -33,8 +33,8 @@ RSpec.describe UploadController, type: :controller do
       it 'creates student entries after uploading a valid csv and .htm file' do
         csv = fixture_file_upload('export.csv', 'text/csv')
         complete_webpage_file = fixture_file_upload('Howdy Dashboard _ Howdy.htm', 'text/html')
-        params = { csv_file: csv, complete_webpage_file:, course_temp: @course.course_name, section_temp: @course.section,
-                   semester_temp: @course.semester }
+        params = { csv_file: csv, complete_webpage_file:, course_temp: @course.course_name,
+                   section_temp: @course.section, semester_temp: @course.semester }
         post(:parse, params:)
         susheel = Student.find_by firstname: 'Susheel'
         expect(susheel.firstname).to eq('Susheel')
@@ -42,12 +42,12 @@ RSpec.describe UploadController, type: :controller do
       end
 
       it 'updates students that already exist' do
-        @prev_student = Student.create(firstname: 'Susheel', lastname: 'Vadakkekuruppath', uin: '236002222', email: 'zeb@tamu.edu',
-                                       classification: 'G7', major: 'CPSC', teacher: @user.email)
+        @prev_student = Student.create(firstname: 'Susheel', lastname: 'Vadakkekuruppath', uin: '236002222',
+                                       email: 'zeb@tamu.edu', classification: 'G7', major: 'CPSC', teacher: @user.email)
         csv = fixture_file_upload('export.csv', 'text/csv')
         complete_webpage_file = fixture_file_upload('Howdy Dashboard _ Howdy.htm', 'text/html')
-        params = { csv_file: csv, complete_webpage_file:, course_temp: @course1.course_name, section_temp: @course1.section,
-                   semester_temp: @course1.semester }
+        params = { csv_file: csv, complete_webpage_file:, course_temp: @course1.course_name,
+                   section_temp: @course1.section, semester_temp: @course1.semester }
         post(:parse, params:)
         uploaded_student = Student.find_by uin: '236002222'
         puts "ups: #{uploaded_student.inspect}"

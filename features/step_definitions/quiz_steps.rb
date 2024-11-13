@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 When('I click on {string}') do |link_text|
   click_link(link_text)
 end
@@ -6,10 +7,9 @@ end
 When('I select {string} from {string}') do |option, field|
   select option, from: field
 end
-  
+
 Given('I select the correct answer') do
   correct_student_id = find('input[name="correct_student_id"]', visible: false).value
-  choice_label = "choice-#{correct_student_id}"
   choose('answer', option: correct_student_id)
   @correct_student = Student.find_by(id: correct_student_id)
 end
@@ -39,7 +39,6 @@ end
 Then('I should see that my answer is incorrect') do
   expect(page).to have_content('Incorrect')
 end
-
 
 Then("the student's practice interval should be doubled") do
   old_interval = @correct_student.curr_practice_interval.to_i

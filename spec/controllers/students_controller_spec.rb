@@ -15,8 +15,9 @@ RSpec.describe StudentsController, type: :controller do
       @course3 = Course.create(course_name: 'CSCE 412', teacher: 'student@gmail.com', section: '501',
                                semester: 'Spring 2024')
 
-      @student = Student.create(firstname: 'Zebulun', lastname: 'Oliphant', uin: '734826482', email: 'zeb@tamu.edu',
-                                classification: 'U2', major: 'CPSC', teacher: 'student@gmail.com', notes: 'Good Student!')
+      @student = Student.create(firstname: 'Zebulun', lastname: 'Oliphant', uin: '734826482',
+                                email: 'zeb@tamu.edu', classification: 'U2', major: 'CPSC',
+                                teacher: 'student@gmail.com', notes: 'Good Student!')
     end
 
     it 'calls index successfully' do
