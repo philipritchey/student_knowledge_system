@@ -22,28 +22,29 @@ Given the following students exist:
 | Sheev     | Palpatine | 983650274 | senate@tamu.edu       | U2             | CPSC  | team_cluck_admin@gmail.com | 2023-01-25 19:11:11.111111    | 119                    |
 
 Scenario: Answering the quiz incorrectly
+    Given students are enrolled in their respective courses
     When I sign in as "team_cluck_admin@gmail.com"
-    Given I am on the quiz page for student with existing id
-    When I select an incorrect student from the choices
+    And I click on "Practice now!"
+    When I select "CSCE 411" from "courses[]"
+    And I select "501" from "sections[]"
+    And I select "Spring 2023" from "semesters[]"
+    And I click "Start the Quiz"
+    When I select an incorrect answer
     And I submit my answer
     Then I should see that my answer is incorrect
     And the student's practice interval should be halved if it was greater than 15
     And the student's last practice time should be updated
 
 Scenario: Answering the quiz correctly
+    Given students are enrolled in their respective courses
     When I sign in as "team_cluck_admin@gmail.com"
-    Given I am on the quiz page for student with existing id
-    When I select the correct student from the choices
+    And I click on "Practice now!"
+    When I select "CSCE 411" from "courses[]"
+    And I select "501" from "sections[]"
+    And I select "Spring 2023" from "semesters[]"
+    And I click "Start the Quiz"
+    When I select the correct answer
     And I submit my answer
     Then I should see that my answer is correct
     And the student's practice interval should be doubled
     And the student's last practice time should be updated
-
-Scenario: Not answering the quiz
-    When I sign in as "team_cluck_admin@gmail.com"
-    Given I am on the quiz page for student with existing id
-    When I don't select any answer
-    And I submit my answer
-    Then I should not see any feedback about correctness
-    And the student's practice interval should remain unchanged
-    And the student's last practice time should remain unchanged

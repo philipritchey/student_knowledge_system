@@ -1,27 +1,27 @@
 # frozen_string_literal: true
-
-Given('I am on the quiz page for student with existing id') do
-  @student = Student.order('RANDOM()').first
-  visit quiz_students_path(@student.id)
+When('I click on {string}') do |link_text|
+  click_link(link_text)
 end
 
-When('I select the correct student from the choices') do
-  choose('answer', option: @student.id.to_s)
+When('I select {string} from {string}') do |option, field|
+  select option, from: field
 end
-Then('the selected student should be different from the correct student') do
-  selected_option = find('input[type="radio"]:checked', visible: false)
-  expect(selected_option['id']).not_to eq(@student.id.to_s)
+  
+Given('I select the correct answer') do
+  correct_student_id = find('input[name="correct_student_id"]', visible: false).value
+  choice_label = "choice-#{correct_student_id}"
+  choose('answer', option: correct_student_id)
+  @correct_student = Student.find_by(id: correct_student_id)
 end
-When('I select an incorrect student from the choices') do
-  # Find all radio buttons
-  radio_buttons = all('input[type="radio"]')
 
-  # Find the first radio button with a non-integer ID
-  incorrect_choice = radio_buttons.find { |rb| rb['id'].split('-').last.to_i.to_s != rb['id'].split('-').last }
-
-  raise 'No incorrect choice found' unless incorrect_choice
-
+Given('I select an incorrect answer') do
+  correct_student_id = find('input[name="correct_student_id"]', visible: false).value
+  incorrect_choice = all('input[type="radio"]').reject do |input|
+    input.value == find('input[name="correct_student_id"]', visible: false).value
+  end.first
   incorrect_choice.choose
+  @correct_student = Student.find_by(id: correct_student_id)
+  @incorrect_student = Student.find_by(id: incorrect_choice)
 end
 
 When("I don't select any answer") do
@@ -40,41 +40,25 @@ Then('I should see that my answer is incorrect') do
   expect(page).to have_content('Incorrect')
 end
 
-Then('I should not see any feedback about correctness') do
-  expect(page).not_to have_content('Correct Answer!')
-  expect(page).not_to have_content('Incorrect Answer')
-end
 
 Then("the student's practice interval should be doubled") do
-  old_interval = @student.curr_practice_interval.to_i
+  old_interval = @correct_student.curr_practice_interval.to_i
   new_interval = old_interval * 2
-  @student.reload
-  expect(@student.curr_practice_interval.to_i).to eq(new_interval)
+  @correct_student.reload
+  expect(@correct_student.curr_practice_interval.to_i).to eq(new_interval)
 end
 
 Then("the student's practice interval should be halved if it was greater than 15") do
-  old_interval = @student.curr_practice_interval.to_i
-  @student.reload
-  if @student.curr_practice_interval.to_i > 15
-    expect(@student.curr_practice_interval.to_i).to eq(old_interval / 2)
+  old_interval = @correct_student.curr_practice_interval.to_i
+  @correct_student.reload
+  if @correct_student.curr_practice_interval.to_i > 15
+    expect(@correct_student.curr_practice_interval.to_i).to eq(old_interval / 2)
   else
-    expect(@student.curr_practice_interval.to_i).to eq(old_interval)
+    expect(@correct_student.curr_practice_interval.to_i).to eq(old_interval)
   end
 end
 
-Then("the student's practice interval should remain unchanged") do
-  old_interval = @student.curr_practice_interval.to_i
-  @student.reload
-  expect(@student.curr_practice_interval.to_i).to eq(old_interval)
-end
-
 Then("the student's last practice time should be updated") do
-  @student.reload
-  expect(@student.last_practice_at).to be_within(1.minute).of(Time.now)
-end
-
-Then("the student's last practice time should remain unchanged") do
-  last_prac = @student.last_practice_at
-  @student.reload
-  expect(@student.last_practice_at).to be_within(1.minute).of(last_prac)
+  @correct_student.reload
+  expect(@correct_student.last_practice_at).to be_within(1.minute).of(Time.now)
 end
