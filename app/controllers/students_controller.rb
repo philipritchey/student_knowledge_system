@@ -10,10 +10,10 @@ class StudentsController < ApplicationController
 
   def clear_session_if_needed
     @quiz_session = QuizSession.find_by(user: current_user)
-    if @quiz_session && request.path.include?("/quiz/filters")
-      Rails.logger.info 'Inside Clear'
-      @quiz_session.update(courses_filter: [], semesters_filter: [], sections_filter: [])
-    end
+    return unless @quiz_session && request.path.include?('/quiz/filters')
+
+    Rails.logger.info 'Inside Clear'
+    @quiz_session.update(courses_filter: [], semesters_filter: [], sections_filter: [])
   end
 
   def quiz_filters
@@ -88,7 +88,8 @@ class StudentsController < ApplicationController
     end
     if params[:input_name].present?
       name_pattern = "%#{params[:input_name]}%"
-      @students = @students.where('LOWER(firstname) LIKE LOWER(?) OR LOWER(lastname) LIKE LOWER(?)', name_pattern, name_pattern)
+      @students = @students.where('LOWER(firstname) LIKE LOWER(?) OR LOWER(lastname) LIKE LOWER(?)', name_pattern,
+                                  name_pattern)
     end
     @students = @students.where(email: params[:input_email]) if params[:input_email].present?
     if params[:input_UIN].present?
@@ -263,21 +264,14 @@ class StudentsController < ApplicationController
     @courses_param = @quiz_session.courses_filter
     @semesters_param = @quiz_session.semesters_filter
     @sections_param = @quiz_session.sections_filter
-    
+
     @target_courses = Course.all
 
-    if @courses_param.present?
-      @target_courses = @target_courses.where(course_name: @courses_param)
-    end
-  
-    if @semesters_param.present?
-      @target_courses = @target_courses.where(semester: @semesters_param)
-    end
-    
-    if @sections_param.present?
-      @target_courses = @target_courses.where(section: @sections_param)
-    end
+    @target_courses = @target_courses.where(course_name: @courses_param) if @courses_param.present?
 
+    @target_courses = @target_courses.where(semester: @semesters_param) if @semesters_param.present?
+
+    @target_courses = @target_courses.where(section: @sections_param) if @sections_param.present?
 
     @student_ids = StudentCourse.where(course_id: @target_courses.pluck(:id)).pluck(:student_id)
     @students = Student.where(id: @student_ids)
@@ -285,12 +279,12 @@ class StudentsController < ApplicationController
     @due_students = Student.get_due(current_user.email)
 
     @due_students = @due_students.select { |student| @students.include?(student) }
-  
+
     if @due_students.empty?
       flash[:alert] = 'No students found for the selected filters.'
       redirect_to quiz_filters_path and return
     end
-  
+
     @random_student = @due_students.sample
 
     if @random_student.nil?
@@ -348,9 +342,7 @@ class StudentsController < ApplicationController
       else
         @correct_student.update(last_practice_at: Time.now)
       end
-      if request.post?
-        @quiz_session.increment_total_questions
-      end
+      @quiz_session.increment_total_questions if request.post?
       render :incorrect_answer,
              locals: { courses: @courses_param, semesters: @semesters_param, sections: @sections_param }
       @quiz_session.reset_streak

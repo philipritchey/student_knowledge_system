@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class CreateQuizSessions < ActiveRecord::Migration[7.0]
   def change
     create_table :quiz_sessions do |t|
-      t.references :user, null: false, foreign_key: true      # Associate with user
+      t.references :user, null: false, foreign_key: true # Associate with user
       t.json :courses_filter, default: []                    # Store array of course filters
       t.json :semesters_filter, default: []                  # Store array of semester filters
       t.json :sections_filter, default: []                   # Store array of section filters
